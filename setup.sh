@@ -2,13 +2,13 @@
 
 # editor and terminal
 mkdir -p ~/.config
-
+mkdir -p ~/.emacs.d/
 
 ln -s ~/dotfiles/.zshenv ~/.zshenv
 ln -s ~/dotfiles/.config/zsh ~/.config/zsh
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 
-ln -s ~/dotfiles/emacs ~/.emacs.d/
+ln -s ~/dotfiles/.config/emacs/init.org ~/.emacs.d/init.org 
 cp ~/dotfiles/extra/init.el ~/.emacs.d/init.el 
 
 
