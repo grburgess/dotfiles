@@ -1,10 +1,4 @@
 
-alias ls="exa --icons"
-alias lg="exa -l --header --git --time-style long-iso"
-
-
-### Aliasi
-#source ~/.alias
 
 alias gofermi="ssh -Y fermi@ds54.mpe.mpg.de"
 alias golocal="ssh ga-ws71.mpe.mpg.de"
@@ -17,14 +11,13 @@ alias notebook="jupyter notebook"
 alias ..="cd .."
 alias ...="cd ../.."
 
-alias a="aws"
-alias e="emacs -nw"
-alias ec="emacs -c"
 alias f="fd"
 alias g="git"
 alias j="z"
 alias l="exa -lbF --git"
-alias n="nvim"
+alias n=notebook
+alias i="ipython"
+alias wo="workon"
 alias p="python"
 alias s="rg"
 alias t="tmux"

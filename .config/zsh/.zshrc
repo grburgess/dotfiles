@@ -218,7 +218,7 @@ if [[ ! -f $HOME/.config/zsh/.zinit/bin/zinit.zsh ]]; then
     command mkdir -p "$HOME/.config/zsh/.zinit" && command chmod g-rwX "$HOME/.config/zsh/.zinit"
     command git clone https://github.com/zdharma/zinit "$HOME/.config/zsh/.zinit/bin" && \
         print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
-        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+            print -P "%F{160}▓▒░ The clone has failed.%f%b"
 fi
 
 source "$HOME/.config/zsh/.zinit/bin/zinit.zsh"
@@ -228,10 +228,10 @@ autoload -Uz _zinit
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
 zinit light-mode for \
-    zinit-zsh/z-a-rust \
-    zinit-zsh/z-a-as-monitor \
-    zinit-zsh/z-a-patch-dl \
-    zinit-zsh/z-a-bin-gem-node
+      zinit-zsh/z-a-rust \
+      zinit-zsh/z-a-as-monitor \
+      zinit-zsh/z-a-patch-dl \
+      zinit-zsh/z-a-bin-gem-node
 
 ### End of Zinit's installer chunk
 zinit ice svn
@@ -293,44 +293,43 @@ zinit wait lucid for \
 
 
 
-if "$ZSH/tools/require_tool.sh" emacsclient 24 2>/dev/null ; then
-    export EMACS_PLUGIN_LAUNCHER="$ZSH/plugins/emacs/emacsclient.sh"
 
-    # set EDITOR if not already defined.
-    export EDITOR="${EDITOR:-${EMACS_PLUGIN_LAUNCHER}}"
+export EMACS_PLUGIN_LAUNCHER="${ZDOTDIR}/emacsclient.sh"
 
-    alias emacs="$EMACS_PLUGIN_LAUNCHER --no-wait"
-    alias e=emacs
-    # open terminal emacsclient
-    alias te="$EMACS_PLUGIN_LAUNCHER -nw"
+# set EDITOR if not already defined.
+export EDITOR="${EDITOR:-${EMACS_PLUGIN_LAUNCHER}}"
 
-    # same than M-x eval but from outside Emacs.
-    alias eeval="$EMACS_PLUGIN_LAUNCHER --eval"
-    # create a new X frame
-    alias eframe='emacsclient --alternate-editor "" --create-frame'
+alias emacs="$EMACS_PLUGIN_LAUNCHER --no-wait"
+alias e=emacs
+# open terminal emacsclient
+alias te="$EMACS_PLUGIN_LAUNCHER -nw"
 
+# same than M-x eval but from outside Emacs.
+alias eeval="$EMACS_PLUGIN_LAUNCHER --eval"
+# create a new X frame
+alias eframe='emacsclient --alternate-editor "" --create-frame'
 
-    # Write to standard output the path to the file
-    # opened in the current buffer.
-    function efile {
-        local cmd="(buffer-file-name (window-buffer))"
-        "$EMACS_PLUGIN_LAUNCHER" --eval "$cmd" | tr -d \"
-    }
+alias ec=eframe
 
-    # Write to standard output the directory of the file
-    # opened in the the current buffer
-    function ecd {
-        local cmd="(let ((buf-name (buffer-file-name (window-buffer))))
+# Write to standard output the path to the file
+# opened in the current buffer.
+function efile {
+    local cmd="(buffer-file-name (window-buffer))"
+    "$EMACS_PLUGIN_LAUNCHER" --eval "$cmd" | tr -d \"
+}
+
+# Write to standard output the directory of the file
+# opened in the the current buffer
+function ecd {
+    local cmd="(let ((buf-name (buffer-file-name (window-buffer))))
                      (if buf-name (file-name-directory buf-name)))"
 
-        local dir="$($EMACS_PLUGIN_LAUNCHER --eval $cmd | tr -d \")"
-        if [ -n "$dir" ] ;then
-            echo "$dir"
-        else
-            echo "can not deduce current buffer filename." >/dev/stderr
-            return 1
-        fi
-    }
-fi
-
+    local dir="$($EMACS_PLUGIN_LAUNCHER --eval $cmd | tr -d \")"
+    if [ -n "$dir" ] ;then
+        echo "$dir"
+    else
+        echo "can not deduce current buffer filename." >/dev/stderr
+        return 1
+    fi
+}
 
