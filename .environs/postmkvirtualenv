@@ -1,0 +1,14 @@
+#!/usr/local/bin/zsh
+# This hook is sourced after a new virtualenv is activated.
+pip install -r /Users/jburgess/.environs/reqs.txt 
+# jupyter  nbextension install ~/coding/projects/default_cells  --sys-prefix
+# jupyter  nbextension enable default_cells/main  --sys-prefix
+jupyter nbextension install https://github.com/drillan/jupyter-black/archive/master.zip --sys-prefix
+jupyter nbextension enable --sys-prefix jupyter-black-master/jupyter-black
+# jupyter nbextension install --sys-prefix nbextensions_configurator
+# jupyter nbextension enable --sys-prefix nbextensions_configurator
+#jupyter contrib nbextension install --sys-prefix
+# jupyter contrib nbextension enable --sys-prefix
+
+
+python -m ipykernel install --user --name $(basename $VIRTUAL_ENV)  --display-name "$(basename $VIRTUAL_ENV)"
