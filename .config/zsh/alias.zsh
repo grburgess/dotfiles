@@ -1,5 +1,6 @@
 
 
+
 alias gofermi="ssh -Y fermi@ds54.mpe.mpg.de"
 alias golocal="ssh ga-ws71.mpe.mpg.de"
 alias necromancer="ssh -X necromancer.mpe.mpg.de"

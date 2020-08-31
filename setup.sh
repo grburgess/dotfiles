@@ -4,6 +4,7 @@
 mkdir -p ~/.config
 mkdir -p ~/.emacs.d/
 
+
 ln -s ~/dotfiles/.zshenv ~/.zshenv
 ln -s ~/dotfiles/.config/zsh ~/.config/zsh
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
