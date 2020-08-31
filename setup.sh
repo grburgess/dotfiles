@@ -9,8 +9,11 @@ ln -s ~/dotfiles/.config/zsh ~/.config/zsh
 ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 
 ln -s ~/dotfiles/.config/emacs/init.org ~/.emacs.d/init.org 
-cp ~/dotfiles/extra/init.el ~/.emacs.d/init.el 
+cp ~/dotfiles/extra/init.el ~/.emacs.d/init.el
 
+# get a modern terminal color going
+cp ~/dotfiles/terminfo-24bit.src ~/terminfo-24bit.src
+tic -x -o ~/.terminfo terminfo-24bit.src
 
 
 
