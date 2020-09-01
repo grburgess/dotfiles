@@ -1290,6 +1290,16 @@
 
 
 
+** expand region
+
+   #+BEGIN_SRC emacs-lisp
+   (use-package expand-region
+     :ensure t
+     :bind ("C-=" . er/expand-region))
+
+
+
+#+END_SRC
 
 ** SLURM
 
