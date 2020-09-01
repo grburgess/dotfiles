@@ -23,23 +23,13 @@ zinit light-mode for \
 zinit ice svn
 zinit snippet OMZ::plugins/osx
 
-# zinit ice svn lucid
-# zinit snippet OMZ::plugins/pip
-
-# zinit ice svn lucid
-# zinit snippet OMZ::plugins/emacs
-
-# zinit ice svn lucid
-# zinit snippet OMZ::plugins/iterm2
-
-# zinit ice svn lucid
-# zinit snippet OMZ::plugins/virtualenv
-
 zinit ice blockf
 zinit light zsh-users/zsh-completions
 
 zinit load zsh-users/zsh-autosuggestions
 zinit load zdharma/fast-syntax-highlighting
+
+source ~/.config/zsh/highlight.zsh
 
 # Binaries
 zinit from"gh-r" as"program" for junegunn/fzf-bin
