@@ -92,8 +92,6 @@ SPACESHIP_PYENV_SYMBOL="🐍 "
 SPACESHIP_PYENV_COLOR="yellow"
 
 # theme
-zinit ice pick"async.zsh" src"pure.zsh"
-zinit light sindresorhus/pure
 #PROMPTにDATETIMEを表示する
 PURE_PROMPT_SYMBOL=" "
-zstyle :prompt:pure:prompt:success color '#999999'
+

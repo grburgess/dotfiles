@@ -76,8 +76,12 @@ zinit wait lucid for zdharma/fast-syntax-highlighting
 zinit pick"shell/completion.zsh" src"shell/key-bindings.zsh" for junegunn/fzf
 
 # Spaceship theme
-zinit ice lucid pick'spaceship.zsh' compile'{lib/*,sections/*,tests/*.zsh}'
-zinit light denysdovhan/spaceship-prompt
+#zinit ice lucid pick'spaceship.zsh' compile'{lib/*,sections/*,tests/*.zsh}'
+#zinit light denysdovhan/spaceship-prompt
+zinit ice pick"async.zsh" src"pure.zsh"
+zinit light sindresorhus/pure
+zstyle :prompt:pure:prompt:success color '#00FFA2'
+
 
 zinit wait lucid for \
       is-snippet "${ZDOTDIR}/alias.zsh"
