@@ -66,12 +66,6 @@ fi
 export ARCHFLAGS="-arch x86_64"
 
 # VENV PYTHPN
-VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
-export WORKON_HOME=~/.environs
-
-source /usr/local/bin/virtualenvwrapper.sh
-
-export PATH=/usr/local/opt/python/libexec/bin:$PATH
 
 
 # local
@@ -83,7 +77,14 @@ export MPLBACKEND='Agg'
 
 
 
-export CMDSTAN=/Users/jburgess/.cmdstanpy/cmdstan
+# # VENV 
+VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3 
+export WORKON_HOME=~/.venv
+
+source /usr/local/bin/virtualenvwrapper.sh
+
+
+export CMDSTAN=/home/jburgess/.cmdstanpy/cmdstan/
 
 bindkey -e
 # End of lines configured by zsh-newuser-install
@@ -128,7 +129,7 @@ source ~/.config/zsh/emacs.zsh
 
 
 
-eval "$(direnv hook zsh)"
+#eval "$(direnv hook zsh)"
 
 
 
