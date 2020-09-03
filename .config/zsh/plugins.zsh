@@ -71,6 +71,7 @@ zinit pick"shell/completion.zsh" src"shell/key-bindings.zsh" for junegunn/fzf
 zinit ice pick"async.zsh" src"pure.zsh"
 zinit light sindresorhus/pure
 zstyle :prompt:pure:prompt:success color '#00FFA2'
+zstyle :prompt:pure:virtualenv color '#BA00FF'
 
 
 zinit wait lucid for \
