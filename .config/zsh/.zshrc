@@ -89,7 +89,6 @@ export CMDSTAN=/home/jburgess/.cmdstanpy/cmdstan/
 bindkey -e
 # End of lines configured by zsh-newuser-install
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
 # HDF5 Sucks....
 export HDF5_DISABLE_VERSION_CHECK=1
