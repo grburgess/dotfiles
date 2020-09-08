@@ -91,10 +91,8 @@ bindkey -e
 export HDF5_DISABLE_VERSION_CHECK=1
 export HDF5_DIR=/usr/local/opt/hdf5
 
-
-
 # # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-# export PATH="$PATH:$HOME/.rvm/bin"
+ 
 export FZF_DEFAULT_COMMAND='fd -HI -L --exclude .git --color=always'
 export FZF_DEFAULT_OPTS='
   --ansi
@@ -138,3 +136,4 @@ source "$HOME/.config/zsh/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
+export PATH="$PATH:$HOME/.rvm/bin"

@@ -50,7 +50,7 @@ zinit is-snippet for OMZ::lib/git.zsh
 
 zinit is-snippet for OMZ::plugins/git/git.plugin.zsh
 zinit is-snippet for OMZ::plugins/pip/pip.plugin.zsh
-zinit is-snippet for OMZ::plugins/iterm2/iterm2.plugin.zsh
+
 
 zinit is-snippet for OMZ::plugins/emacs/emacs.plugin.zsh
 zinit is-snippet for OMZ::plugins/thefuck/thefuck.plugin.zsh
