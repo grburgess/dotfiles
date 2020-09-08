@@ -8,9 +8,6 @@
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 
 
-export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
-export PATH="/usr/local/lib/ruby/gems/bin:/usr/local/lib/ruby/gems/2.6.0/bin:/Library/TeX/texbin:/opt/X11/bin:${PATH}"
-
 
 source ~/.config/zsh/prompt.zsh
 
@@ -116,12 +113,6 @@ export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
 
 
 
-# added by travis gem
-[ -f /Users/jburgess/.travis/travis.sh ] && source /Users/jburgess/.travis/travis.sh
-
-
-
-
 source ~/.config/zsh/plugins.zsh 
 
 source ~/.config/zsh/emacs.zsh 
@@ -133,3 +124,17 @@ source ~/.config/zsh/emacs.zsh
 
 
 
+
+### Added by Zinit's installer
+if [[ ! -f $HOME/.config/zsh/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.config/zsh/.zinit" && command chmod g-rwX "$HOME/.config/zsh/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.config/zsh/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
+
+source "$HOME/.config/zsh/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+### End of Zinit's installer chunk
