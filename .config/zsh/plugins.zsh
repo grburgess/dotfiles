@@ -46,13 +46,15 @@ zinit is-snippet for OMZ::lib/key-bindings.zsh
 zinit is-snippet for OMZ::lib/history.zsh
 zinit is-snippet for OMZ::lib/git.zsh
 
+#zinit is-snippet for OMZ::
+
 
 
 zinit is-snippet for OMZ::plugins/git/git.plugin.zsh
 zinit is-snippet for OMZ::plugins/pip/pip.plugin.zsh
 
 
-zinit is-snippet for OMZ::plugins/emacs/emacs.plugin.zsh
+#zinit is-snippet for OMZ::plugins/emacs/emacs.plugin.zsh
 zinit is-snippet for OMZ::plugins/thefuck/thefuck.plugin.zsh
 zinit is-snippet for OMZ::plugins/history/history.plugin.zsh
 zinit is-snippet for OMZ::plugins/extract/extract.plugin.zsh
@@ -64,6 +66,9 @@ zinit for changyuheng/fz
 zinit for changyuheng/zsh-interactive-cd
 zinit wait lucid for zdharma/fast-syntax-highlighting
 zinit pick"shell/completion.zsh" src"shell/key-bindings.zsh" for junegunn/fzf
+
+zinit for iam4x/zsh-iterm-touchbar
+zinit for bernardop/iterm-tab-color-oh-my-zsh
 
 # Spaceship theme
 #zinit ice lucid pick'spaceship.zsh' compile'{lib/*,sections/*,tests/*.zsh}'

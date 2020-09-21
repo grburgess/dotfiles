@@ -40,7 +40,6 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 TERM=xterm-24bits
 
 
-
 ###### EMACS
 
 # Preferred editor for local and remote sessions
@@ -49,9 +48,6 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
     export EDITOR='emacs'
 fi
-
-
-
 
 
 
@@ -101,7 +97,7 @@ export FZF_DEFAULT_OPTS='
   --reverse
   --border
   --multi
-  --color fg:#1FF088,bg:#282828,hl:#fabd2f,fg+:#ebdbb2,bg+:#3c3836,hl+:#fabd2f
+  --color fg:#1FF088,bg:#000000,hl:#F7FF00,fg+:#B534FA,bg+:#19161B,hl+:#fabd2f
   --color info:#83a598,prompt:#bdae93,spinner:#fabd2f,pointer:#83a598,marker:#fe8019,header:#665c54
 '
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
@@ -115,6 +111,15 @@ source ~/.config/zsh/plugins.zsh
 
 source ~/.config/zsh/emacs.zsh 
 
+
+autoload -Uz compinit
+compinit
+
+zinit cdreplay -q   # -q is for quiet; actually run all the `compdef's saved before
+                    #`compinit` call (`compinit' declares the `compdef' function, so
+                    # it cannot be used until `compinit' is ran; Zinit solves this
+                    # via intercepting the `compdef'-calls and storing them for later
+                    # use with `zinit cdreplay')
 
 
 #eval "$(direnv hook zsh)"
