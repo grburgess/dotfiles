@@ -33,6 +33,7 @@
    the file that is loaded. It looks like this:
 
    #+BEGIN_SRC emacs-lisp :tangle no
+
    ;; This file replaces itself with the actual configuration at first run.
 
 
@@ -97,6 +98,7 @@
 
    #+BEGIN_SRC emacs-lisp
 
+
    (setq custom-file "~/.emacs.d/custom.el")
    (load custom-file)
    (setq shell-file-name "/bin/bash")
@@ -115,7 +117,11 @@
    loaded, along with =package=, which is obviously needed.
 
    #+BEGIN_SRC emacs-lisp
-
+   ;; (setq comp-speed 2)
+   ;; (when (boundp 'comp-eln-load-path)
+   ;;   (setcar comp-eln-load-path
+   ;;           (expand-file-name "cache/eln-cache/" user-emacs-directory)))
+   ;; (setq comp-deferred-compilation t)
    (require 'cl)
    (require 'package)
    (package-initialize)
@@ -286,6 +292,11 @@
              yasnippet-snippets
              yaml-mode
              stan-snippets
+             stan-snippets
+             company-stan
+             eldoc-stan
+             flycheck-stan
+
              ssh
              flx
              amx
@@ -596,19 +607,19 @@
     (global-linum-mode 1)
 
     (setq linum-mode-inhibit-modes-list '(eshell-mode
-					  shell-mode
-					  erc-mode
-					  org-mode
-					  jabber-roster-mode
-					  jabber-chat-mode
-					  gnus-group-mode
-					  gnus-summary-mode
-					  gnus-article-mode))
+                                          shell-mode
+                                          erc-mode
+                                          org-mode
+                                          jabber-roster-mode
+                                          jabber-chat-mode
+                                          gnus-group-mode
+                                          gnus-summary-mode
+                                          gnus-article-mode))
 
     (defadvice linum-on (around linum-on-inhibit-for-modes)
       "Stop the load of linum-mode for some major modes."
       (unless (member major-mode linum-mode-inhibit-modes-list)
-	ad-do-it))
+        ad-do-it))
 
     (ad-activate 'linum-on)
 
@@ -1299,7 +1310,7 @@
 
 
 
-#+END_SRC
+   #+END_SRC
 
 ** SLURM
 
@@ -2130,21 +2141,66 @@
 ** Stan
 
    #+BEGIN_SRC emacs-lisp
+   ;; Uncomment the line below if not required elsewhere.
+   ;; (require 'use-package)
 
+   ;;; stan-mode.el
    (use-package stan-mode
-     :ensure t
+     :mode ("\\.stan\\'" . stan-mode)
+     :hook (stan-mode . stan-mode-setup)
+     ;;
      :config
+     ;; The officially recommended offset is 2.
+     (setq stan-indentation-offset 2))
 
+   ;;; company-stan.el
+   (use-package company-stan
+     :hook (stan-mode . company-stan-setup)
+     ;;
+     :config
+     ;; Whether to use fuzzy matching in `company-stan'
+     (setq company-stan-fuzzy nil))
 
-     (with-eval-after-load 'stan
-
-       (require 'stan-snippets)
-       (yas-global-mode 1)
-       (add-hook 'stan-mode-hook '(lambda () (yas-minor-mode)))
-
-       )
-
+   ;;; eldoc-stan.el
+   (use-package eldoc-stan
+     :hook (stan-mode . eldoc-stan-setup)
+     ;;
+     :config
+     ;; No configuration options as of now.
      )
+
+   ;;; flycheck-stan.el
+   (use-package flycheck-stan
+     ;; Add a hook to setup `flycheck-stan' upon `stan-mode' entry
+     :hook ((stan-mode . flycheck-stan-stanc2-setup)
+            (stan-mode . flycheck-stan-stanc3-setup))
+     :config
+     ;; A string containing the name or the path of the stanc2 executable
+     ;; If nil, defaults to `stanc2'
+     (setq flycheck-stanc-executable nil)
+     ;; A string containing the name or the path of the stanc2 executable
+     ;; If nil, defaults to `stanc3'
+     (setq flycheck-stanc3-executable nil))
+
+   ;;; stan-snippets.el
+   (use-package stan-snippets
+     :hook (stan-mode . stan-snippets-initialize)
+     ;;
+     :config
+     ;; No configuration options as of now.
+     )
+
+   ;;; ac-stan.el (Not on MELPA; Need manual installation)
+   ;; (use-package ac-stan
+   ;;   :load-path "path-to-your-directory/ac-stan/"
+   ;;   ;; Delete the line below if using.
+   ;;   :disabled t
+   ;;   :hook (stan-mode . stan-ac-mode-setup)
+   ;;   ;;
+   ;;   :config
+   ;;   ;; No configuration options as of now.
+   ;;   )
+
 
    #+END_SRC
 
