@@ -48,7 +48,7 @@
    ;; load it
    (load-file (concat user-emacs-directory "init.el"))
    ;; finally byte-compile it
-   ;;(byte-compile-file (concat user-emacs-directory "init.el"))
+   (byte-compile-file (concat user-emacs-directory "init.el"))
    #+END_SRC
 
    It tangles the org-file, so that this file is overwritten with the actual
@@ -142,7 +142,7 @@
      (require 'use-package))
 
 
-;;   (package-refresh-contents)
+   ;;   (package-refresh-contents)
    #+END_SRC
 
    Packages can be fetched from different mirrors, [[http://melpa.milkbox.net/#/][melpa]] is the largest
@@ -1041,9 +1041,17 @@
      :config
      (setq lsp-print-performance t)
      (setq lsp-idle-delay 0.55)
+     (setq lsp-enable-symbol-highlighting t)
+     (setq lsp-enable-snippet t)
      (setq lsp-restart 'auto-restart)
-     (setq lsp-enable-completion-at-point nil)
+     (setq lsp-enable-completion-at-point t)
      (setq lsp-log-io nil)
+     (lsp-register-custom-settings
+      '(("pyls.plugins.pyls_mypy.enabled" t t)
+        ("pyls.plugins.pyls_mypy.live_mode" nil t)
+        ("pyls.plugins.pyls_black.enabled" t t)
+        ("pyls.plugins.pyls_isort.enabled" t t)))
+
 
      :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
      :hook ((python-mode) . lsp)
@@ -1052,28 +1060,44 @@
      (latex-mode . lsp)
      (fortran-mode . lsp)
      )
-
-
    (use-package lsp-ui
-     :after lsp-mode
-     :diminish
+     :config (setq lsp-ui-sideline-show-hover t
+                   lsp-ui-sideline-delay 0.5
+                   lsp-ui-doc-delay 5
+                   lsp-ui-sideline-ignore-duplicates t
+                   lsp-ui-doc-position 'bottom
+                   lsp-ui-doc-alignment 'frame
+                   lsp-ui-doc-header nil
+                   lsp-ui-doc-include-signature t
+                   lsp-ui-doc-use-childframe t)
      :commands lsp-ui-mode
-     :custom
-     (lsp-ui-doc-enable t)
-     (lsp-ui-doc-header t)
-     (lsp-ui-doc-include-signature t)
-     (lsp-ui-doc-position 'top)
-     (lsp-ui-doc-border (face-foreground 'default))
-     (lsp-ui-sideline-enable t)
-     (lsp-ui-sideline-ignore-duplicate t)
-     (lsp-ui-sideline-show-code-actions t)
-     :config
-     ;; Use lsp-ui-doc-webkit only in GUI
-     (setq lsp-ui-doc-use-webkit nil)
-     ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
-     ;; https://github.com/emacs-lsp/lsp-ui/issues/243
-     (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-       (setq mode-line-format nil)))
+     )
+
+   ;; (use-package lsp-ui
+   ;;   :after lsp-mode
+   ;;   :diminish
+   ;;   :commands lsp-ui-mode
+   ;;   :custom
+   ;;   (lsp-ui-doc-enable nil)
+   ;;   ;; (lsp-ui-doc-header t)
+   ;;   ;; (lsp-ui-doc-include-signature t)
+   ;;   (lsp-ui-doc-position 'bottom)
+   ;;   ;; (lsp-ui-doc-border (face-foreground 'default))
+   ;;   ;; (lsp-ui-sideline-enable t)
+   ;;   ;; (lsp-ui-sideline-ignore-duplicate t)
+   ;;   ;; (lsp-ui-sideline-show-code-actions t)
+   ;;   :config
+   ;;   ;; Use lsp-ui-doc-webkit only in GUI
+   ;;   ;; (setq lsp-ui-doc-use-webkit nil)
+   ;;   ;; (setq lsp-ui-sideline-show-hover nil)
+   ;;   (setq lsp-ui-doc-position 'bottom)
+   ;;   ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
+   ;;   ;; https://github.com/emacs-lsp/lsp-ui/issues/243
+   ;;   ;; (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
+   ;;   ;;   (setq mode-line-format nil))
+
+   ;;   ;; (lsp-ui-doc-show)
+   ;;   )
 
    (use-package company-lsp
      :after lsp-mode
@@ -1159,6 +1183,72 @@
        '((auto-compile-on-save-mode 1))))  ; compile .el files on save
    #+END_SRC
 
+** git gutter
+   #+BEGIN_SRC emacs-lisp
+   (use-package git-gutter
+     :diminish
+     :hook ((text-mode . git-gutter-mode)
+            (prog-mode . git-gutter-mode))
+     :config
+     (setq git-gutter:update-interval 2)
+
+     (require 'git-gutter-fringe)
+     (set-face-foreground 'git-gutter-fr:added "LightGreen")
+     (fringe-helper-define 'git-gutter-fr:added nil
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           ".........."
+                           ".........."
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           ".........."
+                           ".........."
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX")
+
+     (set-face-foreground 'git-gutter-fr:modified "LightGoldenrod")
+     (fringe-helper-define 'git-gutter-fr:modified nil
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           ".........."
+                           ".........."
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           ".........."
+                           ".........."
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX")
+
+     (set-face-foreground 'git-gutter-fr:deleted "LightCoral")
+     (fringe-helper-define 'git-gutter-fr:deleted nil
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           ".........."
+                           ".........."
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           ".........."
+                           ".........."
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX"
+                           "XXXXXXXXXX")
+
+     ;; These characters are used in terminal mode
+     (setq git-gutter:modified-sign "≡")
+     (setq git-gutter:added-sign "≡")
+     (setq git-gutter:deleted-sign "≡")
+     (set-face-foreground 'git-gutter:added "LightGreen")
+     (set-face-foreground 'git-gutter:modified "LightGoldenrod")
+     (set-face-foreground 'git-gutter:deleted "LightCoral"))
+   #+END_SRC
 ** projectile
    #+BEGIN_SRC emacs-lisp
    (use-package projectile
@@ -1266,48 +1356,49 @@
 
    #+BEGIN_SRC emacs-lisp
 
-   (use-package yasnippet                  ; Snippets
-     :ensure t
-     :config
+      (use-package yasnippet                  ; Snippets
+	:ensure t
+        :hook (prog-mode . yas-minor-mode)
+	:config
 
-     ;;       (yas-reload-all)
-     (yas-global-mode)
-
-
-     ;; (defun check-expansion ()
-     ;;   (save-excursion
-     ;;         (if (looking-at "\\_>") t
-     ;;           (backward-char 1)
-     ;;           (if (looking-at "\\.") t
-     ;;             (backward-char 1)
-     ;;             (if (looking-at "->") t nil)))))
+	       (yas-reload-all)
+	;;(yas-global-mode)
 
 
-     ;; (defun do-yas-expand ()
-     ;;   (let ((yas/fallback-behavior 'return-nil))
-     ;;         (yas/expand)))
-
-     (defun tab-indent-or-complete ()
-       (interactive)
-       (if (minibufferp)
-           (minibuffer-complete)
-         (if (or (not yas/minor-mode)
-                 (null (do-yas-expand)))
-             (if (check-expansion)
-                 (company-complete-common)
-               (indent-for-tab-command)))))
+	;; (defun check-expansion ()
+	;;   (save-excursion
+	;;         (if (looking-at "\\_>") t
+	;;           (backward-char 1)
+	;;           (if (looking-at "\\.") t
+	;;             (backward-char 1)
+	;;             (if (looking-at "->") t nil)))))
 
 
-     )
+	;; (defun do-yas-expand ()
+	;;   (let ((yas/fallback-behavior 'return-nil))
+	;;         (yas/expand)))
 
-   (use-package yasnippet-snippets         ; Collection of snippets
-     :ensure t)
+	;; (defun tab-indent-or-complete ()
+	;;   (interactive)
+	;;   (if (minibufferp)
+	;;       (minibuffer-complete)
+	;;     (if (or (not yas/minor-mode)
+	;;             (null (do-yas-expand)))
+	;;         (if (check-expansion)
+	;;             (company-complete-common)
+	;;           (indent-for-tab-command)))))
+
+
+	)
+
+      (use-package yasnippet-snippets         ; Collection of snippets
+	:ensure t)
 
    #+END_SRC
 
 
 
-
+   
 ** expand region
 
    #+BEGIN_SRC emacs-lisp
@@ -1814,7 +1905,11 @@
 
    (use-package pyvenv
      :ensure t
-     :bind (([?\C-c ?\C-x ?v] . pyvenv-workon)))
+     :config
+     (pyvenv-tracking-mode 1)
+
+
+     )
 
 
    (setq python-shell-interpreter "python3"
@@ -2166,7 +2261,7 @@
      ;;
      :config
      ;; Whether to use fuzzy matching in `company-stan'
-     (setq company-stan-fuzzy nil))
+     (setq company-stan-fuzzy t))
 
    ;;; eldoc-stan.el
    (use-package eldoc-stan
@@ -2366,11 +2461,7 @@
   #+END_SRC
 
 
-** Bindings for [[http://company-mode.github.io/][company-mode]]
 
-   #+BEGIN_SRC emacs-lisp
-
-   #+END_SRC
 ** Bindings for crux
    #+BEGIN_SRC emacs-lisp
 
@@ -2404,7 +2495,6 @@
 ** Bindings for functions defined [[sec:defuns][above]].
 
    #+BEGIN_SRC emacs-lisp
-   (define-key custom-bindings-map (kbd "C-c .")   'cycle-themes)
    (define-key custom-bindings-map (kbd "C-x k")   'kill-this-buffer-unless-scratch)
 
    #+END_SRC
