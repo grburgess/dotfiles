@@ -24,6 +24,7 @@ alias s="rg"
 alias t="tmux"
 alias y="yarn"
 
+alias telegram="rm -rf ~/.telegram-cli/state && telegram -N -L /Users/jburgess/Documents/.telegram_log/logfile"
 
 
 
