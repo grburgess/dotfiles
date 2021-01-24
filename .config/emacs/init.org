@@ -600,39 +600,7 @@
 
 *** Line numbers
     #+BEGIN_SRC emacs-lisp
-    ;; (use-package nlinum-relative
-    ;;   :config
-    ;;   ;; something else you want
-
-    ;;   (add-hook 'prog-mode-hook 'nlinum-relative-mode)
-
-    ;;   (setq nlinum-highlight-current-line t)
-
-    ;;   (setq nlinum-relative-redisplay-delay 0)      ;; delay
-    ;;   (setq nlinum-relative-current-symbol "->")      ;; or "" for display current line number
-    ;;   ;;(setq nlinum-relative-offset 0)                 ;; 1 if you want 0, 2, 3...)
-    ;;   )
-
-
-    ;; (global-linum-mode 1)
-
-    ;; (setq linum-mode-inhibit-modes-list '(eshell-mode
-    ;;                                       shell-mode
-    ;;                                       erc-mode
-    ;;                                       org-mode
-    ;;                                       jabber-roster-mode
-    ;;                                       jabber-chat-mode
-    ;;                                       gnus-group-mode
-    ;;                                       gnus-summary-mode
-    ;;                                       gnus-article-mode))
-
-    ;; (defadvice linum-on (around linum-on-inhibit-for-modes)
-    ;;   "Stop the load of linum-mode for some major modes."
-    ;;   (unless (member major-mode linum-mode-inhibit-modes-list)
-    ;;     ad-do-it))
-
-    ;; (ad-activate 'linum-on)
-
+  
     (require 'display-line-numbers)
     (defcustom display-line-numbers-exempt-modes '(vterm-mode eshell-mode shell-mode term-mode org-mode ansi-term-mode)
       "Major modes on which to disable the linum mode, exempts them from global requirement"
