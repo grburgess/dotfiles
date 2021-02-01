@@ -16,7 +16,7 @@ fi
 stow emacs zsh bat broot threeML
 
 
-
+touch .z
 
 # ln -s ~/dotfiles/.zshenv ~/.zshenv
 # ln -s ~/dotfiles/.config/zsh ~/.config/zsh
