@@ -1,2 +1,4 @@
 /.config/.DS_Store
 /.config/zsh/.zcompcache/
+/emacs/.config/emacs/init.el
+/zsh/.config/zsh/.zsh_history
