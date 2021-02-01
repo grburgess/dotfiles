@@ -1,16 +1,29 @@
 #!/bin/sh
 
 # editor and terminal
-mkdir -p ~/.config/emacs/
+# mkdir -p ~/.config/emacs/
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    brew install stow
+
+
+else
+
+    apt install stow
+
+fi
+
+
+stow emacs zsh bat broot threeML
 
 
 
-ln -s ~/dotfiles/.zshenv ~/.zshenv
-ln -s ~/dotfiles/.config/zsh ~/.config/zsh
-ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
-ln -s ~/dotfiles/.config/bat ~/.config/bat
 
-ln -s ~/dotfiles/.config/emacs/init.org ~/.config/emacs.d/init.org 
+# ln -s ~/dotfiles/.zshenv ~/.zshenv
+# ln -s ~/dotfiles/.config/zsh ~/.config/zsh
+# ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
+# ln -s ~/dotfiles/.config/bat ~/.config/bat
+
+#ln -s ~/dotfiles/.config/emacs/init.org ~/.config/emacs.d/init.org 
 cp ~/dotfiles/extra/init.el ~/.config/emacs/init.el
 
 # get a modern terminal color going
