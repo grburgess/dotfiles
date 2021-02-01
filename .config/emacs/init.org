@@ -99,7 +99,7 @@
    #+BEGIN_SRC emacs-lisp
 
 
-   (setq custom-file "~/.emacs.d/custom.el")
+   (setq custom-file "~/.config/emacs/custom.el")
    (load custom-file)
    (setq shell-file-name "/bin/bash")
 
