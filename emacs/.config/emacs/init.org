@@ -588,7 +588,6 @@
     #+END_SRC
 
 
-
 *** Beacon
 
     Some nice visual modes
@@ -608,7 +607,7 @@
         (setq beacon-blink-when-buffer-changes t) ; default t
         (setq beacon-blink-when-window-scrolls t) ; default t
         (setq beacon-blink-when-window-changes t) ; default t
-        (setq beacon-blink-when-focused nil) ; default nil
+        (setq beacon-blink-when-focused t) ; default nil
 
         (setq beacon-blink-duration 0.7) ; default 0.3
         (setq beacon-blink-delay 0.3) ; default 0.3
@@ -1228,13 +1227,13 @@
              overlong-summary-line)))
 
    (use-package magit-diff
-     :ensure t
+     ;;:ensure t
      :after magit
      :config
      (setq magit-diff-refine-hunk t))
 
    (use-package magit-repos
-     :ensure t
+     ;;:ensure t
      :after magit
      :commands magit-list-repositories
      :config
@@ -1481,7 +1480,6 @@
    #+BEGIN_SRC emacs-lisp
 
    (use-package dired
-     :ensure t
      :config
      (setq dired-recursive-copies 'always)
      (setq dired-recursive-deletes 'always)
@@ -1492,7 +1490,6 @@
             (dired-mode . hl-line-mode)))
 
    (use-package dired-aux
-     :ensure t
      :config
      (setq dired-isearch-filenames 'dwim)
      ;; The following variables were introduced in Emacs 27.1
@@ -1514,7 +1511,7 @@
      :ensure t)
 
    (use-package dired-async
-     :ensure t
+
      :after (dired async)
      :hook (dired-mode . dired-async-mode))
    #+END_SRC
@@ -1864,7 +1861,7 @@
 ** LaTeX and org-mode LaTeX export
    #+BEGIN_SRC emacs-lisp
    (use-package latex
-     :ensure t
+
      :mode
      ("\\.tex\\'" . latex-mode)
      :bind
