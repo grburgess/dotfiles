@@ -7,30 +7,9 @@
 #+PROPERTY: header-args :tangle yes
 
 
-* About
-
-  This is an Emacs configuration file written in [[http://orgmode.org][Org mode]]. It is an attempt
-  to keep my =~/.emacs.d= tidy, but still be able to keep it all in one
-  file. I aim to briefly explain all my configurations as I go along!
-
 * Configurations
 ** Meta
 
-   All changes to the configuration should be done in =init.org=, *not* in
-   =init.el=. Any changes in the =init.el= will be overwritten by saving
-   =init.org=. The =init.el= in this repo should not be tracked by git, and
-   is replaced the first time Emacs is started (assuming it has been renamed
-   to =~/.emacs.d=).
-
-   Emacs can't load =.org=-files directly, but =org-mode= provides functions
-   to extract the code blocks and write them to a file. There are multiple
-   ways of handling this; like suggested by [[http://emacs.stackexchange.com/questions/3143/can-i-use-org-mode-to-structure-my-emacs-or-other-el-configuration-file][this StackOverflow post]], one
-   could just use =org-babel-load-file=, but I had problems with
-   byte-compilation. Previously I tracked both the =org.=- and =el.=-files,
-   but the git commits got a little messy. So here is a new approach.
-
-   When this configuration is loaded for the first time, the ~init.el~ is
-   the file that is loaded. It looks like this:
 
    #+BEGIN_SRC emacs-lisp :tangle no
 
@@ -51,32 +30,11 @@
    (byte-compile-file (concat user-emacs-directory "init.el"))
    #+END_SRC
 
-   It tangles the org-file, so that this file is overwritten with the actual
-   configuration.
-
-   There is no reason to track the =init.el= that is generated; by running
-   the following command =git= will not bother tracking it:
-
-
-   If one wishes to make changes to the repo-version of =init.el= start
-   tracking again with:
-
-
-   I want lexical scoping for the init-file, which can be specified in the
-   header. The first line of the configuration is as follows:
 
    #+BEGIN_SRC emacs-lisp
    ;;; -*- lexical-binding: t -*-
    #+END_SRC
 
-   The =init.el= should (after the first run) mirror the source blocks in
-   the =init.org=. We can use =C-c C-v t= to run =org-babel-tangle=, which
-   extracts the code blocks from the current file into a source-specific
-   file (in this case a =.el=-file).
-
-   To avoid doing this each time a change is made we can add a function to
-   the =after-save-hook= ensuring to always tangle and byte-compile the
-   =org=-document after changes.
 
    #+BEGIN_SRC emacs-lisp
 
@@ -93,16 +51,10 @@
    (add-hook 'after-save-hook 'tangle-init)
    #+END_SRC
 
-   I'd like to keep a few settings private, so we load a =private.el= if it
-   exists after the init-file has loaded.
-
    #+BEGIN_SRC emacs-lisp
-
-
-   (setq custom-file "~/.config/emacs/custom.el")
-   (load custom-file)
+   ;; (setq custom-file "~/.config/emacs/custom.el")
+   ;; (load custom-file)
    (setq shell-file-name "/bin/bash")
-
 
    #+END_SRC
 
@@ -134,18 +86,50 @@
                             ("org" . "https://orgmode.org/elpa/")
                             ("elpa" . "https://elpa.gnu.org/packages/")))
 
-   ;;   (package-initialize)
+   (package-initialize)
 
-
+   ;; ;; Initialize use-package on non-Linux platforms
+   ;; (unless (or (package-installed-p 'use-package)
+   ;;          )
+   ;;   (package-install 'use-package))
 
    ;; This is only needed once, near the top of the file
-   (eval-when-compile
-     ;; Following line is not needed if use-package.el is in ~/.emacs.d
-     (add-to-list 'load-path "~/.config/emacs/")
-     (require 'use-package))
+   ;; (eval-when-compile
+   ;;   ;; Following line is not needed if use-package.el is in ~/.emacs.d
+   ;;   (add-to-list 'load-path "~/.config/emacs/")
+   ;;   (require 'use-package))
+   (add-to-list 'load-path "~/.config/emacs/")
+   (require 'use-package)
 
 
    ;;   (package-refresh-contents)
+   #+END_SRC
+
+
+** straight.el
+
+   #+BEGIN_SRC emacs-lisp
+
+   ;; Bootstrap straight.el
+   (defvar bootstrap-version)
+   (let ((bootstrap-file
+          (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+         (bootstrap-version 5))
+     (unless (file-exists-p bootstrap-file)
+       (with-current-buffer
+           (url-retrieve-synchronously
+            "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+            'silent 'inhibit-cookies)
+         (goto-char (point-max))
+         (eval-print-last-sexp)))
+     (load bootstrap-file nil 'nomessage))
+
+   ;; Always use straight to install on systems other than Linux
+   (setq straight-use-package-by-default (not (eq system-type 'gnu/linux)))
+
+   ;; Use straight.el for use-package expressions
+   (straight-use-package 'use-package)
+
    #+END_SRC
 
    Packages can be fetched from different mirrors, [[http://melpa.milkbox.net/#/][melpa]] is the largest
@@ -153,17 +137,40 @@
 
    #+BEGIN_SRC emacs-lisp
 
-   (setq package-check-signiture nil)
+   ;; (setq package-check-signiture nil)
 
 
-   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-   (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-   (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
+   ;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+   ;; (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+   ;; (add-to-list 'package-pinned-packages '(cider . "melpa-stable") t)
 
 
 
 
    #+END_SRC
+
+
+** cleaning
+
+   #+BEGIN_SRC emacs-lisp
+   ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
+   (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+         url-history-file (expand-file-name "url/history" user-emacs-directory))
+
+   ;; Use no-littering to automatically set common paths to the new user-emacs-directory
+   (use-package no-littering
+     :straight t
+
+     )
+
+   ;; Keep customization settings in a temporary file (thanks Ambrevar!)
+   (setq custom-file
+         (if (boundp 'server-socket-dir)
+             (expand-file-name "custom.el" server-socket-dir)
+           (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+   (load custom-file t)
+   #+END_SRC
+
 
    The configuration assumes that the packages listed below are
    installed. To ensure we install missing packages if they are missing.
@@ -171,7 +178,7 @@
    #+BEGIN_SRC emacs-lisp
 
    (use-package exec-path-from-shell
-     :ensure t
+     :straight t
      :config
      (when (memq window-system '(mac ns x))
        (exec-path-from-shell-initialize)))
@@ -296,13 +303,19 @@
                                            ;  (add-hook 'doc-view-mode-hook 'auto-revert-mode)
    #+END_SRC
 
+** bug hunter
+   #+BEGIN_SRC emacs-lisp
+   (use-package bug-hunter
+     :straight t
+     )
 
+   #+END_SRC
 * Visual
 ** doom themes
 
    #+BEGIN_SRC emacs-lisp
    (use-package doom-themes
-     :ensure t
+     :straight t
      :init
 
 
@@ -383,13 +396,13 @@
 
    #+BEGIN_SRC emacs-lisp
    ;; (use-package rainbow-mode
-   ;;   :ensure t
+   ;;   :straight t
 
    ;;   )
 
    (use-package rainbow-mode
      :delight
-     :ensure t
+     :straight t
      :hook (prog-mode . rainbow-mode))
    #+END_SRC
 
@@ -439,7 +452,7 @@
    #+BEGIN_SRC emacs-lisp
 
    (use-package beacon
-     :ensure t
+     :straight t
      :config
 
      (progn
@@ -522,7 +535,7 @@
    #+BEGIN_SRC emacs-lisp
    (use-package all-the-icons
      :if window-system
-     :ensure t
+     :straight t
      :config
      (when (not (member "all-the-icons" (font-family-list)))
        (all-the-icons-install-fonts t)))
@@ -530,7 +543,7 @@
 
 
    (use-package all-the-icons-ibuffer
-     :ensure t
+     :straight t
      :init (all-the-icons-ibuffer-mode 1))
 
 
@@ -543,7 +556,7 @@
    #+BEGIN_SRC emacs-lisp
    ;; Minimap
    (use-package sublimity
-     :ensure t
+     :straight t
      :config (require 'sublimity)
      (require 'sublimity-scroll)
      ;; (setq sublimity-scroll-weight 10
@@ -554,11 +567,21 @@
 
 
 * Productivity
+** which key
+   #+BEGIN_SRC emacs-lisp
+   (use-package which-key
+     :straight t
+     :init (which-key-mode)
+     :diminish which-key-mode
+     :config
+     (setq which-key-idle-delay 0.3))
+   #+END_SRC
+
 ** Flycheck
    #+BEGIN_SRC emacs-lisp
 
    (use-package flycheck
-     :ensure t
+     :straight t
      :defer t
      :hook (lsp-mode . flycheck-mode))
 
@@ -570,14 +593,14 @@
    #+BEGIN_SRC emacs-lisp
 
    (use-package yasnippet                  ; Snippets
-     :ensure t
+     :straight t
      :hook (prog-mode . yas-minor-mode)
      :config
 
      (yas-reload-all)
      )
    (use-package yasnippet-snippets         ; Collection of snippets
-     :ensure t)
+     :straight t)
 
    #+END_SRC
 
@@ -585,7 +608,7 @@
 
    #+BEGIN_SRC emacs-lisp
    (use-package smartparens
-     :ensure t
+     :straight t
      :hook (prog-mode . smartparens-mode))
    #+END_SRC
 
@@ -594,7 +617,7 @@
    #+BEGIN_SRC emacs-lisp
 
    (use-package rainbow-delimiters
-     :ensure t
+     :straight t
      :hook (prog-mode . rainbow-delimiters-mode)
      )
 
@@ -604,7 +627,7 @@
 
    #+BEGIN_SRC emacs-lisp
    (use-package highlight-indent-guides
-     :ensure t
+     :straight t
      :init
      (setq highlight-indent-guides-auto-enabled nil)
      (setq highlight-indent-guides-method 'character)
@@ -645,7 +668,7 @@
    #+BEGIN_SRC emacs-lisp
 
    (use-package multiple-cursors
-     :ensure t
+     :straight t
      :bind (
 
             ("C->" . mc/mark-next-like-this)
@@ -702,7 +725,7 @@
    #+BEGIN_SRC emacs-lisp
 
    (use-package direnv
-     :ensure t
+     :straight t
      :config
      (direnv-mode))
 
@@ -715,6 +738,9 @@
    #+BEGIN_SRC emacs-lisp
 
    (use-package dired
+     :ensure nil
+     :straight nil
+
      :config
      (setq dired-recursive-copies 'always)
      (setq dired-recursive-deletes 'always)
@@ -725,6 +751,8 @@
             (dired-mode . hl-line-mode)))
 
    (use-package dired-aux
+     :ensure nil
+     :straight nil
      :config
      (setq dired-isearch-filenames 'dwim)
      ;; The following variables were introduced in Emacs 27.1
@@ -735,7 +763,8 @@
                  ("M-s f" . nil)))
 
    (use-package find-dired
-
+     :ensure nil
+     :straight nil
      :after dired
      :config
      ;; (setq find-ls-option
@@ -743,9 +772,11 @@
      (setq find-name-arg "-iname"))
 
    (use-package async
-     :ensure t)
+     :straight t)
 
    (use-package dired-async
+     :ensure nil
+     :straight nil
 
      :after (dired async)
      :hook (dired-mode . dired-async-mode))
@@ -762,7 +793,8 @@
 
    #+BEGIN_SRC emacs-lisp
    (use-package wdired
-
+     :ensure nil
+     :straight nil
      :after dired
      :commands wdired-change-to-wdired-mode
      :config
@@ -774,7 +806,8 @@
 
    #+BEGIN_SRC emacs-lisp
    (use-package peep-dired
-
+     :ensure nil
+     :straight nil
      :after dired
      :config
      (setq peep-dired-cleanup-on-disable t)
@@ -787,7 +820,8 @@
 
    #+BEGIN_SRC emacs-lisp
    (use-package dired-subtree
-
+     :ensure nil
+     :straight nil
      :after dired
      :config
      (setq dired-subtree-use-backgrounds nil)
@@ -797,12 +831,12 @@
                  ("<S-iso-lefttab>" . dired-subtree-remove)))
 
    (use-package diredfl
-     :ensure t
+     :straight t
      :hook (dired-mode . diredfl-mode))
 
 
    (use-package wgrep
-     :ensure t
+     :straight t
      :config
      (setq wgrep-auto-save-buffer t)
      (setq wgrep-change-readonly-file t))
@@ -816,7 +850,7 @@
 
    ;; Tramp ivy interface
    (use-package counsel-tramp
-     :ensure t
+     :straight t
      :config
 
      (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
@@ -853,7 +887,7 @@
 
 
    (use-package company
-     :ensure t
+     :straight t
      :diminish ""
      :init
      ;; (add-hook 'prog-mode-hook 'company-mode)
@@ -885,13 +919,14 @@
 
 
    (use-package company-auctex
-     :ensure t
+     :straight t
      :defer t
      :hook ((LaTeX-mode . company-auctex-init)))
 
 
    (use-package company-jedi
-     :ensure t)
+     :straight t)
+
 
 
    (dolist (mode
@@ -900,7 +935,7 @@
               global-company-mode          ; Auto-completion everywhere
               global-prettify-symbols-mode ; Greek letters should look gree
               show-paren-mode              ; Highlight matching parentheses
-              which-key-mode))             ; Available keybindings in popup
+              ))             ; Available keybindings in popup
      (funcall mode 1))
 
 
@@ -939,7 +974,7 @@
     #+BEGIN_SRC emacs-lisp
 
     (use-package ace-jump-mode
-      :ensure t
+      :straight t
       :bind ("C-x a" . ace-jump-mode))
 
     #+END_SRC
@@ -947,7 +982,7 @@
 
     #+BEGIN_SRC emacs-lisp
     (use-package ivy
-      :ensure t
+      :straight t
       :diminish
       :bind (
              :map ivy-minibuffer-map
@@ -984,7 +1019,7 @@
 
 
     ;; (use-package ivy-rich
-    ;;   :ensure t
+    ;;   :straight t
     ;;   :init
     ;;   (ivy-rich-mode 1)
     ;;   :after counsel
@@ -1010,7 +1045,7 @@
 
     ;; More friendly display transformer for Ivy
     (use-package ivy-rich
-      :ensure t
+      :straight t
       :defines (all-the-icons-dir-icon-alist bookmark-alist)
       :functions (all-the-icons-icon-family
                   all-the-icons-match-to-alist
@@ -1186,7 +1221,7 @@
 
     (use-package all-the-icons-ivy
       :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup)
-      :ensure t
+      :straight t
       :config
       (setq all-the-icons-ivy-file-commands
             '(counsel-find-file counsel-file-jump counsel-recentf counsel-projectile-find-file counsel-projectile-find-dir))
@@ -1200,7 +1235,7 @@
 
      (use-package ivy-posframe
        :disabled
-       :ensure t
+       :straight t
        :custom
        (ivy-posframe-width      115)
        (ivy-posframe-min-width  115)
@@ -1234,7 +1269,7 @@
     ;;       (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
 
     (use-package counsel
-      :ensure t
+      :straight t
       :after ivy
       :diminish ivy-mode counsel-mode
       :defines
@@ -1298,7 +1333,7 @@
 
 
     (use-package counsel-projectile
-      :ensure t
+      :straight t
       :after projectile)
 
 
@@ -1312,7 +1347,7 @@
     #+BEGIN_SRC emacs-lisp
 
     (use-package swiper
-      :ensure t
+      :straight t
       :after ivy
       :config
       (setq swiper-action-recenter t)
@@ -1332,7 +1367,7 @@
     #+BEGIN_SRC emacs-lisp
 
     (use-package prescient
-      :ensure t
+      :straight t
       :config
       (setq prescient-history-length 200)
       (setq prescient-save-file "~/.config/emacs/prescient-items")
@@ -1341,7 +1376,7 @@
 
     (use-package ivy-prescient
 
-      :ensure t
+      :straight t
       :after (prescient ivy)
       :config
       (setq ivy-prescient-sort-commands
@@ -1364,7 +1399,7 @@
     #+BEGIN_SRC emacs-lisp
 
     (use-package flx  ;; Improves sorting for fuzzy-matched results
-      :ensure t
+      :straight t
       :after ivy
       :defer t
       :init
@@ -1374,7 +1409,7 @@
 
     ;; Enhance M-x
     (use-package amx
-      :ensure t
+      :straight t
       )
 
 
@@ -1384,7 +1419,7 @@
 
    #+BEGIN_SRC emacs-lisp
    (use-package lsp-mode
-     :ensure t
+     :straight t
      :commands lsp
 
 
@@ -1416,7 +1451,7 @@
      )
 
    (use-package lsp-ui
-     :ensure t
+     :straight t
      :config (setq lsp-ui-sideline-show-hover t
                    lsp-ui-sideline-delay 0.5
                    lsp-ui-doc-delay 5
@@ -1430,7 +1465,7 @@
      )
 
    (use-package company-lsp
-     :ensure t
+     :straight t
      :after lsp-mode
      :commands company-lsp
      :init
@@ -1444,7 +1479,7 @@
 
 
    (use-package doom-modeline
-     :ensure t
+     :straight t
      :init
 
      (doom-modeline-mode 1)
@@ -1526,7 +1561,7 @@
 ** projectile
    #+BEGIN_SRC emacs-lisp
    (use-package projectile
-     :ensure t
+     :straight t
      :bind (:map projectile-mode-map
                  ("s-p" . 'projectile-command-map)
                  ("C-c p" . 'projectile-command-map)
@@ -1540,7 +1575,7 @@
 
 
    (use-package ibuffer-projectile
-     :ensure t
+     :straight t
      :config
      (add-hook 'ibuffer-hook
                (lambda ()
@@ -1560,12 +1595,12 @@
 ** MAGIT
    #+BEGIN_SRC emacs-lisp
    (use-package magit
-     :ensure t
+     :straight t
      :bind (("C-c m" . magit-status)
             ("s-g" . magit-status)))
 
    (use-package git-commit
-     :ensure t
+     :straight t
      :after magit
      :config
      (setq git-commit-summary-max-length 50)
@@ -1583,13 +1618,13 @@
              overlong-summary-line)))
 
    (use-package magit-diff
-     ;;:ensure t
+     :straight nil
      :after magit
      :config
      (setq magit-diff-refine-hunk t))
 
    (use-package magit-repos
-     ;;:ensure t
+     :straight nil
      :after magit
      :commands magit-list-repositories
      :config
@@ -1597,11 +1632,11 @@
            '(("~/coding/projects" . 1))))
 
    (use-package git-timemachine
-     :ensure t
+     :straight t
      :commands git-timemachine)
 
    (use-package forge
-     :ensure t
+     :straight t
      :after magit)
 
    #+END_SRC
@@ -1610,7 +1645,7 @@
    #+BEGIN_SRC emacs-lisp
 
    (use-package git-gutter
-     :ensure t
+     :straight t
      :diminish
      :hook ((text-mode . git-gutter-mode)
             (prog-mode . git-gutter-mode))
@@ -1636,7 +1671,7 @@
 
 
   (use-package flyspell
-
+    :straight nil
     :commands (ispell-change-dictionary
                ispell-word
                flyspell-buffer
@@ -1655,7 +1690,7 @@
 
   #+BEGIN_SRC emacs-lisp
   (use-package expand-region
-    :ensure t
+    :straight t
     :bind ("C-=" . er/expand-region))
 
 
@@ -1674,7 +1709,7 @@
 
 
    (use-package pyvenv
-     :ensure t
+     :straight t
      :config
      (pyvenv-tracking-mode 1)
 
@@ -1695,7 +1730,7 @@
 
 
    (use-package auto-virtualenvwrapper
-     :ensure t
+     :straight t
      :config
      (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate)
      (add-hook 'window-configuration-change-hook #'auto-virtualenvwrapper-activate)
@@ -1703,18 +1738,13 @@
      (add-hook 'pyvenv-post-activate-hooks 'wcx-restart-python)
      )
 
-
-   (add-hook 'python-mode-hook (lambda ()
-                                 (require 'sphinx-doc)
-                                 (sphinx-doc-mode t)))
-
    #+END_SRC
 
 
    #+BEGIN_SRC emacs-lisp
 
    ;; (use-package blacken
-   ;;   :ensure t
+   ;;   :straight t
    ;;   :diminish blacken-mode
    ;;   ;; :hook (python-mode . blacken-mode)
    ;;   :config
@@ -1730,117 +1760,162 @@
 
    #+BEGIN_SRC emacs-lisp
 
+    ;; Turn on indentation and auto-fill mode for Org files
+    (defun dw/org-mode-setup ()
+      (org-indent-mode)
+      (variable-pitch-mode 1)
+      (auto-fill-mode 0)
+      (visual-line-mode 1)
+      (diminish org-indent-mode))
 
-   `<add-hook 'org-mode-hook 'turn-on-auto-fill>`__
-   (add-hook 'org-mode-hook 'turn-on-flyspell)
-   (setq org-directory "~/org")
-   (setq org-agenda-files (list "~/org/"))
-   (setq org-default-notes-file "~/org/notes.org")
-   (setq org-agenda-file-regexp "\\`[^.].*\\.org\\|.todo\\'")
-   (global-set-key "\C-cl" 'org-store-link)
-   (global-set-key "\C-ca" 'org-agenda)
-   (setq org-todo-keywords
-         '((sequence "TODO" "READ" "RESEARCH" "|" "DONE" "DELEGATED" )))
+    (use-package org
+      :defer t
+      :hook (org-mode . dw/org-mode-setup)
+      :config
+      (setq org-ellipsis " ▾"
+	    org-hide-emphasis-markers t
+	    org-src-fontify-natively t
+	    org-src-tab-acts-natively t
+	    org-edit-src-content-indentation 2
+	    org-hide-block-startup nil
+	    org-src-preserve-indentation nil
+	    org-startup-folded 'content
+	    org-cycle-separator-lines 2)
 
+      (setq org-modules
+	    '(org-crypt
+	      org-habit
+	      org-bookmark
+	      org-eshell
+	      org-irc))
 
+      (setq org-refile-targets '((nil :maxlevel . 2)
+				 (org-agenda-files :maxlevel . 2)))
 
-                                           ;(setq org-todo-keywords '((sequence "☛ TODO(t)" "|" "<img draggable="false" class="emoji" alt="✔" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/svg/2714.svg"> DONE(d)")
-                                           ;(sequence "⚑ WAITING(w)" "|")
-                                           ;(sequence "|" "✘ CANCELED(c)")))
+      (setq org-outline-path-complete-in-steps nil)
+      (setq org-refile-use-outline-path t)
 
-
-   (use-package org-bullets
-     :ensure t
-     :commands org-bullets-mode
-     :init
-     (add-hook 'org-mode-hook 'org-bullets-mode)
-     )
-
-
-   ;; some sexier setup
-
-   (setq org-hide-emphasis-markers t)
-
-   (font-lock-add-keywords 'org-mode
-                           '(("^ *\\([-]\\) "
-                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-
-   (when window-system
-     (let* ((variable-tuple
-             (cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
-                   ((x-list-fonts   "JetBrains Mono") '(:font   "JetBrains Mono"))
-                   ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
-                   ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
-                   ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
-                   (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-            (base-font-color (face-foreground 'default nil 'default))
-            (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
-
-       (custom-theme-set-faces
-        'user
-        `(org-level-8        ((t (,@headline ,@variable-tuple))))
-        `(org-level-7        ((t (,@headline ,@variable-tuple))))
-        `(org-level-6        ((t (,@headline ,@variable-tuple))))
-        `(org-level-5        ((t (,@headline ,@variable-tuple))))
-        `(org-level-4        ((t (,@headline ,@variable-tuple :height 1.1))))
-        `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.25))))
-        `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
-        `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.75))))
-        `(org-headline-done  ((t (,@headline ,@variable-tuple :strike-through t))))
-        `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
-     )
-   ;;     (require 'org-variable-pitch)
+      (setq org-directory "~/org")
+      (setq org-agenda-files (list "~/org/"))
+      (setq org-default-notes-file "~/org/notes.org")
+      (setq org-agenda-file-regexp "\\`[^.].*\\.org\\|.todo\\'")
+      (global-set-key "\C-cl" 'org-store-link)
+      (global-set-key "\C-ca" 'org-agenda)
+      (setq org-todo-keywords
+	    '((sequence "TODO" "READ" "RESEARCH" "|" "DONE" "DELEGATED" )))
 
 
-   (setq org-fontify-done-headline t)
+
+      ;; some sexier setup
+
+      (setq org-hide-emphasis-markers t)
+
+      (font-lock-add-keywords 'org-mode
+			      '(("^ *\\([-]\\) "
+				 (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
 
-   (setq org-todo-keyword-faces
-         '(("TODO" . org-warning) ("READ" . "yellow") ("RESEARCH" . (:foreground "blue" :weight bold))
-           ("CANCELED" . (:foreground "pink" :weight bold))
-           ("WRITING" . (:foreground "red" :weight bold))
-           ("RECIEVED" . (:foreground "red" :background "green" :weight bold))
-           ("SUBMITTED" . (:foreground "blue"))
-           ("ACCEPTED" . (:foreground "green"))
+      (when window-system
+	(let* ((variable-tuple
+		(cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
+		      ((x-list-fonts   "JetBrains Mono") '(:font   "JetBrains Mono"))
+		      ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
+		      ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
+		      ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
+		      (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+	       (base-font-color (face-foreground 'default nil 'default))
+	       (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
+
+	  (custom-theme-set-faces
+	   'user
+	   `(org-level-8        ((t (,@headline ,@variable-tuple))))
+	   `(org-level-7        ((t (,@headline ,@variable-tuple))))
+	   `(org-level-6        ((t (,@headline ,@variable-tuple))))
+	   `(org-level-5        ((t (,@headline ,@variable-tuple))))
+	   `(org-level-4        ((t (,@headline ,@variable-tuple :height 1.1))))
+	   `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.25))))
+	   `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
+	   `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.75))))
+	   `(org-headline-done  ((t (,@headline ,@variable-tuple :strike-through t))))
+	   `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+	)
+      ;;     (require 'org-variable-pitch)
 
 
-           ))
-
-                                         ;;; ORG TEMPLATES
-   (setq org-default-notes-file (concat org-directory "/notes.org"))
-   (define-key global-map "\C-cc" 'org-capture)
+      (add-hook 'org-mode-hook 'turn-on-flyspell)
+      (setq org-fontify-done-headline t)
 
 
-   (setq org-capture-templates
-         '(("t" "Todo" entry (file+headline "~/org/notes.org" "Task List")
-            "* TODO %?\n%U" :empty-lines 1)
-
-           ("l" "Logbook entry" entry (file+datetree "logbook-work.org") "** %U - %^{Activity}_ %^G :LOG:")
-
-
-           ("P" "Research project" entry (file "~/org/projects.org")
-            "* TODO %^{Project title} :%^G:\n:PROPERTIES:\n:CREATED: %U\n:END:\n%^{Project description}\n** TODO Literature review\n** TODO %?\n** TODO Summary\n** TODO Reports\n** Ideas\n" :clock-in t :clock-resume t)
-
-           ("a" "Research Article" entry(file+headline "~/org/publications.org" "Working articles") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-           ("r" "Ref. Report" entry(file+headline "~/org/publications.org" "Referee reports") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-           ("c" "Coding tips" entry(file+headline "~/org/coding.org" "Refile") "** READ %^{description} %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-                                           ;    ("C" "Cliplink capture code" entry (file+headline  "~/org/coding.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
-
-           ("f" "Fitting" entry(file+headline "~/org/fitting.org" "Refile") "** READ %^{description}  %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-           ("x" "arXiv" entry(file+headline "~/org/arxiv.org" "To read") "** READ %^L %t")
-
-                                           ;       ("F" "Cliplink capture fitting" entry (file+headline  "~/org/fitting.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
-
-           )
-         )
+      (setq org-todo-keyword-faces
+	    '(("TODO" . org-warning) ("READ" . "yellow") ("RESEARCH" . (:foreground "blue" :weight bold))
+	      ("CANCELED" . (:foreground "pink" :weight bold))
+	      ("WRITING" . (:foreground "red" :weight bold))
+	      ("RECIEVED" . (:foreground "red" :background "green" :weight bold))
+	      ("SUBMITTED" . (:foreground "blue"))
+	      ("ACCEPTED" . (:foreground "green"))
 
 
-   ;;
+	      ))
+
+							       ;;; ORG TEMPLATES
+
+
+
+      )
+
+
+
+
+
+
+
+					    ;(setq org-todo-keywords '((sequence "☛ TODO(t)" "|" "<img draggable="false" class="emoji" alt="✔" src="https://s0.wp.com/wp-content/mu-plugins/wpcom-smileys/twemoji/2/svg/2714.svg"> DONE(d)")
+					    ;(sequence "⚑ WAITING(w)" "|")
+					    ;(sequence "|" "✘ CANCELED(c)")))
+
+
+    (use-package org-bullets
+      :straight t
+      :after org
+      :commands org-bullets-mode
+      :init
+      (add-hook 'org-mode-hook 'org-bullets-mode)
+      )
+
+
+    (setq org-default-notes-file (concat org-directory "/notes.org"))
+    (define-key global-map "\C-cc" 'org-capture)
+
+
+    (setq org-capture-templates
+	  '(("t" "Todo" entry (file+headline "~/org/notes.org" "Task List")
+	     "* TODO %?\n%U" :empty-lines 1)
+
+	    ("l" "Logbook entry" entry (file+datetree "logbook-work.org") "** %U - %^{Activity}_ %^G :LOG:")
+
+
+	    ("P" "Research project" entry (file "~/org/projects.org")
+	     "* TODO %^{Project title} :%^G:\n:PROPERTIES:\n:CREATED: %U\n:END:\n%^{Project description}\n** TODO Literature review\n** TODO %?\n** TODO Summary\n** TODO Reports\n** Ideas\n" :clock-in t :clock-resume t)
+
+	    ("a" "Research Article" entry(file+headline "~/org/publications.org" "Working articles") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+	    ("r" "Ref. Report" entry(file+headline "~/org/publications.org" "Referee reports") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+	    ("c" "Coding tips" entry(file+headline "~/org/coding.org" "Refile") "** READ %^{description} %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+					    ;    ("C" "Cliplink capture code" entry (file+headline  "~/org/coding.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
+
+	    ("f" "Fitting" entry(file+headline "~/org/fitting.org" "Refile") "** READ %^{description}  %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+	    ("x" "arXiv" entry(file+headline "~/org/arxiv.org" "To read") "** READ %^L %t")
+
+					    ;       ("F" "Cliplink capture fitting" entry (file+headline  "~/org/fitting.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
+
+	    )
+	  )
+
+
+    ;;
    #+END_SRC
 
    When editing org-files with source-blocks, we want the source blocks to
@@ -1867,7 +1942,7 @@
 ** LaTeX and org-mode LaTeX export
    #+BEGIN_SRC emacs-lisp
    (use-package latex
-
+     :straight nil
      :mode
      ("\\.tex\\'" . latex-mode)
      :bind
@@ -1930,9 +2005,9 @@
    ;; Uncomment the line below if not required elsewhere.
    ;; (require 'use-package)
 
-      ;;; stan-mode.el
+       ;;; stan-mode.el
    (use-package stan-mode
-     :ensure t
+     :straight t
      :mode ("\\.stan\\'" . stan-mode)
      :hook (stan-mode . stan-mode-setup)
      ;;
@@ -1940,25 +2015,28 @@
      ;; The officially recommended offset is 2.
      (setq stan-indentation-offset 2))
 
-      ;;; company-stan.el
+       ;;; company-stan.el
    (use-package company-stan
+     :straight t
      :hook (stan-mode . company-stan-setup)
      ;;
      :config
      ;; Whether to use fuzzy matching in `company-stan'
      (setq company-stan-fuzzy t))
 
-      ;;; eldoc-stan.el
+       ;;; eldoc-stan.el
    (use-package eldoc-stan
+     :straight t
      :hook (stan-mode . eldoc-stan-setup)
      ;;
      :config
      ;; No configuration options as of now.
      )
 
-      ;;; flycheck-stan.el
+       ;;; flycheck-stan.el
    (use-package flycheck-stan
      ;; Add a hook to setup `flycheck-stan' upon `stan-mode' entry
+     :straight t
      :hook ((stan-mode . flycheck-stan-stanc2-setup)
             (stan-mode . flycheck-stan-stanc3-setup))
      :config
@@ -1969,15 +2047,16 @@
      ;; If nil, defaults to `stanc3'
      (setq flycheck-stanc3-executable nil))
 
-      ;;; stan-snippets.el
+       ;;; stan-snippets.el
    (use-package stan-snippets
+     :straight t
      :hook (stan-mode . stan-snippets-initialize)
      ;;
      :config
      ;; No configuration options as of now.
      )
 
-      ;;; ac-stan.el (Not on MELPA; Need manual installation)
+       ;;; ac-stan.el (Not on MELPA; Need manual installation)
    ;; (use-package ac-stan
    ;;   :load-path "path-to-your-directory/ac-stan/"
    ;;   ;; Delete the line below if using.
@@ -2051,7 +2130,9 @@
 
    #+BEGIN_SRC emacs-lisp
    (use-package darkroom
+     :straight t
      :commands darkroom-mode
+     :defer t
      :config
      (setq darkroom-text-scale-increase 0))
 
@@ -2061,7 +2142,8 @@
 ** Focus
    #+BEGIN_SRC emacs-lisp
    (use-package focus
-     :ensure t
+     :straight t
+     :defer t
      )
    #+END_SRC
 
@@ -2086,7 +2168,8 @@
   ;; (advice-remove 'tracking-remove-buffer #'dw/around-tracking-remove-buffer)
 
   (use-package telega
-    :ensure t
+    :straight t
+    :defer t
     :commands telega
     :config
     (setq;; telega-use-tracking-for '(any pin unread)
@@ -2141,6 +2224,10 @@
 ** Bindings for crux
    #+BEGIN_SRC emacs-lisp
 
+   (use-package crux
+     :straight t
+     )
+
    ;; crux
    (global-set-key   [remap move-beginning-of-line] #'crux-move-beginning-of-line)
    (global-set-key   (kbd "C-<backspace>") #'crux-kill-line-backwards)
@@ -2159,7 +2246,7 @@
    (define-key custom-bindings-map (kbd "M-]")         'other-frame)
 
    (define-key custom-bindings-map (kbd "C-c s")       'ispell-word)
-   (define-key custom-bindings-map (kbd "C-x m")       'mu4e)
+                                           ;   (define-key custom-bindings-map (kbd "C-x m")       'mu4e)
    (define-key custom-bindings-map (kbd "C-c <up>")    'windmove-up)
    (define-key custom-bindings-map (kbd "C-c <down>")  'windmove-down)
    (define-key custom-bindings-map (kbd "C-c <left>")  'windmove-left)
@@ -2189,7 +2276,7 @@
 
 
   (use-package diminish
-    :ensure t
+    :straight t
     )
 
 
