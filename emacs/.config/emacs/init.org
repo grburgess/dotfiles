@@ -105,7 +105,6 @@ loaded, along with =package=, which is obviously needed.
   ;;   (package-refresh-contents)
 #+END_SRC
 
-
 ** straight.el
 
 #+BEGIN_SRC emacs-lisp
@@ -148,8 +147,6 @@ archive and is well maintained.
 
 
 #+END_SRC
-
-
 ** cleaning
 
 #+BEGIN_SRC emacs-lisp
@@ -348,38 +345,68 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
   (load-theme 'doom-old-hope t)
 
   (defun preserve-font ( &rest args)
-    (set-frame-font "JetBrains Mono 13" nil t)
-    (add-to-list 'default-frame-alist
-                 '(font . "JetBrains Mono 13"))
 
-    (when window-system
-      (let* ((variable-tuple
-              (cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
-                    ((x-list-fonts   "JetBrains Mono") '(:font   "JetBrains Mono"))
-                    ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
-                    ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
-                    ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
-                    (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-             (base-font-color (face-foreground 'default nil 'default))
-             (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
+    ;; (set-frame-font "JetBrains Mono 13" nil t)
+    ;; (add-to-list 'default-frame-alist
+    ;;              '(font . "JetBrains Mono 13"))
 
-        (custom-theme-set-faces
-         'user
-         `(org-level-8        ((t (,@headline ,@variable-tuple))))
-         `(org-level-7        ((t (,@headline ,@variable-tuple))))
-         `(org-level-6        ((t (,@headline ,@variable-tuple))))
-         `(org-level-5        ((t (,@headline ,@variable-tuple))))
-         `(org-level-4        ((t (,@headline ,@variable-tuple :height 1.1))))
-         `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.25))))
-         `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
-         `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.75))))
-         `(org-headline-done  ((t (,@headline ,@variable-tuple :strike-through t))))
-         `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
-      )
 
+    (set-face-attribute 'org-document-title nil :font "JetBrains Mono" :weight 'bold :height 1.3)
+    (dolist (face '((org-level-1 . 1.5)
+                    (org-level-2 . 1.1)
+                    (org-level-3 . 1.05)
+                    (org-level-4 . 1.0)
+                    (org-level-5 . 1.1)
+                    (org-level-6 . 1.1)
+                    (org-level-7 . 1.1)
+                    (org-level-8 . 1.1)))
+      (set-face-attribute (car face) nil :font "JetBrains Mono" :weight 'regular :height (cdr face)))
+
+    ;; Make sure org-indent face is available
+    (require 'org-indent)
+
+    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+    (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
+    (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
 
 
     )
+
+  ;; (when window-system
+  ;;   (let* ((variable-tuple
+  ;;           (cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
+  ;;                 ((x-list-fonts   "JetBrains Mono") '(:font   "JetBrains Mono"))
+  ;;                 ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
+  ;;                 ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
+  ;;                 ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
+  ;;                 (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+  ;;          (base-font-color (face-foreground 'default nil 'default))
+  ;;          (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
+
+  ;;     (custom-theme-set-faces
+  ;;      'user
+  ;;      `(org-level-8        ((t (,@headline ,@variable-tuple))))
+  ;;      `(org-level-7        ((t (,@headline ,@variable-tuple))))
+  ;;      `(org-level-6        ((t (,@headline ,@variable-tuple))))
+  ;;      `(org-level-5        ((t (,@headline ,@variable-tuple))))
+  ;;      `(org-level-4        ((t (,@headline ,@variable-tuple :height 1.1))))
+  ;;      `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.25))))
+  ;;      `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
+  ;;      `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.75))))
+  ;;      `(org-headline-done  ((t (,@headline ,@variable-tuple :strike-through t))))
+  ;;      `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+  ;;   )
+
+
+
+                                          ;)
 
 
   (advice-add 'counsel-load-theme :after 'preserve-font)
@@ -550,7 +577,7 @@ Some nice visual modes
 
 #+END_SRC
 
-** submlime
+** sublime
 
 
 #+BEGIN_SRC emacs-lisp
@@ -559,14 +586,13 @@ Some nice visual modes
     :straight t
     :config (require 'sublimity)
     (require 'sublimity-scroll)
-    ;; (setq sublimity-scroll-weight 10
-    ;;       sublimity-scroll-drift-length 2)                           ;  (require 'sublimity-map)
+    (setq sublimity-scroll-weight 3
+          sublimity-scroll-drift-length 1)                           ;  (require 'sublimity-map)
     (sublimity-mode 1))
                                           ;  (sublimity-map-set-delay 3))
 #+END_SRC
 
-
-* Productivity
+* Keys
 ** which key
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
@@ -574,9 +600,87 @@ Some nice visual modes
     :init (which-key-mode)
     :diminish which-key-mode
     :config
-    (setq which-key-idle-delay 0.3))
+    (setq which-key-idle-delay 0.7))
 #+END_SRC
 
+** General Key maps
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package crux
+    :straight t
+    )
+
+
+  (use-package general
+    :straight t
+    :config
+    (general-define-key
+     "M-x" 'counsel-M-x
+     "C-s" 'counsel-grep-or-swiper
+     "M-s" 'isearch-forward
+
+     "C-<backspace>" 'crux-kill-line-backwards
+     [remap move-beginning-of-line] 'crux-move-beginning-of-line
+     [remap kill-whole-line] 'crux-kill-whole-line
+     [(shift return)] 'crux-smart-open-line
+
+     "M-j" (lambda () (interactive)
+             (join-line -1))
+
+
+     )
+
+    ;; Cc
+    (general-define-key
+     :prefix "C-c"
+     "c" 'org-capture
+     "a" 'org-agenda
+     "l" 'org-store-link
+     "s" 'ispell-word
+     "r" 'counsel-projectile-rg
+     "i" 'crux-find-user-init-file
+     "<up>" 'windmove-up
+     "<down>" 'windmove-down
+     "<left>" 'windmove-left
+     "<right>" 'windmove-right
+
+     )
+    ;; Cx
+    (general-define-key
+     :prefix "C-x"
+
+     "a" 'ace-jump-mode
+     "C-b" 'ibuffer
+     "k" 'kill-this-buffer-unless-scratch
+
+     )
+
+
+    ;; Swiper
+    (general-def swiper-map
+      "M-%" 'swiper-query-replace
+      )
+
+    (general-def projectile-mode-map
+      "s-p" 'projectile-command-map
+
+      )
+
+
+
+    )
+
+
+#+END_SRC
+
+#+RESULTS:
+: t
+
+
+
+
+* Productivity
 ** Flycheck
 #+BEGIN_SRC emacs-lisp
 
@@ -965,7 +1069,7 @@ created directly upon successful exit.
 
 
 
-** ACE/IVY
+** ACE/I VY
 
 Just some jumping around and easy menus
 
@@ -975,7 +1079,7 @@ Just some jumping around and easy menus
 
   (use-package ace-jump-mode
     :straight t
-    :bind ("C-x a" . ace-jump-mode))
+    )
 
 #+END_SRC
 *** IVY
@@ -1016,31 +1120,6 @@ Just some jumping around and easy menus
     (setf (alist-get 'counsel-projectile-rg ivy-height-alist) 15)
     (setf (alist-get 'swiper ivy-height-alist) 15)
     (setf (alist-get 'counsel-switch-buffer ivy-height-alist) 7))
-
-
-  ;; (use-package ivy-rich
-  ;;   :straight t
-  ;;   :init
-  ;;   (ivy-rich-mode 1)
-  ;;   :after counsel
-  ;;   :config
-  ;;   (setq ivy-format-function #'ivy-format-function-line)
-  ;;   (setq ivy-rich-display-transformers-list
-  ;;  (plist-put ivy-rich-display-transformers-list
-  ;;             'ivy-switch-buffer
-  ;;             '(:columns
-  ;;               ((ivy-rich-candidate (:width 40))
-  ;;                (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right)); return the buffer indicators
-  ;;                (ivy-rich-switch-buffer-major-mode (:width 12 :face warning))          ; return the major mode info
-  ;;                (ivy-rich-switch-buffer-project (:width 15 :face success))             ; return project name using `projectile'
-  ;;                (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))  ; return file path relative to project root or `default-directory' if project is nil
-  ;;               :predicate
-  ;;               (lambda (cand)
-  ;;                 (if-let ((buffer (get-buffer cand)))
-  ;;                     ;; Don't mess with EXWM buffers
-  ;;                     (with-current-buffer buffer
-  ;;                       (not (derived-mode-p 'exwm-mode)))))))))
-
 
 
   ;; More friendly display transformer for Ivy
@@ -1254,19 +1333,6 @@ Just some jumping around and easy menus
 *** Counsel
 
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package counsel
-  ;;       :after ivy
-  ;;       :bind (("M-x" . counsel-M-x)
-  ;;       ("C-x b" . counsel-ibuffer)
-  ;;       ("C-x C-f" . counsel-find-file)
-  ;;       ("C-M-j" . counsel-switch-buffer)
-  ;;       ("C-M-l" . counsel-imenu)
-  ;;       :map minibuffer-local-map
-  ;;       ("C-r" . 'counsel-minibuffer-history))
-  ;;       :custom
-  ;;       (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
-  ;;       :config
-  ;;       (setq ivy-initial-inputs-alist nil)) ;; Don't start searches with ^
 
   (use-package counsel
     :straight t
@@ -1341,8 +1407,6 @@ Just some jumping around and easy menus
 
 
 #+END_SRC
-
-
 *** Swiper
 #+BEGIN_SRC emacs-lisp
 
@@ -1353,12 +1417,7 @@ Just some jumping around and easy menus
     (setq swiper-action-recenter t)
     (setq swiper-goto-start-of-match t)
     (setq swiper-include-line-number-in-search t)
-    :bind (("M-s" . swiper)
-           ;;("M-s s" . swiper-multi)
-           ;;          ("M-s w" . swiper-thing-at-point)
-           :map swiper-map
-           ("M-%" . swiper-query-replace)
-           ))
+    )
 
 #+END_SRC
 
@@ -1562,11 +1621,6 @@ Just some jumping around and easy menus
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :straight t
-    :bind (:map projectile-mode-map
-                ("s-p" . 'projectile-command-map)
-                ("C-c p" . 'projectile-command-map)
-                )
-
     :config
     (setq projectile-completion-system 'ivy)
     (setq projectile-project-search-path '("~/coding/projects/" "~/coding/tml/" "~/org"))
@@ -1584,7 +1638,7 @@ Just some jumping around and easy menus
                   (ibuffer-do-sort-by-alphabetic))))
     )
 
-  (global-set-key [f2] 'counsel-projectile-rg)
+
 
 
 #+END_SRC
@@ -1731,6 +1785,7 @@ I use LSP for python.
 
   (use-package auto-virtualenvwrapper
     :straight t
+    :defer t
     :config
     (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate)
     (add-hook 'window-configuration-change-hook #'auto-virtualenvwrapper-activate)
@@ -1753,7 +1808,14 @@ I use LSP for python.
 
 #+END_SRC
 
+** YAML
+#+BEGIN_SRC emacs-lisp
 
+  (use-package yaml-mode
+    :straight t
+    :mode ("\\.yml$" . yaml-mode)
+    )
+#+END_SRC
 ** Org
 
 I use =org-agenda= along with =org-capture= for appointments and such.
@@ -1767,7 +1829,6 @@ I use =org-agenda= along with =org-capture= for appointments and such.
     (auto-fill-mode 0)
     (visual-line-mode 1)
     (diminish org-indent-mode))
-
   (use-package org
     :defer t
     :hook (org-mode . dw/org-mode-setup)
@@ -1799,8 +1860,7 @@ I use =org-agenda= along with =org-capture= for appointments and such.
     (setq org-agenda-files (list "~/org/"))
     (setq org-default-notes-file "~/org/notes.org")
     (setq org-agenda-file-regexp "\\`[^.].*\\.org\\|.todo\\'")
-    (global-set-key "\C-cl" 'org-store-link)
-    (global-set-key "\C-ca" 'org-agenda)
+
     (setq org-todo-keywords
           '((sequence "TODO" "READ" "RESEARCH" "|" "DONE" "DELEGATED" )))
 
@@ -1816,28 +1876,28 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 
 
     (when window-system
-      (let* ((variable-tuple
-              (cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
-                    ((x-list-fonts   "JetBrains Mono") '(:font   "JetBrains Mono"))
-                    ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
-                    ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
-                    ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
-                    (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-             (base-font-color (face-foreground 'default nil 'default))
-             (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
+      ;; (let* ((variable-tuple
+      ;;         (cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
+      ;;               ((x-list-fonts   "JetBrains Mono") '(:font   "JetBrains Mono"))
+      ;;               ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
+      ;;               ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
+      ;;               ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
+      ;;               (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+      ;;        (base-font-color (face-foreground 'default nil 'default))
+      ;;        (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
 
-        (custom-theme-set-faces
-         'user
-         `(org-level-8        ((t (,@headline ,@variable-tuple))))
-         `(org-level-7        ((t (,@headline ,@variable-tuple))))
-         `(org-level-6        ((t (,@headline ,@variable-tuple))))
-         `(org-level-5        ((t (,@headline ,@variable-tuple))))
-         `(org-level-4        ((t (,@headline ,@variable-tuple :height 1.1))))
-         `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.25))))
-         `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
-         `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.75))))
-         `(org-headline-done  ((t (,@headline ,@variable-tuple :strike-through t))))
-         `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
+      ;;   (custom-theme-set-faces
+      ;;    'user
+      ;;    `(org-level-8        ((t (,@headline ,@variable-tuple))))
+      ;;    `(org-level-7        ((t (,@headline ,@variable-tuple))))
+      ;;    `(org-level-6        ((t (,@headline ,@variable-tuple))))
+      ;;    `(org-level-5        ((t (,@headline ,@variable-tuple))))
+      ;;    `(org-level-4        ((t (,@headline ,@variable-tuple :height 1.1))))
+      ;;    `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.25))))
+      ;;    `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
+      ;;    `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.75))))
+      ;;    `(org-headline-done  ((t (,@headline ,@variable-tuple :strike-through t))))
+      ;;    `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
       )
     ;;     (require 'org-variable-pitch)
 
@@ -1857,11 +1917,50 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 
             ))
 
-                                                             ;;; ORG TEMPLATES
+
+#+END_SRC
 
 
 
-    )
+#+BEGIN_SRC emacs-lisp
+
+  (use-package org-superstar
+    :straight t
+    :after org
+    :hook (org-mode . org-superstar-mode)
+    :custom
+    (org-superstar-remove-leading-stars t)
+    (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
+
+
+  ;; Increase the size of various headings
+  (set-face-attribute 'org-document-title nil :font "JetBrains Mono" :weight 'bold :height 1.3)
+  (dolist (face '((org-level-1 . 1.5)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "JetBrains Mono" :weight 'regular :height (cdr face)))
+
+  ;; Make sure org-indent face is available
+  (require 'org-indent)
+
+  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+
+
+  )
 
   (use-package org-bullets
     :straight t
@@ -2140,32 +2239,38 @@ about a function or a variable in the echo area.
 #+BEGIN_SRC emacs-lisp
   ;; Add faces for specific people in the modeline.  There must
   ;; be a better way to do this.
-  (defun dw/around-tracking-add-buffer (original-func buffer &optional faces)
-    (let* ((name (buffer-name buffer))
-           (face (cond ((s-contains? "Francesca" name) '(all-the-icons-pink))
-                       ((s-contains? "Alex " name) '(all-the-icons-lgreen))
-                       ((s-contains? "Steve" name) '(all-the-icons-lblue))))
-           (result (apply original-func buffer (list face))))
-      (dw/update-polybar-telegram)
-      result))
+  ;; (defun dw/around-tracking-add-buffer (original-func buffer &optional faces)
+  ;;   (let* ((name (buffer-name buffer))
+  ;;          (face (cond ((s-contains? "Francesca" name) '(all-the-icons-pink))
+  ;;                      ((s-contains? "Alex " name) '(all-the-icons-lgreen))
+  ;;                      ((s-contains? "Steve" name) '(all-the-icons-lblue))))
+  ;;          (result (apply original-func buffer (list face))))
+  ;;     (dw/update-polybar-telegram)
+  ;;     result))
 
-  (defun dw/after-tracking-remove-buffer (buffer)
-    (dw/update-polybar-telegram))
+  ;; (defun dw/after-tracking-remove-buffer (buffer)
+  ;;   (dw/update-polybar-telegram))
 
   ;; (advice-add 'tracking-add-buffer :around #'dw/around-tracking-add-buffer)
   ;; (advice-add 'tracking-remove-buffer :after #'dw/after-tracking-remove-buffer)
   ;; (advice-remove 'tracking-remove-buffer #'dw/around-tracking-remove-buffer)
+
+  (use-package tracking
+
+    :straight t
+
+    )
 
   (use-package telega
     :straight t
     :defer t
     :commands telega
     :config
-    (setq;; telega-use-tracking-for '(any pin unread)
-     ;;    telega-chat-use-markdown-formatting t
-     ;;   telega-emoji-use-images t
-     ;;  telega-completing-read-function #'ivy-completing-read
-     telega-chat-fill-column 75))
+    (setq telega-use-tracking-for '(any pin unread)
+          telega-chat-use-markdown-formatting t
+          telega-emoji-use-images t
+          telega-completing-read-function #'ivy-completing-read
+          telega-chat-fill-column 75))
 
 #+END_SRC
 
@@ -2195,70 +2300,14 @@ defined.
 
 #+BEGIN_SRC emacs-lisp
   ;; join the line below with the current line
-  (global-set-key (kbd "M-j") (lambda () (interactive)
-                                (join-line -1)))
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
+
   (autoload 'ibuffer "ibuffer" "List buffers." t)
 
 #+END_SRC
 
 
-#+BEGIN_SRC emacs-lisp
-  (defvar custom-bindings-map (make-keymap)
-    "A keymap for custom bindings.")
-#+END_SRC
 
 
-
-** Bindings for crux
-#+BEGIN_SRC emacs-lisp
-
-  (use-package crux
-    :straight t
-    )
-
-  ;; crux
-  (global-set-key   [remap move-beginning-of-line] #'crux-move-beginning-of-line)
-  (global-set-key   (kbd "C-<backspace>") #'crux-kill-line-backwards)
-  (global-set-key   [remap kill-whole-line] #'crux-kill-whole-line)
-  (global-set-key    [(shift return)] #'crux-smart-open-line)
-  (global-set-key   (kbd "C-c I")     #'crux-find-user-init-file)
-
-#+END_SRC
-
-** Bindings for built-ins
-
-#+BEGIN_SRC emacs-lisp
-  (define-key custom-bindings-map (kbd "M-u")         'upcase-dwim)
-  (define-key custom-bindings-map (kbd "M-c")         'capitalize-dwim)
-  (define-key custom-bindings-map (kbd "M-l")         'downcase-dwim)
-  (define-key custom-bindings-map (kbd "M-]")         'other-frame)
-
-  (define-key custom-bindings-map (kbd "C-c s")       'ispell-word)
-                                          ;   (define-key custom-bindings-map (kbd "C-x m")       'mu4e)
-  (define-key custom-bindings-map (kbd "C-c <up>")    'windmove-up)
-  (define-key custom-bindings-map (kbd "C-c <down>")  'windmove-down)
-  (define-key custom-bindings-map (kbd "C-c <left>")  'windmove-left)
-  (define-key custom-bindings-map (kbd "C-c <right>") 'windmove-right)
-  (define-key custom-bindings-map (kbd "C-c t")
-    (lambda () (interactive) (org-agenda nil "n")))
-#+END_SRC
-
-** Bindings for functions defined [[sec:defuns][above]].
-
-#+BEGIN_SRC emacs-lisp
-  (define-key custom-bindings-map (kbd "C-x k")   'kill-this-buffer-unless-scratch)
-
-#+END_SRC
-
-Lastly we need to activate the map by creating and activating the
-=minor-mode=.
-
-#+BEGIN_SRC emacs-lisp
-  (define-minor-mode custom-bindings-mode
-    "A mode that activates custom-bindings."
-    t nil custom-bindings-map)
-#+END_SRC
 
 * diminish
 #+BEGIN_SRC emacs-lisp
