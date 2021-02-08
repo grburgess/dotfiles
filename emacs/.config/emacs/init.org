@@ -31,9 +31,6 @@
 #+END_SRC
 
 
-#+BEGIN_SRC emacs-lisp
-  ;;; -*- lexical-binding: t -*-
-#+END_SRC
 
 
 #+BEGIN_SRC emacs-lisp
@@ -697,7 +694,6 @@ Some nice visual modes
 
 
 
-
 * Productivity
 ** Flycheck
 #+BEGIN_SRC emacs-lisp
@@ -999,7 +995,6 @@ PP-ERROR: (telega-root--chat-known-pp (:@type "chat" :id 1323489203 :type (:@typ
 
 
 #+END_SRC
-
 
 * Completion
 ** Company
@@ -1638,15 +1633,14 @@ Just some jumping around and easy menus
 
 
 #+END_SRC
+* projectile
 
-
-** projectile
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :straight t
     :config
     (setq projectile-completion-system 'ivy)
-    (setq projectile-project-search-path '("~/coding/projects/" "~/coding/tml/" "~/org"))
+    (setq projectile-project-search-path '("~/coding/projects/" "~/coding/tml/" "~/org" "~/.config/emacs"))
 
     (projectile-mode +1))
 
@@ -1665,7 +1659,6 @@ Just some jumping around and easy menus
 
 
 #+END_SRC
-
 
 * GIT
 
@@ -1689,50 +1682,52 @@ Just some jumping around and easy menus
 
 ** MAGIT
 #+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :straight t
-    :bind (("C-c m" . magit-status)
-           ("s-g" . magit-status)))
+      (use-package magit
+        :straight t
+        :bind (("C-c m" . magit-status)
+               ("s-g" . magit-status)))
 
-  (use-package git-commit
-    :straight t
-    :after magit
-    :config
-    (setq git-commit-summary-max-length 50)
-    (setq git-commit-known-pseudo-headers
-          '("Signed-off-by"
-            "Acked-by"
-            "Modified-by"
-            "Cc"
-            "Suggested-by"
-            "Reported-by"
-            "Tested-by"
-            "Reviewed-by"))
-    (setq git-commit-style-convention-checks
-          '(non-empty-second-line
-            overlong-summary-line)))
+      (use-package git-commit
+        :straight t
+        :after magit
+        :config
+        (setq git-commit-summary-max-length 50)
+        (setq git-commit-known-pseudo-headers
+              '("Signed-off-by"
+                "Acked-by"
+                "Modified-by"
+                "Cc"
+                "Suggested-by"
+                "Reported-by"
+                "Tested-by"
+                "Reviewed-by"))
+        (setq git-commit-style-convention-checks
+              '(non-empty-second-line
+                overlong-summary-line)))
 
-  (use-package magit-diff
-    :straight nil
-    :after magit
-    :config
-    (setq magit-diff-refine-hunk t))
+      (use-package magit-diff
+        :straight nil
+        :after magit
+        :config
+        (setq magit-diff-refine-hunk t))
 
-  (use-package magit-repos
-    :straight nil
-    :after magit
-    :commands magit-list-repositories
-    :config
-    (setq magit-repository-directories
-          '(("~/coding/projects" . 1))))
+      (use-package magit-repos
+        :straight nil
+        :after magit
+        :commands magit-list-repositories
+        :config
+        (setq magit-repository-directories
+              '(("~/coding/projects" . 1)
 
-  (use-package git-timemachine
-    :straight t
-    :commands git-timemachine)
+                )))
 
-  (use-package forge
-    :straight t
-    :after magit)
+      (use-package git-timemachine
+        :straight t
+        :commands git-timemachine)
+
+      (use-package forge
+        :straight t
+        :after magit)
 
 #+END_SRC
 
@@ -1791,7 +1786,6 @@ text-modes with this snippet.
 
 
 #+END_SRC
-
 
 
 * Modes
@@ -2233,20 +2227,6 @@ can be achieved by surrounding a LaTeX formula with =$math$= and
         (delete-region beg end))
       (insert (concat "$math$ " body " $/math$"))
       (search-backward " $/math$")))
-#+END_SRC
-
-Most of my writing in this markup is in Norwegian, so the dictionary is
-set accordingly. The markup is also sensitive to line breaks, so
-=auto-fill-mode= is disabled. Of course we want to bind our lovely
-function to a key!
-
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'markdown-mode-hook
-            (lambda ()
-              (auto-fill-mode 0)
-              (visual-line-mode 1)
-
-              (local-set-key (kbd "C-c b") 'insert-markdown-inline-math-block)) t)
 #+END_SRC
 
 ** Lisp
