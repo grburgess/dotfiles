@@ -115,25 +115,25 @@ loaded, along with =package=, which is obviously needed.
 
 #+BEGIN_SRC emacs-lisp
 
-  ;; Bootstrap straight.el
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
+  ;; ;; Bootstrap straight.el
+  ;; (defvar bootstrap-version)
+  ;; (let ((bootstrap-file
+  ;;        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+  ;;       (bootstrap-version 5))
+  ;;   (unless (file-exists-p bootstrap-file)
+  ;;     (with-current-buffer
+  ;;         (url-retrieve-synchronously
+  ;;          "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+  ;;          'silent 'inhibit-cookies)
+  ;;       (goto-char (point-max))
+  ;;       (eval-print-last-sexp)))
+  ;;   (load bootstrap-file nil 'nomessage))
 
-  ;; Always use straight to install on systems other than Linux
-  (setq straight-use-package-by-default (not (eq system-type 'gnu/linux)))
+  ;; ;; Always use straight to install on systems other than Linux
+  ;; (setq straight-use-package-by-default (not (eq system-type 'gnu/linux)))
 
-  ;; Use straight.el for use-package expressions
-  (straight-use-package 'use-package)
+  ;; ;; Use straight.el for use-package expressions
+  ;; (straight-use-package 'use-package)
 
 #+END_SRC
 
@@ -162,7 +162,7 @@ archive and is well maintained.
 
   ;; Use no-littering to automatically set common paths to the new user-emacs-directory
   (use-package no-littering
-    :straight t
+    :ensure t
 
     )
 
@@ -181,7 +181,7 @@ installed. To ensure we install missing packages if they are missing.
 #+BEGIN_SRC emacs-lisp
 
   (use-package exec-path-from-shell
-    :straight t
+    :ensure t
     :config
     (when (memq window-system '(mac ns x))
       (exec-path-from-shell-initialize)))
@@ -328,7 +328,7 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 ** bug hunter
 #+BEGIN_SRC emacs-lisp
   (use-package bug-hunter
-    :straight t
+    :ensure t
     )
 
 #+END_SRC
@@ -337,7 +337,7 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 
 #+BEGIN_SRC emacs-lisp
   (use-package doom-themes
-    :straight t
+    :ensure t
     :init
 
 
@@ -448,13 +448,13 @@ This for displaying HTML colors from HEX
 
 #+BEGIN_SRC emacs-lisp
   ;; (use-package rainbow-mode
-  ;;   :straight t
+  ;;   :ensure t
 
   ;;   )
 
   (use-package rainbow-mode
     :delight
-    :straight t
+    :ensure t
     :hook (prog-mode . rainbow-mode))
 #+END_SRC
 
@@ -488,7 +488,7 @@ Some nice visual modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package beacon
-    :straight t
+    :ensure t
     :config
 
     (progn
@@ -571,7 +571,7 @@ Some nice visual modes
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
     :if window-system
-    :straight t
+    :ensure t
     :config
     (when (not (member "all-the-icons" (font-family-list)))
       (all-the-icons-install-fonts t)))
@@ -579,7 +579,7 @@ Some nice visual modes
 
 
   (use-package all-the-icons-ibuffer
-    :straight t
+    :ensure t
     :init (all-the-icons-ibuffer-mode 1))
 
 
@@ -592,7 +592,7 @@ Some nice visual modes
 #+BEGIN_SRC emacs-lisp
   ;; Minimap
   (use-package sublimity
-    :straight t
+    :ensure t
     :config (require 'sublimity)
     (require 'sublimity-scroll)
     (setq sublimity-scroll-weight 3
@@ -605,7 +605,7 @@ Some nice visual modes
 ** which key
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
-    :straight t
+    :ensure t
     :init (which-key-mode)
     :diminish which-key-mode
     :config
@@ -617,12 +617,12 @@ Some nice visual modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package crux
-    :straight t
+    :ensure t
     )
 
 
   (use-package general
-    :straight t
+    :ensure t
     :config
     (general-define-key
      "M-x" 'counsel-M-x
@@ -699,7 +699,7 @@ Some nice visual modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package flycheck
-    :straight t
+    :ensure t
     :defer t
     :hook (lsp-mode . flycheck-mode))
 
@@ -711,14 +711,14 @@ Some nice visual modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package yasnippet                  ; Snippets
-    :straight t
+    :ensure t
     :hook (prog-mode . yas-minor-mode)
     :config
 
     (yas-reload-all)
     )
   (use-package yasnippet-snippets         ; Collection of snippets
-    :straight t)
+    :ensure t)
 
 #+END_SRC
 
@@ -726,7 +726,7 @@ Some nice visual modes
 
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
-    :straight t
+    :ensure t
     :hook (prog-mode . smartparens-mode))
 #+END_SRC
 
@@ -735,7 +735,7 @@ Some nice visual modes
 #+BEGIN_SRC emacs-lisp
 
   (use-package rainbow-delimiters
-    :straight t
+    :ensure t
     :hook (prog-mode . rainbow-delimiters-mode)
     )
 
@@ -745,7 +745,7 @@ Some nice visual modes
 
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-indent-guides
-    :straight t
+    :ensure t
     :init
     (setq highlight-indent-guides-auto-enabled nil)
     (setq highlight-indent-guides-method 'character)
@@ -786,7 +786,7 @@ adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 #+BEGIN_SRC emacs-lisp
 
   (use-package multiple-cursors
-    :straight t
+    :ensure t
     :bind (
 
            ("C->" . mc/mark-next-like-this)
@@ -843,7 +843,7 @@ https://github.com/direnv/direnv/wiki/Python#virtualenvwrapper
 #+BEGIN_SRC emacs-lisp
 
   (use-package direnv
-    :straight t
+    :ensure t
     :config
     (direnv-mode))
 
@@ -857,7 +857,7 @@ https://github.com/direnv/direnv/wiki/Python#virtualenvwrapper
 
   (use-package dired
     :ensure nil
-    :straight nil
+                                          ; nil
 
     :config
     (setq dired-recursive-copies 'always)
@@ -870,7 +870,7 @@ https://github.com/direnv/direnv/wiki/Python#virtualenvwrapper
 
   (use-package dired-aux
     :ensure nil
-    :straight nil
+                                          ; nil
     :config
     (setq dired-isearch-filenames 'dwim)
     ;; The following variables were introduced in Emacs 27.1
@@ -882,7 +882,7 @@ https://github.com/direnv/direnv/wiki/Python#virtualenvwrapper
 
   (use-package find-dired
     :ensure nil
-    :straight nil
+                                          ; nil
     :after dired
     :config
     ;; (setq find-ls-option
@@ -890,11 +890,11 @@ https://github.com/direnv/direnv/wiki/Python#virtualenvwrapper
     (setq find-name-arg "-iname"))
 
   (use-package async
-    :straight t)
+    :ensure t)
 
   (use-package dired-async
     :ensure nil
-    :straight nil
+                                          ; nil
 
     :after (dired async)
     :hook (dired-mode . dired-async-mode))
@@ -912,7 +912,7 @@ created directly upon successful exit.
 #+BEGIN_SRC emacs-lisp
   (use-package wdired
     :ensure nil
-    :straight nil
+                                          ; nil
     :after dired
     :commands wdired-change-to-wdired-mode
     :config
@@ -925,7 +925,7 @@ created directly upon successful exit.
 #+BEGIN_SRC emacs-lisp
   (use-package peep-dired
     :ensure nil
-    :straight nil
+                                          ; nil
     :after dired
     :config
     (setq peep-dired-cleanup-on-disable t)
@@ -939,7 +939,7 @@ created directly upon successful exit.
 #+BEGIN_SRC emacs-lisp
   (use-package dired-subtree
     :ensure nil
-    :straight nil
+                                          ; nil
     :after dired
     :config
     (setq dired-subtree-use-backgrounds nil)
@@ -949,22 +949,18 @@ created directly upon successful exit.
                 ("<S-iso-lefttab>" . dired-subtree-remove)))
 
   (use-package diredfl
-    :straight t
+    :ensure t
     :hook (dired-mode . diredfl-mode))
 
 
   (use-package wgrep
-    :straight t
+    :ensure t
     :config
     (setq wgrep-auto-save-buffer t)
     (setq wgrep-change-readonly-file t))
 
 
 #+END_SRC
----[telega bug]
-PP-ERROR: (telega-root--chat-known-pp (:@type "chat" :id 1323489203 :type (:@type "chatTypePrivate" :user_id 1323489203) :title "Linda Baronchelli" :photo (:@type "chatPhotoInfo" :small (:@type "file" :id 41 :size 0 :expected_size 0 :local (:@type "localFile" :path "" :can_be_downloaded t :can_be_deleted nil :is_downloading_active nil :is_downloading_completed nil :download_offset 0 :downloaded_prefix_size 0 :downloaded_size 0) :remote (:@type "remoteFile" :id "AQADAgADj64xG8tiSUoACJCf6JcuAAMCAAOz1-JOAATlsOEO0IKCfWUHAAIeBA" :unique_id "AQADkJ_oly4AA2UHAAI" :is_uploading_active nil :is_uploading_completed t :uploaded_size 0) :telega-file-recency 1612725848) :big (:@type "file" :id 42 :size 0 :expected_size 0 :local (:@type "localFile" :path "" :can_be_downloaded t :can_be_deleted nil :is_downloading_active nil :is_downloading_completed nil :download_offset 0 :downloaded_prefix_size 0 :downloaded_size 0) :remote (:@type "remoteFile" :id "AQADAgADj64xG8tiSUoACJCf6JcuAAMDAAOz1-JOAATlsOEO0IKCfWcHAAIeBA" :unique_id "AQADkJ_oly4AA2cHAAI" :is_uploading_active nil :is_uploading_completed t :uploaded_size 0)) :has_animation nil) :permissions (:@type "chatPermissions" :can_send_messages t :can_send_media_messages t :can_send_polls t :can_send_other_messages t :can_add_web_page_previews t :can_change_info nil :can_invite_users nil :can_pin_messages t) :positions [(:@type "chatPosition" :list (:@type "chatListMain") :order "6923158325312464756" :is_pinned nil)] :is_marked_as_unread nil :is_blocked nil :has_scheduled_messages nil :can_be_deleted_only_for_self t :can_be_deleted_for_all_users t :can_be_reported nil :default_disable_notification nil :unread_count 0 :last_read_inbox_message_id 663425646592 :last_read_outbox_message_id 663414112256 :unread_mention_count 0 :notification_settings (:@type "chatNotificationSettings" :use_default_mute_for t :mute_for 0 :use_default_sound t :sound "default" :use_default_show_preview t :show_preview nil :use_default_disable_pinned_message_notifications t :disable_pinned_message_notifications nil :use_default_disable_mention_notifications t :disable_mention_notifications nil) :reply_markup_message_id 0 :client_data "(:color (\"#8c6e38a31728\" \"#e62284b15d9f\"))" :last_message (:@type "message" :id 663425646592 :sender (:@type "messageSenderUser" :user_id 1323489203) :chat_id 1323489203 :is_outgoing nil :is_pinned nil :can_be_edited nil :can_be_forwarded t :can_be_deleted_only_for_self t :can_be_deleted_for_all_users t :can_get_statistics nil :can_get_message_thread nil :is_channel_post nil :contains_unread_mention nil :date 1611923409 :edit_date 0 :reply_in_chat_id 0 :reply_to_message_id 0 :message_thread_id 0 :ttl 0 :ttl_expires_in 0.0 :via_bot_user_id 0 :author_signature "" :media_album_id "0" :restriction_reason "" :content (:@type "messageText" :text (:@type "formattedText" :text "Cool cool! I‘ll check it out later!" :entities []))) :telega-need-reorder-p nil :uaprops (:color ("#8c6e38a31728" "#e62284b15d9f")) :telega-avatar-1 (image :type svg :data "<?xml version=\"1.0\" encoding=\"UTF-8\"?><svg width=\"16\" height=\"13\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"> <defs> <clipPath id=\"clip\"> <circle cx=\"8\" cy=\"6\" r=\"6.0\"></circle></clipPath></defs> <image xlink:href=\"profile_photos/200117100432_1893.jpg\" clip-path=\"url(#clip)\" height=\"12.0\" width=\"12.0\" y=\"0.75\" x=\"2.0\"></image></svg>" :scale 1.0 :width 16 :height 13 :ascent center :mask heuristic :base-uri "/Users/jburgess/.telega/dummy" :telega-text (#("(L)" 1 2 (face (telega-msg-user-title (:foreground "#e62284b15d9f")))))))) ==>
-(error "Selecting deleted buffer")
-------
 
 ** tramp
 
@@ -972,7 +968,7 @@ PP-ERROR: (telega-root--chat-known-pp (:@type "chat" :id 1323489203 :type (:@typ
 
   ;; Tramp ivy interface
   (use-package counsel-tramp
-    :straight t
+    :ensure t
     :config
 
     (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
@@ -1008,7 +1004,7 @@ PP-ERROR: (telega-root--chat-known-pp (:@type "chat" :id 1323489203 :type (:@typ
 
 
   (use-package company
-    :straight t
+    :ensure t
     :diminish ""
     :init
     ;; (add-hook 'prog-mode-hook 'company-mode)
@@ -1040,13 +1036,13 @@ PP-ERROR: (telega-root--chat-known-pp (:@type "chat" :id 1323489203 :type (:@typ
 
 
   (use-package company-auctex
-    :straight t
+    :ensure t
     :defer t
     :hook ((LaTeX-mode . company-auctex-init)))
 
 
   (use-package company-jedi
-    :straight t)
+    :ensure t)
 
 
 
@@ -1095,7 +1091,7 @@ Just some jumping around and easy menus
 #+BEGIN_SRC emacs-lisp
 
   (use-package ace-jump-mode
-    :straight t
+    :ensure t
     )
 
 #+END_SRC
@@ -1103,7 +1099,7 @@ Just some jumping around and easy menus
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
-    :straight t
+    :ensure t
     :diminish
     :bind (
            :map ivy-minibuffer-map
@@ -1141,7 +1137,7 @@ Just some jumping around and easy menus
 
   ;; More friendly display transformer for Ivy
   (use-package ivy-rich
-    :straight t
+    :ensure t
     :defines (all-the-icons-dir-icon-alist bookmark-alist)
     :functions (all-the-icons-icon-family
                 all-the-icons-match-to-alist
@@ -1317,7 +1313,7 @@ Just some jumping around and easy menus
 
   (use-package all-the-icons-ivy
     :init (add-hook 'after-init-hook 'all-the-icons-ivy-setup)
-    :straight t
+    :ensure t
     :config
     (setq all-the-icons-ivy-file-commands
           '(counsel-find-file counsel-file-jump counsel-recentf counsel-projectile-find-file counsel-projectile-find-dir))
@@ -1331,7 +1327,7 @@ Just some jumping around and easy menus
 
   (use-package ivy-posframe
     :disabled
-    :straight t
+    :ensure t
     :custom
     (ivy-posframe-width      115)
     (ivy-posframe-min-width  115)
@@ -1352,7 +1348,7 @@ Just some jumping around and easy menus
 #+BEGIN_SRC emacs-lisp
 
   (use-package counsel
-    :straight t
+    :ensure t
     :after ivy
     :diminish ivy-mode counsel-mode
     :defines
@@ -1416,7 +1412,7 @@ Just some jumping around and easy menus
 
 
   (use-package counsel-projectile
-    :straight t
+    :ensure t
     :after projectile)
 
 
@@ -1428,7 +1424,7 @@ Just some jumping around and easy menus
 #+BEGIN_SRC emacs-lisp
 
   (use-package swiper
-    :straight t
+    :ensure t
     :after ivy
     :config
     (setq swiper-action-recenter t)
@@ -1443,7 +1439,7 @@ Just some jumping around and easy menus
 #+BEGIN_SRC emacs-lisp
 
   (use-package prescient
-    :straight t
+    :ensure t
     :config
     (setq prescient-history-length 200)
     (setq prescient-save-file "~/.config/emacs/prescient-items")
@@ -1452,7 +1448,7 @@ Just some jumping around and easy menus
 
   (use-package ivy-prescient
 
-    :straight t
+    :ensure t
     :after (prescient ivy)
     :config
     (setq ivy-prescient-sort-commands
@@ -1475,7 +1471,7 @@ Just some jumping around and easy menus
 #+BEGIN_SRC emacs-lisp
 
   (use-package flx  ;; Improves sorting for fuzzy-matched results
-    :straight t
+    :ensure t
     :after ivy
     :defer t
     :init
@@ -1485,7 +1481,7 @@ Just some jumping around and easy menus
 
   ;; Enhance M-x
   (use-package amx
-    :straight t
+    :ensure t
     )
 
 
@@ -1495,7 +1491,7 @@ Just some jumping around and easy menus
 
 #+BEGIN_SRC emacs-lisp
   (use-package lsp-mode
-    :straight t
+    :ensure t
     :commands lsp
 
 
@@ -1525,7 +1521,7 @@ Just some jumping around and easy menus
     )
 
   (use-package lsp-ui
-    :straight t
+    :ensure t
     :config (setq lsp-ui-sideline-show-hover t
                   lsp-ui-sideline-delay 0.5
                   lsp-ui-doc-delay 5
@@ -1539,7 +1535,7 @@ Just some jumping around and easy menus
     )
 
   (use-package company-lsp
-    :straight t
+    :ensure t
     :after lsp-mode
     :commands company-lsp
     :init
@@ -1556,7 +1552,7 @@ Just some jumping around and easy menus
 #+BEGIN_SRC emacs-lisp
 
   (use-package doom-modeline
-    :straight t
+    :ensure t
     :init
 
     (doom-modeline-mode 1)
@@ -1637,7 +1633,7 @@ Just some jumping around and easy menus
 
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
-    :straight t
+    :ensure t
     :config
     (setq projectile-completion-system 'ivy)
     (setq projectile-project-search-path '("~/coding/projects/" "~/coding/tml/" "~/org" "~/.config/emacs"))
@@ -1646,7 +1642,7 @@ Just some jumping around and easy menus
 
 
   (use-package ibuffer-projectile
-    :straight t
+    :ensure t
     :config
     (add-hook 'ibuffer-hook
               (lambda ()
@@ -1666,13 +1662,13 @@ Just some jumping around and easy menus
 #+BEGIN_SRC emacs-lisp
 
   (use-package ghub
-    :straight t
+    :ensure t
 
 
     )
 
   (use-package ghub+
-    :straight t
+    :ensure t
 
 
     )
@@ -1682,52 +1678,52 @@ Just some jumping around and easy menus
 
 ** MAGIT
 #+BEGIN_SRC emacs-lisp
-      (use-package magit
-        :straight t
-        :bind (("C-c m" . magit-status)
-               ("s-g" . magit-status)))
+  (use-package magit
+    :ensure t
+    :bind (("C-c m" . magit-status)
+           ("s-g" . magit-status)))
 
-      (use-package git-commit
-        :straight t
-        :after magit
-        :config
-        (setq git-commit-summary-max-length 50)
-        (setq git-commit-known-pseudo-headers
-              '("Signed-off-by"
-                "Acked-by"
-                "Modified-by"
-                "Cc"
-                "Suggested-by"
-                "Reported-by"
-                "Tested-by"
-                "Reviewed-by"))
-        (setq git-commit-style-convention-checks
-              '(non-empty-second-line
-                overlong-summary-line)))
+  (use-package git-commit
+    :ensure t
+    :after magit
+    :config
+    (setq git-commit-summary-max-length 50)
+    (setq git-commit-known-pseudo-headers
+          '("Signed-off-by"
+            "Acked-by"
+            "Modified-by"
+            "Cc"
+            "Suggested-by"
+            "Reported-by"
+            "Tested-by"
+            "Reviewed-by"))
+    (setq git-commit-style-convention-checks
+          '(non-empty-second-line
+            overlong-summary-line)))
 
-      (use-package magit-diff
-        :straight nil
-        :after magit
-        :config
-        (setq magit-diff-refine-hunk t))
+  (use-package magit-diff
+                                          ; nil
+    :after magit
+    :config
+    (setq magit-diff-refine-hunk t))
 
-      (use-package magit-repos
-        :straight nil
-        :after magit
-        :commands magit-list-repositories
-        :config
-        (setq magit-repository-directories
-              '(("~/coding/projects" . 1)
+  (use-package magit-repos
+                                          ; nil
+    :after magit
+    :commands magit-list-repositories
+    :config
+    (setq magit-repository-directories
+          '(("~/coding/projects" . 1)
 
-                )))
+            )))
 
-      (use-package git-timemachine
-        :straight t
-        :commands git-timemachine)
+  (use-package git-timemachine
+    :ensure t
+    :commands git-timemachine)
 
-      (use-package forge
-        :straight t
-        :after magit)
+  (use-package forge
+    :ensure t
+    :after magit)
 
 #+END_SRC
 
@@ -1735,7 +1731,7 @@ Just some jumping around and easy menus
 #+BEGIN_SRC emacs-lisp
 
   (use-package git-gutter
-    :straight t
+    :ensure t
     :diminish
     :hook ((text-mode . git-gutter-mode)
            (prog-mode . git-gutter-mode))
@@ -1761,7 +1757,7 @@ text-modes with this snippet.
 
 
   (use-package flyspell
-    :straight nil
+                                          ; nil
     :commands (ispell-change-dictionary
                ispell-word
                flyspell-buffer
@@ -1780,7 +1776,7 @@ text-modes with this snippet.
 
 #+BEGIN_SRC emacs-lisp
   (use-package expand-region
-    :straight t
+    :ensure t
     :bind ("C-=" . er/expand-region))
 
 
@@ -1798,7 +1794,7 @@ I use LSP for python.
 
 
   (use-package pyvenv
-    :straight t
+    :ensure t
     :config
     (pyvenv-tracking-mode 1)
 
@@ -1819,7 +1815,7 @@ I use LSP for python.
 
 
   (use-package auto-virtualenvwrapper
-    :straight t
+    :ensure t
     :defer t
     :config
     (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate)
@@ -1834,7 +1830,7 @@ I use LSP for python.
 #+BEGIN_SRC emacs-lisp
 
   ;; (use-package blacken
-  ;;   :straight t
+  ;;   :ensure t
   ;;   :diminish blacken-mode
   ;;   ;; :hook (python-mode . blacken-mode)
   ;;   :config
@@ -1847,21 +1843,21 @@ I use LSP for python.
 #+BEGIN_SRC emacs-lisp
 
   (use-package yaml-mode
-    :straight t
+    :ensure t
     :mode ("\\.yml$" . yaml-mode)
     )
 #+END_SRC
 ** Org
 
 I use =org-agenda= along with =org-capture= for appointments and such.
-
+*** Basic org up
 #+BEGIN_SRC emacs-lisp
 
   ;; Turn on indentation and auto-fill mode for Org files
   (defun dw/org-mode-setup ()
     (org-indent-mode)
     (variable-pitch-mode 1)
-    (auto-fill-mode 0)
+    (auto-fill-mode 1)
     (visual-line-mode 1)
     (diminish org-indent-mode))
   (use-package org
@@ -1909,34 +1905,6 @@ I use =org-agenda= along with =org-capture= for appointments and such.
                             '(("^ *\\([-]\\) "
                                (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-
-    (when window-system
-      ;; (let* ((variable-tuple
-      ;;         (cond ((x-list-fonts   "Source Sans Pro") '(:font   "Source Sans Pro"))
-      ;;               ((x-list-fonts   "JetBrains Mono") '(:font   "JetBrains Mono"))
-      ;;               ((x-list-fonts   "Lucida Grande")   '(:font   "Lucida Grande"))
-      ;;               ((x-list-fonts   "Verdana")         '(:font   "Verdana"))
-      ;;               ((x-family-fonts "Sans Serif")      '(:family "Sans Serif"))
-      ;;               (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-      ;;        (base-font-color (face-foreground 'default nil 'default))
-      ;;        (headline       `(:inherit default :weight bold :foreground ,base-font-color)))
-
-      ;;   (custom-theme-set-faces
-      ;;    'user
-      ;;    `(org-level-8        ((t (,@headline ,@variable-tuple))))
-      ;;    `(org-level-7        ((t (,@headline ,@variable-tuple))))
-      ;;    `(org-level-6        ((t (,@headline ,@variable-tuple))))
-      ;;    `(org-level-5        ((t (,@headline ,@variable-tuple))))
-      ;;    `(org-level-4        ((t (,@headline ,@variable-tuple :height 1.1))))
-      ;;    `(org-level-3        ((t (,@headline ,@variable-tuple :height 1.25))))
-      ;;    `(org-level-2        ((t (,@headline ,@variable-tuple :height 1.5))))
-      ;;    `(org-level-1        ((t (,@headline ,@variable-tuple :height 1.75))))
-      ;;    `(org-headline-done  ((t (,@headline ,@variable-tuple :strike-through t))))
-      ;;    `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil))))))
-      )
-    ;;     (require 'org-variable-pitch)
-
-
     (add-hook 'org-mode-hook 'turn-on-flyspell)
     (setq org-fontify-done-headline t)
 
@@ -1955,6 +1923,8 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 
 #+END_SRC
 
+*** org tempo
+
 #+BEGIN_SRC emacs-lisp
   (require 'org-tempo)
 
@@ -1966,89 +1936,106 @@ I use =org-agenda= along with =org-capture= for appointments and such.
   (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
   (add-to-list 'org-structure-template-alist '("json" . "src json"))
 #+END_SRC
+*** org super star
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package org-superstar
-:straight t
-:after org
-:hook (org-mode . org-superstar-mode)
-:custom
-(org-superstar-remove-leading-stars t)
-(org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
+  (use-package org-superstar
+    :ensure t
+    :after org
+    :hook (org-mode . org-superstar-mode)
+    :custom
+    (org-superstar-remove-leading-stars t)
+    (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
 
 
-;; Increase the size of various headings
-(set-face-attribute 'org-document-title nil :font "JetBrains Mono" :weight 'bold :height 1.3)
-(dolist (face '((org-level-1 . 1.5)
-(org-level-2 . 1.1)
-(org-level-3 . 1.05)
-(org-level-4 . 1.0)
-(org-level-5 . 1.1)
-(org-level-6 . 1.1)
-(org-level-7 . 1.1)
-(org-level-8 . 1.1)))
-(set-face-attribute (car face) nil :font "JetBrains Mono" :weight 'regular :height (cdr face)))
+  ;; Increase the size of various headings
+  (set-face-attribute 'org-document-title nil :font "JetBrains Mono" :weight 'bold :height 1.3)
+  (dolist (face '((org-level-1 . 1.5)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "JetBrains Mono" :weight 'regular :height (cdr face)))
 
-;; Make sure org-indent face is available
-(require 'org-indent)
+  ;; Make sure org-indent face is available
+  (require 'org-indent)
 
-;; Ensure that anything that should be fixed-pitch in Org files appears that way
-(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-(set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
-(set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
-(set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
-(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
 
 
-)
-
-(use-package org-bullets
-:straight t
-:after org
-:commands org-bullets-mode
-:init
-(add-hook 'org-mode-hook 'org-bullets-mode)
-)
+  )
 
 
 
-(define-key global-map "\C-cc" 'org-capture)
+#+end_src
 
 
-(setq org-capture-templates
-'(("t" "Todo" entry (file+headline "~/org/notes.org" "Task List")
-"* TODO %?\n%U" :empty-lines 1)
+*** org bullets
 
-("l" "Logbook entry" entry (file+datetree "logbook-work.org") "** %U - %^{Activity}_ %^G :LOG:")
+#+begin_src emacs-lisp
 
-
-("P" "Research project" entry (file "~/org/projects.org")
-"* TODO %^{Project title} :%^G:\n:PROPERTIES:\n:CREATED: %U\n:END:\n%^{Project description}\n** TODO Literature review\n** TODO %?\n** TODO Summary\n** TODO Reports\n** Ideas\n" :clock-in t :clock-resume t)
-
-("a" "Research Article" entry(file+headline "~/org/publications.org" "Working articles") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-("r" "Ref. Report" entry(file+headline "~/org/publications.org" "Referee reports") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-("c" "Coding tips" entry(file+headline "~/org/coding.org" "Refile") "** READ %^{description} %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-;    ("C" "Cliplink capture code" entry (file+headline  "~/org/coding.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
-
-("f" "Fitting" entry(file+headline "~/org/fitting.org" "Refile") "** READ %^{description}  %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-("x" "arXiv" entry(file+headline "~/org/arxiv.org" "To read") "** READ %^L %t")
-
-;       ("F" "Cliplink capture fitting" entry (file+headline  "~/org/fitting.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
-
-)
-)
+  (use-package org-bullets
+    :ensure t
+    :after org
+    :commands org-bullets-mode
+    :init
+    (add-hook 'org-mode-hook 'org-bullets-mode)
+    )
 
 
-;;
+
+  (define-key global-map "\C-cc" 'org-capture)
+
+#+end_src
+*** Capture templates
+
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file+headline "~/org/notes.org" "Task List")
+           "* TODO %?\n%U" :empty-lines 1)
+
+          ("l" "Logbook entry" entry (file+datetree "logbook-work.org") "** %U - %^{Activity}_ %^G :LOG:")
+
+
+          ("P" "Research project" entry (file "~/org/projects.org")
+           "* TODO %^{Project title} :%^G:\n:PROPERTIES:\n:CREATED: %U\n:END:\n%^{Project description}\n** TODO Literature review\n** TODO %?\n** TODO Summary\n** TODO Reports\n** Ideas\n" :clock-in t :clock-resume t)
+
+          ("a" "Research Article" entry(file+headline "~/org/publications.org" "Working articles") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+          ("r" "Ref. Report" entry(file+headline "~/org/publications.org" "Referee reports") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+          ("c" "Coding tips" entry(file+headline "~/org/coding.org" "Refile") "** READ %^{description} %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+                                          ;    ("C" "Cliplink capture code" entry (file+headline  "~/org/coding.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
+
+          ("f" "Fitting" entry(file+headline "~/org/fitting.org" "Refile") "** READ %^{description}  %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+          ("x" "arXiv" entry(file+headline "~/org/arxiv.org" "To read") "** READ %^L %t")
+
+
+
+          ("i" "idea" entry(file "~/org/ideas.org") "* TODO %? %t" :empty-lines 1)
+
+                                          ;       ("F" "Cliplink capture fitting" entry (file+headline  "~/org/fitting.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
+
+          )
+        )
+
+
+  ;;
 #+END_SRC
 
 When editing org-files with source-blocks, we want the source blocks to
@@ -2075,7 +2062,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 ** LaTeX and org-mode LaTeX export
 #+BEGIN_SRC emacs-lisp
   (use-package latex
-    :straight nil
+                                          ; nil
     :mode
     ("\\.tex\\'" . latex-mode)
     :bind
@@ -2140,7 +2127,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 
       ;;; stan-mode.el
   (use-package stan-mode
-    :straight t
+    :ensure t
     :mode ("\\.stan\\'" . stan-mode)
     :hook (stan-mode . stan-mode-setup)
     ;;
@@ -2150,7 +2137,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 
       ;;; company-stan.el
   (use-package company-stan
-    :straight t
+    :ensure t
     :hook (stan-mode . company-stan-setup)
     ;;
     :config
@@ -2159,7 +2146,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 
       ;;; eldoc-stan.el
   (use-package eldoc-stan
-    :straight t
+    :ensure t
     :hook (stan-mode . eldoc-stan-setup)
     ;;
     :config
@@ -2169,7 +2156,7 @@ This is quite an ugly fix for allowing code markup for expressions like
       ;;; flycheck-stan.el
   (use-package flycheck-stan
     ;; Add a hook to setup `flycheck-stan' upon `stan-mode' entry
-    :straight t
+    :ensure t
     :hook ((stan-mode . flycheck-stan-stanc2-setup)
            (stan-mode . flycheck-stan-stanc3-setup))
     :config
@@ -2182,7 +2169,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 
       ;;; stan-snippets.el
   (use-package stan-snippets
-    :straight t
+    :ensure t
     :hook (stan-mode . stan-snippets-initialize)
     ;;
     :config
@@ -2249,7 +2236,7 @@ about a function or a variable in the echo area.
 
 #+BEGIN_SRC emacs-lisp
   (use-package darkroom
-    :straight t
+    :ensure t
     :commands darkroom-mode
     :defer t
     :config
@@ -2261,7 +2248,7 @@ about a function or a variable in the echo area.
 ** Focus
 #+BEGIN_SRC emacs-lisp
   (use-package focus
-    :straight t
+    :ensure t
     :defer t
     )
 #+END_SRC
@@ -2269,15 +2256,15 @@ about a function or a variable in the echo area.
 * Telegram
 #+BEGIN_SRC emacs-lisp
   (use-package tracking
-    :straight t
+    :ensure t
     )
 
   (use-package visual-fill-column
-    :straight t
+    :ensure t
     )
 
   (use-package rainbow-identifiers
-    :straight t
+    :ensure t
     )
 
 
@@ -2301,13 +2288,13 @@ about a function or a variable in the echo area.
   ;; (advice-add 'tracking-remove-buffer :after #'dw/after-tracking-remove-buffer)
   ;; (advice-remove 'tracking-remove-buffer #'dw/around-tracking-remove-buffer)
 
-  (use-package telega
-    :straight t
-                                          ;   :defer t
-    :commands telega
-    :config
-    ;;    (setq )
-    )
+  ;; (use-package telega
+  ;;   :ensure
+  ;;                                         ;   :defer t
+  ;;   :commands telega
+  ;;   :config
+  ;;   ;;    (setq )
+  ;;   )
 #+END_SRC
 
 * spotify
@@ -2350,7 +2337,7 @@ defined.
 
 
   (use-package diminish
-    :straight t
+    :ensure t
     )
 
 
