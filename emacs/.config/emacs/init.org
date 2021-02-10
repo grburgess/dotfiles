@@ -371,9 +371,9 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 
   (defun preserve-font ( &rest args)
 
-    ;; (set-frame-font "JetBrains Mono 13" nil t)
-    ;; (add-to-list 'default-frame-alist
-    ;;              '(font . "JetBrains Mono 13"))
+    (set-frame-font "JetBrains Mono 13" nil t)
+    (add-to-list 'default-frame-alist
+                 '(font . "JetBrains Mono 13"))
 
 
     (set-face-attribute 'org-document-title nil :font "JetBrains Mono" :weight 'bold :height 1.3)
