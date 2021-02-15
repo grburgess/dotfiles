@@ -332,6 +332,10 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
     )
 
 #+END_SRC
+** tramp
+#+begin_src emacs-lisp
+(setq tramp-default-method "ssh")
+#+end_src
 * Visual
 ** doom themes
 
@@ -691,8 +695,6 @@ Some nice visual modes
 
 #+RESULTS:
 : t
-
-
 
 * Productivity
 ** Flycheck
