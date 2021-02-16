@@ -334,7 +334,7 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 #+END_SRC
 ** tramp
 #+begin_src emacs-lisp
-(setq tramp-default-method "ssh")
+  (setq tramp-default-method "ssh")
 #+end_src
 * Visual
 ** doom themes
@@ -2312,6 +2312,17 @@ setup for counsel spoify
 
 #+END_SRC
 
+* Twitter
+#+begin_src emacs-lisp
+  (use-package twittering-mode
+    :ensure t
+    :defer t
+
+
+    )
+#+end_src
+
+#+RESULTS:
 
 * Key bindings
 
