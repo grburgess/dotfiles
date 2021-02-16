@@ -334,7 +334,7 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 #+END_SRC
 ** tramp
 #+begin_src emacs-lisp
-(setq tramp-default-method "ssh")
+  (setq tramp-default-method "ssh")
 #+end_src
 * Visual
 ** doom themes
@@ -606,6 +606,78 @@ Some nice visual modes
 #+END_SRC
 
 * Keys
+** ESC Cancels
+#+begin_src emacs-lisp
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+#+end_src
+** rebind C-u
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-M-u") 'universal-argument)
+#+end_src
+** EVIL
+#+begin_src emacs-lisp
+  (defun dw/evil-hook ()
+    (dolist (mode '(custom-mode
+                    eshell-mode
+                    git-rebase-mode
+                    erc-mode
+                    circe-server-mode
+                    circe-chat-mode
+                    circe-query-mode
+                    sauron-mode
+                    term-mode))
+      (add-to-list 'evil-emacs-state-modes mode)))
+
+  (defun dw/dont-arrow-me-bro ()
+    (interactive)
+    (message "Arrow keys are bad, you know?"))
+
+  (use-package undo-tree
+  :ensure t
+    :init
+    (global-undo-tree-mode 1))
+
+  (use-package evil
+    :ensure t
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-i-jump nil)
+    (setq evil-respect-visual-line-mode t)
+    (setq evil-undo-system 'undo-tree)
+    :config
+    (add-hook 'evil-mode-hook 'dw/evil-hook)
+    (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+
+    ;; Use visual line motions even outside of visual-line-mode buffers
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+    ;; (unless dw/is-termux
+    ;;   ;; Disable arrow keys in normal and visual modes
+    ;;   (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
+    ;;   (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
+    ;;   (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
+    ;;   (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
+    ;;   (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
+    ;;   (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
+    ;;   (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
+    ;;   (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro))
+
+    (evil-set-initial-state 'messages-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal))
+
+  (use-package evil-collection
+    :after evil
+    :custom
+    (evil-collection-outline-bind-tab-p nil)
+    :config
+    (evil-collection-init))
+#+end_src
+
 ** which key
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
