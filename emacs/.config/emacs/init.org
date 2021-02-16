@@ -2379,11 +2379,11 @@ defined.
 * Font
 
 #+BEGIN_SRC emacs-lisp
-  (set-frame-font "JetBrains Mono 13" nil t)
-  (add-to-list 'default-frame-alist
-               '(font . "JetBrains Mono 13"))
+(set-frame-font "JetBrains Mono 13" nil t)
+(add-to-list 'default-frame-alist
+             '(font . "JetBrains Mono 13"))
 
-  (load-theme 'doom-old-hope t)
+(load-theme 'doom-old-hope t)
 
 #+END_SRC
 
