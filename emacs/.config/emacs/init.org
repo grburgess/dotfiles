@@ -816,9 +816,24 @@ Some nice visual modes
 
 adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 
+
+#+begin_src emacs-lisp
+(use-package evil-multiedit
+:ensure t
+:config
+(evil-multiedit-default-keybinds)
+
+  )
+#+end_src
+
+#+RESULTS:
+: t
+
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package multiple-cursors
+  :disabled
   :ensure t
   :bind (
 
@@ -865,6 +880,8 @@ adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
     ))
 
 #+END_SRC
+
+#+RESULTS:
 
 ** direnv
 
@@ -1724,7 +1741,7 @@ Just some jumping around and easy menus
          ("s-g" . magit-status))
   ;; :commands (magit-status magit-get-current-branch)
   :custom
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  ;; (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
 
 
   )
@@ -2333,19 +2350,19 @@ about a function or a variable in the echo area.
 
 
 
-;;Add faces for specific people in the modeline.  There must
-;;be a better way to do this.
+;; Add faces for specific people in the modeline.  There must
+;; be a better way to do this.
 (defun dw/around-tracking-add-buffer (original-func buffer &optional faces)
   (let* ((name (buffer-name buffer))
          (face (cond ((s-contains? "Francesca" name) '(all-the-icons-pink))
                      ((s-contains? "Thomas" name) '(all-the-icons-lgreen))
                      ((s-contains? "Anastasia" name) '(all-the-icons-lblue))))
          (result (apply original-func buffer (list face))))
-    (dw/update-polybar-telegram)
+    ;; (dw/update-polybar-telegram)	
     result))
 
-(defun dw/after-tracking-remove-buffer (buffer)
-  (dw/update-polybar-telegram))
+;; (defun dw/after-tracking-remove-buffer (buffer)
+  ;; (dw/update-polybar-telegram))
 
 (advice-add 'tracking-add-buffer :around #'dw/around-tracking-add-buffer)
 (advice-add 'tracking-remove-buffer :after #'dw/after-tracking-remove-buffer)
