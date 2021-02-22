@@ -291,8 +291,8 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 ** Transparent
 #+begin_src emacs-lisp
 
-(set-frame-parameter (selected-frame) 'alpha '(90 . 90))
-(add-to-list 'default-frame-alist '(alpha . (90 . 90)))
+(set-frame-parameter (selected-frame) 'alpha '(95 . 95))
+(add-to-list 'default-frame-alist '(alpha . (95 . 95)))
 #+end_src
 
 #+RESULTS:
@@ -544,74 +544,74 @@ Some nice visual modes
 #+end_src
 ** rebind C-u
 #+begin_src emacs-lisp
-(global-set-key (kbd "C-M-u") 'universal-argument)
+;; (global-set-key (kbd "C-M-u") 'universal-argument)
 #+end_src
 ** EVIL
 #+begin_src emacs-lisp
-(defun dw/evil-hook ()
-  (dolist (mode '(custom-mode
-                  eshell-mode
-                  git-rebase-mode
-                  erc-mode
-                  circe-server-mode
-                  circe-chat-mode
-                  circe-query-mode
-                  sauron-mode
-                  term-mode))
-    (add-to-list 'evil-emacs-state-modes mode)))
+;; (defun dw/evil-hook ()
+;;   (dolist (mode '(custom-mode
+;;                   eshell-mode
+;;                   git-rebase-mode
+;;                   erc-mode
+;;                   circe-server-mode
+;;                   circe-chat-mode
+;;                   circe-query-mode
+;;                   sauron-mode
+;;                   term-mode))
+;;     (add-to-list 'evil-emacs-state-modes mode)))
 
-(defun dw/dont-arrow-me-bro ()
-  (interactive)
-  (message "Arrow keys are bad, you know?"))
+;; (defun dw/dont-arrow-me-bro ()
+;;   (interactive)
+;;   (message "Arrow keys are bad, you know?"))
 
-(use-package undo-tree
-  :ensure t
-  :init
-  (global-undo-tree-mode 1))
+;; (use-package undo-tree
+;;   :ensure t
+;;   :init
+;;   (global-undo-tree-mode 1))
 
-(use-package evil
-  :ensure t
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  (setq evil-respect-visual-line-mode t)
-  (setq evil-undo-system 'undo-tree)
-  :config
-  (add-hook 'evil-mode-hook 'dw/evil-hook)
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+;; (use-package evil
+;;   :ensure t
+;;   :init
+;;   (setq evil-want-integration t)
+;;   (setq evil-want-keybinding nil)
+;;   (setq evil-want-C-u-scroll t)
+;;   (setq evil-want-C-i-jump nil)
+;;   (setq evil-respect-visual-line-mode t)
+;;   (setq evil-undo-system 'undo-tree)
+;;   :config
+;;   (add-hook 'evil-mode-hook 'dw/evil-hook)
+;;   (evil-mode 1)
+;;   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+;;   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+;;   ;; Use visual line motions even outside of visual-line-mode buffers
+;;   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+;;   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-  ;; (unless dw/is-termux
-  ;;   ;; Disable arrow keys in normal and visual modes
-  ;;   (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
-  ;;   (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
-  ;;   (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
-  ;;   (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
-  ;;   (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
-  ;;   (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
-  ;;   (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
-  ;;   (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro))
+;;   ;; (unless dw/is-termux
+;;   ;;   ;; Disable arrow keys in normal and visual modes
+;;   ;;   (define-key evil-normal-state-map (kbd "<left>") 'dw/dont-arrow-me-bro)
+;;   ;;   (define-key evil-normal-state-map (kbd "<right>") 'dw/dont-arrow-me-bro)
+;;   ;;   (define-key evil-normal-state-map (kbd "<down>") 'dw/dont-arrow-me-bro)
+;;   ;;   (define-key evil-normal-state-map (kbd "<up>") 'dw/dont-arrow-me-bro)
+;;   ;;   (evil-global-set-key 'motion (kbd "<left>") 'dw/dont-arrow-me-bro)
+;;   ;;   (evil-global-set-key 'motion (kbd "<right>") 'dw/dont-arrow-me-bro)
+;;   ;;   (evil-global-set-key 'motion (kbd "<down>") 'dw/dont-arrow-me-bro)
+;;   ;;   (evil-global-set-key 'motion (kbd "<up>") 'dw/dont-arrow-me-bro))
 
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
+;;   (evil-set-initial-state 'messages-buffer-mode 'normal)
+;;   (evil-set-initial-state 'dashboard-mode 'normal))
 
-(use-package evil-collection
-  :ensure t
-  :after evil
-  :custom
-  (evil-collection-outline-bind-tab-p nil)
-  :config
-  (evil-collection-init))
-(use-package evil-nerd-commenter
-  :ensure t
-  :bind ("M-/" . evilnc-comment-or-uncomment-lines))
+;; (use-package evil-collection
+;;   :ensure t
+;;   :after evil
+;;   :custom
+;;   (evil-collection-outline-bind-tab-p nil)
+;;   :config
+;;   (evil-collection-init))
+;; (use-package evil-nerd-commenter
+;;   :ensure t
+;;   :bind ("M-/" . evilnc-comment-or-uncomment-lines))
 #+end_src
 
 ** which key
@@ -628,105 +628,106 @@ Some nice visual modes
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package crux
-  :ensure t
-  )
-
-
-(use-package general
-  :ensure t
-  :config
-  (general-define-key
-   "M-x" 'counsel-M-x
-   "C-s" 'counsel-grep-or-swiper
-   "M-s" 'isearch-forward
-
-   "C-<backspace>" 'crux-kill-line-backwards
-   [remap move-beginning-of-line] 'crux-move-beginning-of-line
-   [remap kill-whole-line] 'crux-kill-whole-line
-   [(shift return)] 'crux-smart-open-line
-
-   "M-j" (lambda () (interactive)
-           (join-line -1))
-
-
-   )
-
-  (general-create-definer dw/leader-key-def
-    :keymaps '(normal insert visual emacs)
-    :prefix "SPC"
-    :global-prefix "C-SPC")
-
-  ;; Cc
-  (general-define-key
-   :prefix "C-c"
-   "c" 'org-capture
-   "a" 'org-agenda
-   "l" 'org-store-link
-   "s" 'ispell-word
-   "r" 'counsel-projectile-rg
-   "i" 'crux-find-user-init-file
-   "t" 'counsel-load-theme
-   "<up>" 'windmove-up
-   "<down>" 'windmove-down
-   "<left>" 'windmove-left
-   "<right>" 'windmove-right
-
-
-   )
-  ;; Cx
-  (general-define-key
-   :prefix "C-x"
-
-   "a" 'ace-jump-mode
-   "C-b" 'ibuffer
-   "k" 'kill-this-buffer-unless-scratch
-
-   )
-
-  (general-def lsp-mode-map
-    "C-c C-f" 'lsp-format-buffer
-
-
-    )
-  ;; Swiper
-  (general-def swiper-map
-    "M-%" 'swiper-query-replace
-    )
-
-  (general-def projectile-mode-map
-    "s-p" 'projectile-command-map
-
+  (use-package crux
+    :ensure t
     )
 
 
+  (use-package general
+    :ensure t
+    :config
+    (general-define-key
+     "M-x" 'counsel-M-x
+     "C-s" 'counsel-grep-or-swiper
+     "M-s" 'isearch-forward
 
-  )
+     "C-<backspace>" 'crux-kill-line-backwards
+     [remap move-beginning-of-line] 'crux-move-beginning-of-line
+     [remap kill-whole-line] 'crux-kill-whole-line
+     [(shift return)] 'crux-smart-open-line
 
-(dw/leader-key-def
-  "t"  '(:ignore t :which-key "toggles")
-  "tw" 'whitespace-mode
-  "tt" '(counsel-load-theme :which-key "choose theme"))
+     "M-j" (lambda () (interactive)
+	     (join-line -1))
+
+
+     )
+
+    ;; (general-create-definer dw/leader-key-def
+    ;;   :keymaps '(normal insert visual emacs)
+    ;;   :prefix "C-c"
+    ;;   :global-prefix "C-c")
+
+    ;; Cc
+    (general-define-key
+     :prefix "C-c"
+     "c" 'org-capture
+     "a" 'org-agenda
+     "l" 'org-store-link
+     "s" 'ispell-word
+     "g" 'counsel-projectile-rg
+     "r" '(ivy-resume :which-key "ivy resume")
+     "i" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
+     "n" '((lambda () (interactive) (counsel-find-file "~/org")) :which-key "notes")
+     "t" 'counsel-load-theme
+     "<up>" 'windmove-up
+     "<down>" 'windmove-down
+     "<left>" 'windmove-left
+     "<right>" 'windmove-right
+
+
+     )
+    ;; Cx
+    (general-define-key
+     :prefix "C-x"
+
+     "a" 'ace-jump-mode
+     "C-b" 'ibuffer
+     "k" 'kill-this-buffer-unless-scratch
+
+     )
+
+    (general-def lsp-mode-map
+      "C-c C-f" 'lsp-format-buffer
+
+
+      )
+    ;; Swiper
+    (general-def swiper-map
+      "M-%" 'swiper-query-replace
+      )
+
+    (general-def projectile-mode-map
+      "s-p" 'projectile-command-map
+
+      )
 
 
 
-(dw/leader-key-def
-  "fn" '((lambda () (interactive) (counsel-find-file "~/org")) :which-key "notes")
-  "fd"  '(:ignore t :which-key "dotfiles")
-  ;; "fdd" '((lambda () (interactive) (find-file "~/dotfiles/Desktop.org")) :which-key "desktop")
-  "fde" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
-  ;; "fdm" '((lambda () (interactive) (find-file "~/.dotfiles/Mail.org")) :which-key "mail")
-  ;; "fdM" '((lambda () (interactive) (counsel-find-file "~/.dotfiles/.config/guix/manifests/")) :which-key "manifests")
-  ;; "fds" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" "Base Configuration")) :which-key "base system")
-  ;; "fdS" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" system-name)) :which-key "this system")
-  ;; "fdp" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Desktop.org" "Panel via Polybar")) :which-key "polybar")
-  ;; "fdw" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/Workflow.org"))) :which-key "workflow")
-  ;; "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/.config/vimb/config")) :which-key "vimb"))
-  )
+    )
+
+  ;; (dw/leader-key-def
+    ;; "t"  '(:ignore t :which-key "toggles")
+    ;; "tw" 'whitespace-mode
+    ;; "tt" '(counsel-load-theme :which-key "choose theme"))
+
+
+
+  ;; (dw/leader-key-def
+  ;;   "fn" '((lambda () (interactive) (counsel-find-file "~/org")) :which-key "notes")
+  ;;   "fd"  '(:ignore t :which-key "dotfiles")
+  ;;   ;; "fdd" '((lambda () (interactive) (find-file "~/dotfiles/Desktop.org")) :which-key "desktop")
+  ;;   "fde" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
+  ;;   ;; "fdm" '((lambda () (interactive) (find-file "~/.dotfiles/Mail.org")) :which-key "mail")
+  ;;   ;; "fdM" '((lambda () (interactive) (counsel-find-file "~/.dotfiles/.config/guix/manifests/")) :which-key "manifests")
+  ;;   ;; "fds" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" "Base Configuration")) :which-key "base system")
+  ;;   ;; "fdS" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" system-name)) :which-key "this system")
+  ;;   ;; "fdp" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Desktop.org" "Panel via Polybar")) :which-key "polybar")
+  ;;   ;; "fdw" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/Workflow.org"))) :which-key "workflow")
+  ;;   ;; "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/.config/vimb/config")) :which-key "vimb"))
+  ;;   )
 #+END_SRC
 
 #+RESULTS:
-: t
 
 * Productivity
 ** Flycheck
@@ -759,9 +760,9 @@ Some nice visual modes
 ** smart parens
 
 #+BEGIN_SRC emacs-lisp
-(use-package smartparens
-  :ensure t
-  :hook (prog-mode . smartparens-mode))
+;; (use-package smartparens
+;;   :ensure t
+;;   :hook (prog-mode . smartparens-mode))
 #+END_SRC
 
 ** rainbow delimeters
@@ -818,12 +819,12 @@ adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 
 
 #+begin_src emacs-lisp
-(use-package evil-multiedit
-:ensure t
-:config
-(evil-multiedit-default-keybinds)
+;; (use-package evil-multiedit
+;;   :ensure t
+;;   :config
+;;   (evil-multiedit-default-keybinds)
 
-  )
+;;   )
 #+end_src
 
 #+RESULTS:
@@ -833,7 +834,7 @@ adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 #+BEGIN_SRC emacs-lisp
 
 (use-package multiple-cursors
-  :disabled
+;;  :disabled
   :ensure t
   :bind (
 
@@ -1487,39 +1488,39 @@ Just some jumping around and easy menus
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package prescient
-  :ensure t
-  :config
-  (setq prescient-history-length 200)
-  (setq prescient-save-file "~/.config/emacs/prescient-items")
-  (setq prescient-filter-method '(literal regexp))
-  (prescient-persist-mode 1))
+  (use-package prescient
+    :ensure t
+    :config
+    (setq prescient-history-length 200)
+    (setq prescient-save-file "~/.config/emacs/prescient-items")
+    (setq prescient-filter-method '(literal regexp))
+    (prescient-persist-mode 1))
 
-(use-package ivy-prescient
+  (use-package ivy-prescient
 
-  :ensure t
-  :after (prescient ivy)
-  :config
-  (setq ivy-prescient-sort-commands
-        '(:not counsel-grep
-               counsel-rg
-               counsel-switch-buffer
-               ivy-switch-buffer
-               swiper
-               swiper-multi))
-  (setq ivy-prescient-retain-classic-highlighting t)
-  (setq ivy-prescient-enable-filtering nil)
-  (setq ivy-prescient-enable-sorting t)
-  (ivy-prescient-mode 1))
+    :ensure t
+    :after (prescient ivy)
+    :config
+    (setq ivy-prescient-sort-commands
+	  '(:not counsel-grep
+		 counsel-rg
+		 counsel-switch-buffer
+		 ivy-switch-buffer
+		 swiper
+		 swiper-multi))
+    (setq ivy-prescient-retain-classic-highlighting t)
+    (setq ivy-prescient-enable-filtering nil)
+    (setq ivy-prescient-enable-sorting t)
+    (ivy-prescient-mode 1))
 
-(dw/leader-key-def
-  "r"   '(ivy-resume :which-key "ivy resume")
-  "f"   '(:ignore t :which-key "files")
-  "ff"  '(counsel-find-file :which-key "open file")
-  "C-f" 'counsel-find-file
-  "fr"  '(counsel-recentf :which-key "recent files")
-  "fR"  '(revert-buffer :which-key "revert file")
-  "fj"  '(counsel-file-jump :which-key "jump to file") )
+  ;; (dw/leader-key-def
+  ;;   "r"   '(ivy-resume :which-key "ivy resume")
+  ;;   "f"   '(:ignore t :which-key "files")
+  ;;   "ff"  '(counsel-find-file :which-key "open file")
+  ;;   "C-f" 'counsel-find-file
+  ;;   "fr"  '(counsel-recentf :which-key "recent files")
+  ;;   "fR"  '(revert-buffer :which-key "revert file")
+  ;;   "fj"  '(counsel-file-jump :which-key "jump to file") )
 #+END_SRC
 
 
@@ -1740,26 +1741,26 @@ Just some jumping around and easy menus
   :bind (("C-c m" . magit-status)
          ("s-g" . magit-status))
   ;; :commands (magit-status magit-get-current-branch)
-  :custom
+;;  :custom
   ;; (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
 
 
   )
 
-(dw/leader-key-def
-  "g"   '(:ignore t :which-key "git")
-  "gs"  'magit-status
-  "gd"  'magit-diff-unstaged
-  "gc"  'magit-branch-or-checkout
-  "gl"   '(:ignore t :which-key "log")
-  "glc" 'magit-log-current
-  "glf" 'magit-log-buffer-file
-  "gb"  'magit-branch
-  "gP"  'magit-push-current
-  "gp"  'magit-pull-branch
-  "gf"  'magit-fetch
-  "gF"  'magit-fetch-all
-  "gr"  'magit-rebase)
+;; (dw/leader-key-def
+;;   "g"   '(:ignore t :which-key "git")
+;;   "gs"  'magit-status
+;;   "gd"  'magit-diff-unstaged
+;;   "gc"  'magit-branch-or-checkout
+;;   "gl"   '(:ignore t :which-key "log")
+;;   "glc" 'magit-log-current
+;;   "glf" 'magit-log-buffer-file
+;;   "gb"  'magit-branch
+;;   "gP"  'magit-push-current
+;;   "gp"  'magit-pull-branch
+;;   "gf"  'magit-fetch
+;;   "gF"  'magit-fetch-all
+;;   "gr"  'magit-rebase)
 
 (use-package git-commit
   :ensure t
@@ -1804,7 +1805,13 @@ Just some jumping around and easy menus
   :after magit)
 
 #+END_SRC
+** magit todos
+#+begin_src emacs-lisp
+(use-package magit-todos
+  :ensure t
 
+  :defer t)
+#+end_src
 ** git gutter
 #+BEGIN_SRC emacs-lisp
 
@@ -2358,11 +2365,11 @@ about a function or a variable in the echo area.
                      ((s-contains? "Thomas" name) '(all-the-icons-lgreen))
                      ((s-contains? "Anastasia" name) '(all-the-icons-lblue))))
          (result (apply original-func buffer (list face))))
-    ;; (dw/update-polybar-telegram)	
+    ;; (dw/update-polybar-telegram)
     result))
 
 ;; (defun dw/after-tracking-remove-buffer (buffer)
-  ;; (dw/update-polybar-telegram))
+;; (dw/update-polybar-telegram))
 
 (advice-add 'tracking-add-buffer :around #'dw/around-tracking-add-buffer)
 (advice-add 'tracking-remove-buffer :after #'dw/after-tracking-remove-buffer)
