@@ -630,103 +630,103 @@ Some nice visual modes
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package crux
-    :ensure t
-    )
+(use-package crux
+  :ensure t
+  )
 
 
-  (use-package general
-    :ensure t
-    :config
-    (general-define-key
-     "M-x" 'counsel-M-x
-     "C-s" 'counsel-grep-or-swiper
-     "M-s" 'isearch-forward
+(use-package general
+  :ensure t
+  :config
+  (general-define-key
+   "M-x" 'counsel-M-x
+   "C-s" 'counsel-grep-or-swiper
+   "M-s" 'isearch-forward
 
-     "C-<backspace>" 'crux-kill-line-backwards
-     [remap move-beginning-of-line] 'crux-move-beginning-of-line
-     [remap kill-whole-line] 'crux-kill-whole-line
-     [(shift return)] 'crux-smart-open-line
+   "C-<backspace>" 'crux-kill-line-backwards
+   [remap move-beginning-of-line] 'crux-move-beginning-of-line
+   [remap kill-whole-line] 'crux-kill-whole-line
+   [(shift return)] 'crux-smart-open-line
 
-     "M-j" (lambda () (interactive)
-	     (join-line -1))
-
-
-     )
-
-    ;; (general-create-definer dw/leader-key-def
-    ;;   :keymaps '(normal insert visual emacs)
-    ;;   :prefix "C-c"
-    ;;   :global-prefix "C-c")
-
-    ;; Cc
-    (general-define-key
-     :prefix "C-c"
-     "c" 'org-capture
-     "a" 'org-agenda
-     "l" 'org-store-link
-     "s" 'ispell-word
-     "g" 'counsel-projectile-rg
-     "r" '(ivy-resume :which-key "ivy resume")
-     "i" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
-     "n" '((lambda () (interactive) (counsel-find-file "~/org")) :which-key "notes")
-     "t" 'counsel-load-theme
-     "<up>" 'windmove-up
-     "<down>" 'windmove-down
-     "<left>" 'windmove-left
-     "<right>" 'windmove-right
+   "M-j" (lambda () (interactive)
+           (join-line -1))
 
 
-     )
-    ;; Cx
-    (general-define-key
-     :prefix "C-x"
+   )
 
-     "a" 'ace-jump-mode
-     "C-b" 'ibuffer
-     "k" 'kill-this-buffer-unless-scratch
+  ;; (general-create-definer dw/leader-key-def
+  ;;   :keymaps '(normal insert visual emacs)
+  ;;   :prefix "C-c"
+  ;;   :global-prefix "C-c")
 
-     )
+  ;; Cc
+  (general-define-key
+   :prefix "C-c"
+   "c" 'org-capture
+   "a" 'org-agenda
+   "l" 'org-store-link
+   "s" 'ispell-word
+   "g" 'counsel-projectile-rg
+   "r" '(ivy-resume :which-key "ivy resume")
+   "i" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
+   "n" '((lambda () (interactive) (counsel-find-file "~/org")) :which-key "notes")
+   "t" 'counsel-load-theme
+   "<up>" 'windmove-up
+   "<down>" 'windmove-down
+   "<left>" 'windmove-left
+   "<right>" 'windmove-right
 
-    (general-def lsp-mode-map
-      "C-c C-f" 'lsp-format-buffer
 
+   )
+  ;; Cx
+  (general-define-key
+   :prefix "C-x"
 
-      )
-    ;; Swiper
-    (general-def swiper-map
-      "M-%" 'swiper-query-replace
-      )
+   "a" 'ace-jump-mode
+   "C-b" 'ibuffer
+   "k" 'kill-this-buffer-unless-scratch
 
-    (general-def projectile-mode-map
-      "s-p" 'projectile-command-map
+   )
 
-      )
-
+  (general-def lsp-mode-map
+    "C-c C-f" 'lsp-format-buffer
 
 
     )
+  ;; Swiper
+  (general-def swiper-map
+    "M-%" 'swiper-query-replace
+    )
 
-  ;; (dw/leader-key-def
-    ;; "t"  '(:ignore t :which-key "toggles")
-    ;; "tw" 'whitespace-mode
-    ;; "tt" '(counsel-load-theme :which-key "choose theme"))
+  (general-def projectile-mode-map
+    "s-p" 'projectile-command-map
+
+    )
 
 
 
-  ;; (dw/leader-key-def
-  ;;   "fn" '((lambda () (interactive) (counsel-find-file "~/org")) :which-key "notes")
-  ;;   "fd"  '(:ignore t :which-key "dotfiles")
-  ;;   ;; "fdd" '((lambda () (interactive) (find-file "~/dotfiles/Desktop.org")) :which-key "desktop")
-  ;;   "fde" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
-  ;;   ;; "fdm" '((lambda () (interactive) (find-file "~/.dotfiles/Mail.org")) :which-key "mail")
-  ;;   ;; "fdM" '((lambda () (interactive) (counsel-find-file "~/.dotfiles/.config/guix/manifests/")) :which-key "manifests")
-  ;;   ;; "fds" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" "Base Configuration")) :which-key "base system")
-  ;;   ;; "fdS" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" system-name)) :which-key "this system")
-  ;;   ;; "fdp" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Desktop.org" "Panel via Polybar")) :which-key "polybar")
-  ;;   ;; "fdw" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/Workflow.org"))) :which-key "workflow")
-  ;;   ;; "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/.config/vimb/config")) :which-key "vimb"))
-  ;;   )
+  )
+
+;; (dw/leader-key-def
+;; "t"  '(:ignore t :which-key "toggles")
+;; "tw" 'whitespace-mode
+;; "tt" '(counsel-load-theme :which-key "choose theme"))
+
+
+
+;; (dw/leader-key-def
+;;   "fn" '((lambda () (interactive) (counsel-find-file "~/org")) :which-key "notes")
+;;   "fd"  '(:ignore t :which-key "dotfiles")
+;;   ;; "fdd" '((lambda () (interactive) (find-file "~/dotfiles/Desktop.org")) :which-key "desktop")
+;;   "fde" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
+;;   ;; "fdm" '((lambda () (interactive) (find-file "~/.dotfiles/Mail.org")) :which-key "mail")
+;;   ;; "fdM" '((lambda () (interactive) (counsel-find-file "~/.dotfiles/.config/guix/manifests/")) :which-key "manifests")
+;;   ;; "fds" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" "Base Configuration")) :which-key "base system")
+;;   ;; "fdS" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" system-name)) :which-key "this system")
+;;   ;; "fdp" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Desktop.org" "Panel via Polybar")) :which-key "polybar")
+;;   ;; "fdw" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/Workflow.org"))) :which-key "workflow")
+;;   ;; "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/.config/vimb/config")) :which-key "vimb"))
+;;   )
 #+END_SRC
 
 #+RESULTS:
@@ -836,7 +836,7 @@ adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 #+BEGIN_SRC emacs-lisp
 
 (use-package multiple-cursors
-;;  :disabled
+  ;;  :disabled
   :ensure t
   :bind (
 
@@ -1493,39 +1493,39 @@ Just some jumping around and easy menus
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package prescient
-    :ensure t
-    :config
-    (setq prescient-history-length 200)
-    (setq prescient-save-file "~/.config/emacs/prescient-items")
-    (setq prescient-filter-method '(literal regexp))
-    (prescient-persist-mode 1))
+(use-package prescient
+  :ensure t
+  :config
+  (setq prescient-history-length 200)
+  (setq prescient-save-file "~/.config/emacs/prescient-items")
+  (setq prescient-filter-method '(literal regexp))
+  (prescient-persist-mode 1))
 
-  (use-package ivy-prescient
+(use-package ivy-prescient
 
-    :ensure t
-    :after (prescient ivy)
-    :config
-    (setq ivy-prescient-sort-commands
-	  '(:not counsel-grep
-		 counsel-rg
-		 counsel-switch-buffer
-		 ivy-switch-buffer
-		 swiper
-		 swiper-multi))
-    (setq ivy-prescient-retain-classic-highlighting t)
-    (setq ivy-prescient-enable-filtering nil)
-    (setq ivy-prescient-enable-sorting t)
-    (ivy-prescient-mode 1))
+  :ensure t
+  :after (prescient ivy)
+  :config
+  (setq ivy-prescient-sort-commands
+        '(:not counsel-grep
+               counsel-rg
+               counsel-switch-buffer
+               ivy-switch-buffer
+               swiper
+               swiper-multi))
+  (setq ivy-prescient-retain-classic-highlighting t)
+  (setq ivy-prescient-enable-filtering nil)
+  (setq ivy-prescient-enable-sorting t)
+  (ivy-prescient-mode 1))
 
-  ;; (dw/leader-key-def
-  ;;   "r"   '(ivy-resume :which-key "ivy resume")
-  ;;   "f"   '(:ignore t :which-key "files")
-  ;;   "ff"  '(counsel-find-file :which-key "open file")
-  ;;   "C-f" 'counsel-find-file
-  ;;   "fr"  '(counsel-recentf :which-key "recent files")
-  ;;   "fR"  '(revert-buffer :which-key "revert file")
-  ;;   "fj"  '(counsel-file-jump :which-key "jump to file") )
+;; (dw/leader-key-def
+;;   "r"   '(ivy-resume :which-key "ivy resume")
+;;   "f"   '(:ignore t :which-key "files")
+;;   "ff"  '(counsel-find-file :which-key "open file")
+;;   "C-f" 'counsel-find-file
+;;   "fr"  '(counsel-recentf :which-key "recent files")
+;;   "fR"  '(revert-buffer :which-key "revert file")
+;;   "fj"  '(counsel-file-jump :which-key "jump to file") )
 #+END_SRC
 
 
@@ -1746,7 +1746,7 @@ Just some jumping around and easy menus
   :bind (("C-c m" . magit-status)
          ("s-g" . magit-status))
   ;; :commands (magit-status magit-get-current-branch)
-;;  :custom
+  ;;  :custom
   ;; (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
 
 
@@ -2089,15 +2089,80 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 (define-key global-map "\C-cc" 'org-capture)
 
 #+end_src
+*** org journal
+
+#+begin_src emacs-lisp
+(use-package org-journal
+  :ensure t
+  :defer t
+  :init
+  ;; Change default prefix key; needs to be set before loading org-journal
+  (setq org-journal-prefix-key "C-c j ")
+  (setq org-journal-file-format "%Y-%m-%d-%a")
+  :config
+
+  (defun org-journal-file-header-func (time)
+    "Custom function to create journal header."
+    (concat
+     (pcase org-journal-file-type
+       (`daily "#+TITLE: Daily Journal\n#+STARTUP: showeverything")
+       (`weekly "#+TITLE: Weekly Journal\n#+STARTUP: folded")
+       (`monthly "#+TITLE: Monthly Journal\n#+STARTUP: folded")
+       (`yearly "#+TITLE: Yearly Journal\n#+STARTUP: folded"))))
+
+  (setq org-journal-file-header 'org-journal-file-header-func)
+
+
+  (setq org-journal-dir "~/org/journal/"
+        org-journal-date-format "%A, %d/%m/%Y")
+
+  (defun org-journal-save-entry-and-exit()
+    "Simple convenience function.
+  Saves the buffer of the current day's entry and kills the window
+  Similar to org-capture like behavior"
+    (interactive)
+    (save-buffer)
+    (kill-buffer-and-window))
+  (define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
+
+
+
+
+  (defun org-journal-find-location ()
+    ;; Open today's journal, but specify a non-nil prefix argument in order to
+    ;; inhibit inserting the heading; org-capture will insert the heading.
+    (org-journal-new-entry t)
+    (unless (eq org-journal-file-type 'daily)
+      (org-narrow-to-subtree))
+    (goto-char (point-max)))
+
+
+  )
+
+
+
+
+#+end_src
+
+
 *** Capture templates
+
 
 #+begin_src emacs-lisp
 (setq org-capture-templates
-      '(("t" "Todo" entry (file+headline "~/org/notes.org" "Task List")
-         "* TODO %?\n%U" :empty-lines 1)
+      '(("t" "TODO" plain (function org-journal-find-location)
+         "** TODO %(format-time-string org-journal-time-format)%^{Title}"
+         :immediate-finish t)
 
-        ("l" "Logbook entry" entry (file+datetree "logbook-work.org") "** %U - %^{Activity}_ %^G :LOG:")
 
+        ;; ("t" "Todo" entry (file+headline "~/org/notes.org" "Task List")
+        ;;  "* TODO %?\n%U" :empty-lines 1)
+
+        ;; ("l" "Logbook entry" entry (file+datetree "logbook-work.org") "** %U - %^{Activity}_ %^G :LOG:")
+
+        ("j" "Journal entry" plain (function org-journal-find-location)
+         "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
+         :jump-to-captured t :immediate-finish t)
 
         ("P" "Research project" entry (file "~/org/projects.org")
          "* TODO %^{Project title} :%^G:\n:PROPERTIES:\n:CREATED: %U\n:END:\n%^{Project description}\n** TODO Literature review\n** TODO %?\n** TODO Summary\n** TODO Reports\n** Ideas\n" :clock-in t :clock-resume t)
