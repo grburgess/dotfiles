@@ -8,9 +8,7 @@
 
 * Configurations
 ** Meta
-:PROPERTIES:
-:ID:       8B352CDE-B14A-4421-8DB0-D2F5D588A13C
-:END:
+
 
 #+BEGIN_SRC emacs-lisp :tangle no
 
@@ -53,9 +51,6 @@
 
 
 ** Packages
-:PROPERTIES:
-:ID:       F798ACE3-9892-4EA7-B3E0-BF3A4FF86AFC
-:END:
 
 Managing extensions for Emacs is simplified using =package= which is
 built in to Emacs 24 and newer. To load downloaded packages we need to
@@ -103,9 +98,7 @@ loaded, along with =package=, which is obviously needed.
 #+END_SRC
 
 ** cleaning
-:PROPERTIES:
-:ID:       BAC1C0BD-1101-4B51-A464-8C40A61F0133
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
@@ -143,9 +136,7 @@ installed. To ensure we install missing packages if they are missing.
 
 #+END_SRC
 ** Mac OS X
-:PROPERTIES:
-:ID:       23F6536D-C3A4-484F-8D82-B593356909B3
-:END:
+
 
 I run this configuration mostly on Mac OS X, so we need a couple of
 settings to make things work smoothly. In the package section
@@ -178,9 +169,7 @@ along with external processes a lot simpler. I also prefer using the
 #+END_SRC
 
 ** clean things
-:PROPERTIES:
-:ID:       F6C4EDFD-E970-45CE-8AAA-6FBF9C8BA1A7
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -200,9 +189,7 @@ along with external processes a lot simpler. I also prefer using the
 #+END_SRC
 
 ** Sane defaults
-:PROPERTIES:
-:ID:       45DE51A8-636F-4B1B-B4D1-FC243A1230C6
-:END:
+
 
 These are what /I/ consider to be saner defaults.
 
@@ -285,9 +272,7 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 #+END_SRC
 
 ** bug hunter
-:PROPERTIES:
-:ID:       AC4FEBBF-4043-4F96-8B44-FBB9AA13122E
-:END:
+
 #+BEGIN_SRC emacs-lisp
 (use-package bug-hunter
   :ensure t
@@ -295,17 +280,13 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 
 #+END_SRC
 ** tramp
-:PROPERTIES:
-:ID:       F8E13E87-6B01-4B49-BE00-532E403DC754
-:END:
+
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh")
 #+end_src
 * Visual
 ** Font
-:PROPERTIES:
-:ID:       8520A898-0CB6-4FED-8DB2-F2A04D99294D
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 (set-frame-font "JetBrains Mono 13" nil t)
@@ -316,9 +297,7 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 #+END_SEC
 
 ** Transparent
-:PROPERTIES:
-:ID:       8807BC6E-54B0-47DC-8EAF-11F30FBD5576
-:END:
+
 #+begin_src emacs-lisp
 
 (set-frame-parameter (selected-frame) 'alpha '(95 . 95))
@@ -330,9 +309,7 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 
 ** Themes
 *** doom themes
-:PROPERTIES:
-:ID:       C181A1C1-5666-4F64-AA8E-C964EBED3598
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 (use-package doom-themes
@@ -357,9 +334,7 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 #+END_SRC
 
 *** general
-:PROPERTIES:
-:ID:       BB61D1F0-892E-4D9F-BEC9-FDF36BB2E9EE
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -410,10 +385,7 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 #+END_SRC
 
 ** Rainbow mode
-:PROPERTIES:
-:ID:       69DF215C-F712-4D69-B576-014F990E8AE4
-:END:
-This for displaying HTML colors from HEX
+is for displaying HTML colors from HEX
 
 #+BEGIN_SRC emacs-lisp
 ;; (use-package rainbow-mode
@@ -428,9 +400,7 @@ This for displaying HTML colors from HEX
 #+END_SRC
 
 ** Line numbers
-:PROPERTIES:
-:ID:       FBB13714-7586-46F0-9985-4ABD057447CC
-:END:
+
 
 
 #+BEGIN_SRC emacs-lisp
@@ -454,9 +424,7 @@ This for displaying HTML colors from HEX
 #+END_SRC
 
 ** Beacon
-:PROPERTIES:
-:ID:       60BA6615-D71E-4AF9-91ED-4FD6AFAD7668
-:END:
+
 
 Some nice visual modes
 #+BEGIN_SRC emacs-lisp
@@ -489,9 +457,7 @@ Some nice visual modes
 #+END_SRC
 
 ** ATI ibuffer
-:PROPERTIES:
-:ID:       F3A49D4C-F4B7-43E7-88FF-590F5F4C47D2
-:END:
+
 #+BEGIN_SRC emacs-lisp
 ;; (setq ibuffer-saved-filter-groups
 ;;       '(("home"
@@ -522,9 +488,7 @@ Some nice visual modes
 #+END_SRC
 
 ** Neotree
-:PROPERTIES:
-:ID:       918723EC-188B-4823-9453-4E665131F7A1
-:END:
+
 #+BEGIN_SRC emacs-lisp
 (use-package neotree
   :ensure t
@@ -554,9 +518,7 @@ Some nice visual modes
 : neotree-project-dir
 
 ** all the icons
-:PROPERTIES:
-:ID:       82676B88-C8E4-4A66-AD37-28816E69F439
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 (use-package all-the-icons
@@ -577,9 +539,7 @@ Some nice visual modes
 #+END_SRC
 
 ** sublime
-:PROPERTIES:
-:ID:       91D3EE4C-78F6-4DBF-9C51-C10277C81E3D
-:END:
+
 
 
 #+BEGIN_SRC emacs-lisp
@@ -596,23 +556,17 @@ Some nice visual modes
 
 * Keys
 ** ESC Cancels
-:PROPERTIES:
-:ID:       1E382771-8E57-4AD4-A51E-2931EBD18324
-:END:
+
 #+begin_src emacs-lisp
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
 ** rebind C-u
-:PROPERTIES:
-:ID:       53D9EC95-6C0C-44A8-9504-C974F1322E4C
-:END:
+
 #+begin_src emacs-lisp
 ;; (global-set-key (kbd "C-M-u") 'universal-argument)
 #+end_src
 ** EVIL
-:PROPERTIES:
-:ID:       49FA9000-997C-4700-9269-EC3FFA4B039B
-:END:
+
 #+begin_src emacs-lisp
 ;; (defun dw/evil-hook ()
 ;;   (dolist (mode '(custom-mode
@@ -681,9 +635,7 @@ Some nice visual modes
 #+end_src
 
 ** which key
-:PROPERTIES:
-:ID:       DCE1EC4E-1610-4BE0-9114-56EB1E34D41A
-:END:
+
 #+BEGIN_SRC emacs-lisp
 (use-package which-key
   :ensure t
@@ -694,9 +646,7 @@ Some nice visual modes
 #+END_SRC
 
 ** General Key maps
-:PROPERTIES:
-:ID:       A96EA178-4AFD-4B07-8CA9-AEC7312E289F
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -813,9 +763,7 @@ Some nice visual modes
 
 * Productivity
 ** Flycheck
-:PROPERTIES:
-:ID:       E970A19C-74D3-48F9-9954-1E7739B0E809
-:END:
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package flycheck
@@ -827,9 +775,7 @@ Some nice visual modes
 #+END_SRC
 
 ** snippets
-:PROPERTIES:
-:ID:       9169AC49-B642-4F86-8F89-0BC40E1FEA67
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -846,9 +792,7 @@ Some nice visual modes
 #+END_SRC
 
 ** smart parens
-:PROPERTIES:
-:ID:       CECCC170-6D98-455E-B909-FB9635F406E1
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 ;; (use-package smartparens
@@ -857,9 +801,7 @@ Some nice visual modes
 #+END_SRC
 
 ** rainbow delimeters
-:PROPERTIES:
-:ID:       B71A9632-91CB-43B4-9949-FCAE46B7F744
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -870,9 +812,7 @@ Some nice visual modes
 
 #+END_SRC
 ** highlight indent guides
-:PROPERTIES:
-:ID:       9815038E-7006-4D26-BAD3-60B6149BFAD7
-:END:
+
 
 
 #+BEGIN_SRC emacs-lisp
@@ -911,9 +851,7 @@ Some nice visual modes
 #+END_SRC
 
 ** multiple cursors
-:PROPERTIES:
-:ID:       9140B85D-2DE9-4EC5-828D-0EFE5FCC9FE2
-:END:
+
 
 adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 
@@ -985,9 +923,7 @@ adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 #+RESULTS:
 
 ** direnv
-:PROPERTIES:
-:ID:       21DDA1A6-EB43-46EE-9219-4E8A12E00AC2
-:END:
+
 
 http://www.kotaweaver.com/blog/emacs-python-lsp/
 https://gist.github.com/alexhayes/cb1e6ad873c147502132ae17362a9daf
@@ -1005,9 +941,7 @@ https://github.com/direnv/direnv/wiki/Python#virtualenvwrapper
 #+END_SRC
 
 ** Dired
-:PROPERTIES:
-:ID:       36B46D64-97C9-40C5-9C73-95660EEDA7A9
-:END:
+
 
 
 #+BEGIN_SRC emacs-lisp
@@ -1120,9 +1054,7 @@ created directly upon successful exit.
 #+END_SRC
 
 ** tramp
-:PROPERTIES:
-:ID:       A49B51CD-E0A3-4DA3-A8BA-F67886E278F9
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1154,9 +1086,7 @@ created directly upon successful exit.
 
 * Completion
 ** Company
-:PROPERTIES:
-:ID:       A551B669-0FA4-4F07-BE89-4BA7B4D255BB
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1253,9 +1183,7 @@ Just some jumping around and easy menus
 
 
 *** ace
-:PROPERTIES:
-:ID:       71A57B06-220E-41EA-8031-2605C059B610
-:END:
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package ace-jump-mode
@@ -1264,9 +1192,7 @@ Just some jumping around and easy menus
 
 #+END_SRC
 *** IVY
-:PROPERTIES:
-:ID:       27CE46F4-B055-439C-B964-2233806655A7
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 (use-package ivy
@@ -1493,9 +1419,7 @@ Just some jumping around and easy menus
 
 #+END_SRC
 **** IVY Posframe
-:PROPERTIES:
-:ID:       9A06D816-4AD7-4EEA-B344-89C53297D75C
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1518,9 +1442,7 @@ Just some jumping around and easy menus
 #+END_SRC
 
 *** Counsel
-:PROPERTIES:
-:ID:       E184B19C-E572-422A-811A-1633BBFE2040
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1598,9 +1520,7 @@ Just some jumping around and easy menus
 
 #+END_SRC
 *** Swiper
-:PROPERTIES:
-:ID:       86E3879D-00C7-47D6-9E30-822A83DD7500
-:END:
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package swiper
@@ -1615,9 +1535,7 @@ Just some jumping around and easy menus
 #+END_SRC
 
 *** Prescient
-:PROPERTIES:
-:ID:       B96B4D29-F824-4FFF-8CE2-178BF9E06EA0
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1658,9 +1576,7 @@ Just some jumping around and easy menus
 
 
 *** FLX AMX
-:PROPERTIES:
-:ID:       080027BA-52EF-4469-991E-588ED6E99AE0
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1682,9 +1598,7 @@ Just some jumping around and easy menus
 #+END_SRC
 
 ** LSP
-:PROPERTIES:
-:ID:       FB66E032-7884-4D0C-8A30-E6AEDB3032F7
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 (use-package lsp-mode
@@ -1746,9 +1660,7 @@ Just some jumping around and easy menus
 #+END_SRC
 
 * doom modeline
-:PROPERTIES:
-:ID:       D0C2767A-3B48-4D43-910C-1D6A93DA8AD9
-:END:
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package doom-modeline
@@ -1830,9 +1742,7 @@ Just some jumping around and easy menus
 
 #+END_SRC
 * projectile
-:PROPERTIES:
-:ID:       CF986696-AA1F-4125-ADF0-FE9E54B65701
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
@@ -1862,9 +1772,7 @@ Just some jumping around and easy menus
 * GIT
 
 ** ghub
-:PROPERTIES:
-:ID:       3549781E-60DF-4D03-8DB4-E9BDE5862AC0
-:END:
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package ghub
@@ -1883,9 +1791,7 @@ Just some jumping around and easy menus
 #+END_SRC
 
 ** MAGIT
-:PROPERTIES:
-:ID:       4854B73F-701D-471F-A04E-8D22DB6749E9
-:END:
+
 #+BEGIN_SRC emacs-lisp
 (use-package magit
   :ensure t
@@ -1957,9 +1863,7 @@ Just some jumping around and easy menus
 
 #+END_SRC
 ** magit todos
-:PROPERTIES:
-:ID:       88DAC47B-8604-4E5A-9719-429A20AB327E
-:END:
+
 #+begin_src emacs-lisp
 (use-package magit-todos
   :ensure t
@@ -1967,9 +1871,7 @@ Just some jumping around and easy menus
   :defer t)
 #+end_src
 ** git gutter
-:PROPERTIES:
-:ID:       DA34EC1E-5F77-4CBB-9917-FACE4A2422CD
-:END:
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package git-gutter
@@ -1990,9 +1892,7 @@ Just some jumping around and easy menus
   (set-face-foreground 'git-gutter:deleted "LightCoral"))
 #+END_SRC
 * Flyspell
-:PROPERTIES:
-:ID:       21AE0C39-299C-4679-A583-969C482BE83E
-:END:
+
 
 Flyspell offers on-the-fly spell checking. We can enable flyspell for all
 text-modes with this snippet.
@@ -2030,9 +1930,7 @@ text-modes with this snippet.
 
 * Modes
 ** Python
-:PROPERTIES:
-:ID:       B57CE514-2F70-4BE8-90A4-6ED7728E9473
-:END:
+
 
 
 I use LSP for python.
@@ -2087,9 +1985,7 @@ I use LSP for python.
 #+END_SRC
 
 ** YAML
-:PROPERTIES:
-:ID:       722BF870-6C2A-4B85-99A3-EC83AD8418DD
-:END:
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package yaml-mode
@@ -2187,7 +2083,7 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 
 (use-package org-journal
   :ensure t
-                                        :defer t
+  :defer t
   :init
   ;; Change default prefix key; needs to be set before loading org-journal
   (setq org-journal-prefix-key "C-c j ")
@@ -2228,9 +2124,7 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 
 
 *** org tempo
-:PROPERTIES:
-:ID:       57623FB5-057D-4B72-8834-6EA92CEEFC88
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 (require 'org-tempo)
@@ -2244,9 +2138,7 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 (add-to-list 'org-structure-template-alist '("json" . "src json"))
 #+END_SRC
 *** org super star
-:PROPERTIES:
-:ID:       25ACF4D2-D70E-4F71-A34D-7103503879F2
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2292,9 +2184,7 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 #+end_src
 
 *** org bullets
-:PROPERTIES:
-:ID:       ECBBB04A-316B-474E-A3DF-DA27BE8F8578
-:END:
+
 
 #+begin_src emacs-lisp
 
@@ -2312,51 +2202,46 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 
 #+end_src
 *** Capture templates
-:PROPERTIES:
-:ID:       4C79E70E-FC1D-49BF-91FA-4572F42B5398
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 
 
-;;(setq org-capture-templates
-  ;;     '(("j" "Journal entry" plain (function org-journal-find-location)
-  ;;        "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
-  ;;        :jump-to-captured t :immediate-finish t)
+(setq org-capture-templates
+      '(("j" "Journal entry" plain (function org-journal-find-location)
+         "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
+         :jump-to-captured t :immediate-finish t)
 
-  ;;       ("t" "TODO" plain (function org-journal-find-location)
-  ;;        "** TODO %(format-time-string org-journal-time-format)%^{Title}"
-  ;;        :immediate-finish t)
-
-
-  ;;       ("P" "Research project" entry (file "~/org/projects.org")
-  ;;        "* TODO %^{Project title} :%^G:\n:PROPERTIES:\n:CREATED: %U\n:END:\n%^{Project description}\n** TODO Literature review\n** TODO %?\n** TODO Summary\n** TODO Reports\n** Ideas\n" :clock-in t :clock-resume t)
-
-  ;;       ("a" "Research Article" entry(file+headline "~/org/publications.org" "Working articles") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-  ;;       ("r" "Ref. Report" entry(file+headline "~/org/publications.org" "Referee reports") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-  ;;       ("c" "Coding tips" entry(file+headline "~/org/coding.org" "Refile") "** READ %^{description} %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-  ;;                                       ;    ("C" "Cliplink capture code" entry (file+headline  "~/org/coding.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
-
-  ;;       ("f" "Fitting" entry(file+headline "~/org/fitting.org" "Refile") "** READ %^{description}  %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-  ;;       ("x" "arXiv" entry(file+headline "~/org/arxiv.org" "To read") "** READ %^L %t")
+        ("t" "TODO" plain (function org-journal-find-location)
+         "** TODO %(format-time-string org-journal-time-format)%^{Title}"
+         :immediate-finish t)
 
 
+        ("P" "Research project" entry (file "~/org/projects.org")
+         "* TODO %^{Project title} :%^G:\n:PROPERTIES:\n:CREATED: %U\n:END:\n%^{Project description}\n** TODO Literature review\n** TODO %?\n** TODO Summary\n** TODO Reports\n** Ideas\n" :clock-in t :clock-resume t)
 
-  ;;       ("i" "idea" entry(file "~/org/ideas.org") "* TODO %? %t" :empty-lines 1)
+        ("a" "Research Article" entry(file+headline "~/org/publications.org" "Working articles") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+        ("r" "Ref. Report" entry(file+headline "~/org/publications.org" "Referee reports") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+        ("c" "Coding tips" entry(file+headline "~/org/coding.org" "Refile") "** READ %^{description} %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+                                        ;    ("C" "Cliplink capture code" entry (file+headline  "~/org/coding.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
+
+        ("f" "Fitting" entry(file+headline "~/org/fitting.org" "Refile") "** READ %^{description}  %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+        ("x" "arXiv" entry(file+headline "~/org/arxiv.org" "To read") "** READ %^L %t")
 
 
-  ;;       )
-  ;;     )
+
+        ("i" "idea" entry(file "~/org/ideas.org") "* TODO %? %t" :empty-lines 1)
+
+
+        )
+      )
 
 
 #+END_SRC
-
-#+RESULTS:
-| j | Journal entry | plain | #'org-journal-find-location | ** %(format-time-string org-journal-time-format)%^{Title} |
 
 
 When editing org-files with source-blocks, we want the source blocks to
@@ -2381,9 +2266,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 #+END_SRC
 
 ** LaTeX and org-mode LaTeX export
-:PROPERTIES:
-:ID:       5EC4317A-35AB-4C47-8D93-285B526EAE37
-:END:
+
 #+BEGIN_SRC emacs-lisp
 (use-package latex
                                         ; nil
@@ -2443,9 +2326,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 #+END_SRC
 
 ** Stan
-:PROPERTIES:
-:ID:       43DED8EA-4F06-4E90-A04F-81C1ABA8361F
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 ;; Uncomment the line below if not required elsewhere.
@@ -2517,9 +2398,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 #+END_SRC
 
 ** Markdown
-:PROPERTIES:
-:ID:       E47A3ACE-42FC-44E5-993C-9B7390E011A9
-:END:
+
 
 This makes =.md=-files open in =markdown-mode=.
 
@@ -2562,9 +2441,7 @@ about a function or a variable in the echo area.
 
 * Writing and Focus
 ** Darkroom
-:PROPERTIES:
-:ID:       2157D0AA-A524-4198-8D4A-006F97632934
-:END:
+
 
 #+BEGIN_SRC emacs-lisp
 (use-package darkroom
@@ -2577,9 +2454,7 @@ about a function or a variable in the echo area.
 #+END_SRC
 
 ** Focus
-:PROPERTIES:
-:ID:       9962D6C0-06E8-4E28-876D-A9E7F29BAD2C
-:END:
+
 #+BEGIN_SRC emacs-lisp
 (use-package focus
   :ensure t
@@ -2588,9 +2463,7 @@ about a function or a variable in the echo area.
 #+END_SRC
 
 * Telegram
-:PROPERTIES:
-:ID:       B70BE12D-146A-4448-A987-E7A5A6CDA00A
-:END:
+
 #+BEGIN_SRC emacs-lisp
 
 ;; (use-package tracking
@@ -2647,9 +2520,7 @@ about a function or a variable in the echo area.
 : t
 
 * spotify
-:PROPERTIES:
-:ID:       2E529A99-5D2F-4F86-B0C6-B80F24FAF27E
-:END:
+
 
 setup for counsel spoify
 
@@ -2664,9 +2535,7 @@ setup for counsel spoify
 
 
 * Key bindings
-:PROPERTIES:
-:ID:       BCBD0CE2-2E60-42D7-9C42-D43B4DA54B4F
-:END:
+
 
 Inspired by [[http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][this StackOverflow post]] I keep a =custom-bindings-map= that
 holds all my custom bindings. This map can be activated by toggling a
@@ -2688,9 +2557,7 @@ defined.
 
 
 * diminish
-:PROPERTIES:
-:ID:       3866736B-018D-43A0-9C04-804C4557E856
-:END:
+
 #+BEGIN_SRC emacs-lisp
 
 
