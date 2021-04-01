@@ -2143,7 +2143,29 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 
 
 #+end_src
+*** org download
 
+#+begin_src emacs-lisp
+(use-package org-download
+  :ensure t
+  :after org
+   
+   :defer nil
+   :custom
+   (org-download-method 'directory)
+   (org-download-image-dir "~/org/pictures")
+   (org-download-heading-lvl nil)
+   (org-download-timestamp "%Y%m%d-%H%M%S_")
+   (org-image-actual-width 300)
+   (org-download-screenshot-method "/usr/local/bin/pngpaste %s")
+   :bind
+   ("C-M-y" . org-download-screenshot)
+   :config
+   (require 'org-download))
+#+end_src
+
+#+RESULTS:
+: org-download-screenshot
 
 *** Capture templates
 
