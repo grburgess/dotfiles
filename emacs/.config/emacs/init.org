@@ -2206,7 +2206,6 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 
 #+BEGIN_SRC emacs-lisp
 
-
 (setq org-capture-templates
       '(("j" "Journal entry" plain (function org-journal-find-location)
          "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
