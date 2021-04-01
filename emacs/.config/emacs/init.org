@@ -6,9 +6,10 @@
 #+LATEX_HEADER: \usepackage[utf8]{inputenc}
 #+PROPERTY: header-args :tangle ~/dotfiles/emacs/.config/emacs/init.el
 
+
+
 * Configurations
 ** Meta
-
 
 #+BEGIN_SRC emacs-lisp :tangle no
 
@@ -99,7 +100,6 @@ loaded, along with =package=, which is obviously needed.
 
 ** cleaning
 
-
 #+BEGIN_SRC emacs-lisp
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
@@ -137,7 +137,6 @@ installed. To ensure we install missing packages if they are missing.
 #+END_SRC
 ** Mac OS X
 
-
 I run this configuration mostly on Mac OS X, so we need a couple of
 settings to make things work smoothly. In the package section
 =exec-path-from-shell= is included (only if you're running OS X), this is
@@ -170,7 +169,6 @@ along with external processes a lot simpler. I also prefer using the
 
 ** clean things
 
-
 #+BEGIN_SRC emacs-lisp
 
 
@@ -189,7 +187,6 @@ along with external processes a lot simpler. I also prefer using the
 #+END_SRC
 
 ** Sane defaults
-
 
 These are what /I/ consider to be saner defaults.
 
@@ -272,7 +269,6 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 #+END_SRC
 
 ** bug hunter
-
 #+BEGIN_SRC emacs-lisp
 (use-package bug-hunter
   :ensure t
@@ -280,24 +276,21 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 
 #+END_SRC
 ** tramp
-
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh")
 #+end_src
 * Visual
 ** Font
 
-
 #+BEGIN_SRC emacs-lisp
 (set-frame-font "JetBrains Mono 13" nil t)
 (add-to-list 'default-frame-alist
-'(font . "JetBrains Mono 13"))
+             '(font . "JetBrains Mono 13"))
 
 
-#+END_SEC
+#+END_SRC
 
 ** Transparent
-
 #+begin_src emacs-lisp
 
 (set-frame-parameter (selected-frame) 'alpha '(95 . 95))
@@ -309,7 +302,6 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 
 ** Themes
 *** doom themes
-
 
 #+BEGIN_SRC emacs-lisp
 (use-package doom-themes
@@ -334,7 +326,6 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 #+END_SRC
 
 *** general
-
 
 #+BEGIN_SRC emacs-lisp
 
@@ -385,7 +376,7 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 #+END_SRC
 
 ** Rainbow mode
-is for displaying HTML colors from HEX
+This for displaying HTML colors from HEX
 
 #+BEGIN_SRC emacs-lisp
 ;; (use-package rainbow-mode
@@ -400,7 +391,6 @@ is for displaying HTML colors from HEX
 #+END_SRC
 
 ** Line numbers
-
 
 
 #+BEGIN_SRC emacs-lisp
@@ -424,7 +414,6 @@ is for displaying HTML colors from HEX
 #+END_SRC
 
 ** Beacon
-
 
 Some nice visual modes
 #+BEGIN_SRC emacs-lisp
@@ -457,7 +446,6 @@ Some nice visual modes
 #+END_SRC
 
 ** ATI ibuffer
-
 #+BEGIN_SRC emacs-lisp
 ;; (setq ibuffer-saved-filter-groups
 ;;       '(("home"
@@ -488,7 +476,6 @@ Some nice visual modes
 #+END_SRC
 
 ** Neotree
-
 #+BEGIN_SRC emacs-lisp
 (use-package neotree
   :ensure t
@@ -519,7 +506,6 @@ Some nice visual modes
 
 ** all the icons
 
-
 #+BEGIN_SRC emacs-lisp
 (use-package all-the-icons
   :if window-system
@@ -541,7 +527,6 @@ Some nice visual modes
 ** sublime
 
 
-
 #+BEGIN_SRC emacs-lisp
 ;; Minimap
 (use-package sublimity
@@ -556,17 +541,14 @@ Some nice visual modes
 
 * Keys
 ** ESC Cancels
-
 #+begin_src emacs-lisp
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
 ** rebind C-u
-
 #+begin_src emacs-lisp
 ;; (global-set-key (kbd "C-M-u") 'universal-argument)
 #+end_src
 ** EVIL
-
 #+begin_src emacs-lisp
 ;; (defun dw/evil-hook ()
 ;;   (dolist (mode '(custom-mode
@@ -635,7 +617,6 @@ Some nice visual modes
 #+end_src
 
 ** which key
-
 #+BEGIN_SRC emacs-lisp
 (use-package which-key
   :ensure t
@@ -647,123 +628,111 @@ Some nice visual modes
 
 ** General Key maps
 
-
 #+BEGIN_SRC emacs-lisp
 
-(use-package crux
-  :ensure t
-  )
+  (use-package crux
+    :ensure t
+    )
 
 
-(use-package general
-  :ensure t
-  :config
-  (general-define-key
-   "M-x" 'counsel-M-x
-   "C-s" 'counsel-grep-or-swiper
-   "M-s" 'isearch-forward
+  (use-package general
+    :ensure t
+    :config
+    (general-define-key
+     "M-x" 'counsel-M-x
+     "C-s" 'counsel-grep-or-swiper
+     "M-s" 'isearch-forward
 
-   "C-<backspace>" 'crux-kill-line-backwards
-   [remap move-beginning-of-line] 'crux-move-beginning-of-line
-   [remap kill-whole-line] 'crux-kill-whole-line
-   [(shift return)] 'crux-smart-open-line
+     "C-<backspace>" 'crux-kill-line-backwards
+     [remap move-beginning-of-line] 'crux-move-beginning-of-line
+     [remap kill-whole-line] 'crux-kill-whole-line
+     [(shift return)] 'crux-smart-open-line
 
-   "M-j" (lambda () (interactive)
-           (join-line -1))
-
-
-   )
-
-  ;; (general-create-definer dw/leader-key-def
-  ;;   :keymaps '(normal insert visual emacs)
-  ;;   :prefix "C-c"
-  ;;   :global-prefix "C-c")
-
-  ;; Cc
-  (general-define-key
-   :prefix "C-c"
-   "c" 'org-capture
-   "a" 'org-agenda
-   "l" 'org-store-link
-   "s" 'ispell-word
-   "g" 'counsel-projectile-rg
-   "r" '(ivy-resume :which-key "ivy resume")
-   "i" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
-   "n" '((lambda () (interactive) (counsel-find-file "~/org")) :which-key "notes")
-   "t" 'counsel-load-theme
-   "<up>" 'windmove-up
-   "<down>" 'windmove-down
-   "<left>" 'windmove-left
-   "<right>" 'windmove-right
+     "M-j" (lambda () (interactive)
+	     (join-line -1))
 
 
-   )
-  ;; Cx
-  (general-define-key
-   :prefix "C-x"
+     )
 
-   "a" 'ace-jump-mode
-   "C-b" 'ibuffer
-   "k" 'kill-this-buffer-unless-scratch
+    ;; (general-create-definer dw/leader-key-def
+    ;;   :keymaps '(normal insert visual emacs)
+    ;;   :prefix "C-c"
+    ;;   :global-prefix "C-c")
 
-   )
+    ;; Cc
+    (general-define-key
+     :prefix "C-c"
+     "c" 'org-capture
+     "a" 'org-agenda
+     "l" 'org-store-link
+     "s" 'ispell-word
+     "g" 'counsel-projectile-rg
+     "r" '(ivy-resume :which-key "ivy resume")
+     "i" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
+     "n" '((lambda () (interactive) (counsel-find-file "~/org")) :which-key "notes")
+     "t" 'counsel-load-theme
+     "<up>" 'windmove-up
+     "<down>" 'windmove-down
+     "<left>" 'windmove-left
+     "<right>" 'windmove-right
 
-  ;; (general-def org-roam-mode-map
-  ;;   "C-c n i"  'org-roam-insert
-  ;;   "C-c n t"  'org-roam-tag-add
-  ;;   "C-c n f"  'org-roam-find-file
-  ;;   "C-c n b"  'org-roam-switch-to-buffer
+
+     )
+    ;; Cx
+    (general-define-key
+     :prefix "C-x"
+
+     "a" 'ace-jump-mode
+     "C-b" 'ibuffer
+     "k" 'kill-this-buffer-unless-scratch
+
+     )
+
+    (general-def lsp-mode-map
+      "C-c C-f" 'lsp-format-buffer
+
+
+      )
+    ;; Swiper
+    (general-def swiper-map
+      "M-%" 'swiper-query-replace
+      )
+
+    (general-def projectile-mode-map
+      "s-p" 'projectile-command-map
+
+      )
 
 
 
+    )
+
+  ;; (dw/leader-key-def
+    ;; "t"  '(:ignore t :which-key "toggles")
+    ;; "tw" 'whitespace-mode
+    ;; "tt" '(counsel-load-theme :which-key "choose theme"))
+
+
+
+  ;; (dw/leader-key-def
+  ;;   "fn" '((lambda () (interactive) (counsel-find-file "~/org")) :which-key "notes")
+  ;;   "fd"  '(:ignore t :which-key "dotfiles")
+  ;;   ;; "fdd" '((lambda () (interactive) (find-file "~/dotfiles/Desktop.org")) :which-key "desktop")
+  ;;   "fde" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
+  ;;   ;; "fdm" '((lambda () (interactive) (find-file "~/.dotfiles/Mail.org")) :which-key "mail")
+  ;;   ;; "fdM" '((lambda () (interactive) (counsel-find-file "~/.dotfiles/.config/guix/manifests/")) :which-key "manifests")
+  ;;   ;; "fds" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" "Base Configuration")) :which-key "base system")
+  ;;   ;; "fdS" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" system-name)) :which-key "this system")
+  ;;   ;; "fdp" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Desktop.org" "Panel via Polybar")) :which-key "polybar")
+  ;;   ;; "fdw" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/Workflow.org"))) :which-key "workflow")
+  ;;   ;; "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/.config/vimb/config")) :which-key "vimb"))
   ;;   )
-
-  (general-def lsp-mode-map
-    "C-c C-f" 'lsp-format-buffer
-
-
-    )
-  ;; Swiper
-  (general-def swiper-map
-    "M-%" 'swiper-query-replace
-    )
-
-  (general-def projectile-mode-map
-    "s-p" 'projectile-command-map
-
-    )
-
-
-
-  )
-
-;; (dw/leader-key-def
-;; "t"  '(:ignore t :which-key "toggles")
-;; "tw" 'whitespace-mode
-;; "tt" '(counsel-load-theme :which-key "choose theme"))
-
-
-
-;; (dw/leader-key-def
-;;   "fn" '((lambda () (interactive) (counsel-find-file "~/org")) :which-key "notes")
-;;   "fd"  '(:ignore t :which-key "dotfiles")
-;;   ;; "fdd" '((lambda () (interactive) (find-file "~/dotfiles/Desktop.org")) :which-key "desktop")
-;;   "fde" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
-;;   ;; "fdm" '((lambda () (interactive) (find-file "~/.dotfiles/Mail.org")) :which-key "mail")
-;;   ;; "fdM" '((lambda () (interactive) (counsel-find-file "~/.dotfiles/.config/guix/manifests/")) :which-key "manifests")
-;;   ;; "fds" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" "Base Configuration")) :which-key "base system")
-;;   ;; "fdS" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Systems.org" system-name)) :which-key "this system")
-;;   ;; "fdp" '((lambda () (interactive) (dw/org-file-jump-to-heading "~/.dotfiles/Desktop.org" "Panel via Polybar")) :which-key "polybar")
-;;   ;; "fdw" '((lambda () (interactive) (find-file (expand-file-name "~/.dotfiles/Workflow.org"))) :which-key "workflow")
-;;   ;; "fdv" '((lambda () (interactive) (find-file "~/.dotfiles/.config/vimb/config")) :which-key "vimb"))
-;;   )
 #+END_SRC
 
 #+RESULTS:
 
 * Productivity
 ** Flycheck
-
 #+BEGIN_SRC emacs-lisp
 
 (use-package flycheck
@@ -775,7 +744,6 @@ Some nice visual modes
 #+END_SRC
 
 ** snippets
-
 
 #+BEGIN_SRC emacs-lisp
 
@@ -793,7 +761,6 @@ Some nice visual modes
 
 ** smart parens
 
-
 #+BEGIN_SRC emacs-lisp
 ;; (use-package smartparens
 ;;   :ensure t
@@ -801,7 +768,6 @@ Some nice visual modes
 #+END_SRC
 
 ** rainbow delimeters
-
 
 #+BEGIN_SRC emacs-lisp
 
@@ -812,7 +778,6 @@ Some nice visual modes
 
 #+END_SRC
 ** highlight indent guides
-
 
 
 #+BEGIN_SRC emacs-lisp
@@ -852,7 +817,6 @@ Some nice visual modes
 
 ** multiple cursors
 
-
 adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 
 
@@ -872,7 +836,7 @@ adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 #+BEGIN_SRC emacs-lisp
 
 (use-package multiple-cursors
-  ;;  :disabled
+;;  :disabled
   :ensure t
   :bind (
 
@@ -924,7 +888,6 @@ adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 
 ** direnv
 
-
 http://www.kotaweaver.com/blog/emacs-python-lsp/
 https://gist.github.com/alexhayes/cb1e6ad873c147502132ae17362a9daf
 https://github.com/direnv/direnv/wiki/Python#virtualenvwrapper
@@ -941,7 +904,6 @@ https://github.com/direnv/direnv/wiki/Python#virtualenvwrapper
 #+END_SRC
 
 ** Dired
-
 
 
 #+BEGIN_SRC emacs-lisp
@@ -1055,7 +1017,6 @@ created directly upon successful exit.
 
 ** tramp
 
-
 #+BEGIN_SRC emacs-lisp
 
 ;; Tramp ivy interface
@@ -1086,7 +1047,6 @@ created directly upon successful exit.
 
 * Completion
 ** Company
-
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1183,7 +1143,6 @@ Just some jumping around and easy menus
 
 
 *** ace
-
 #+BEGIN_SRC emacs-lisp
 
 (use-package ace-jump-mode
@@ -1192,7 +1151,6 @@ Just some jumping around and easy menus
 
 #+END_SRC
 *** IVY
-
 
 #+BEGIN_SRC emacs-lisp
 (use-package ivy
@@ -1420,7 +1378,6 @@ Just some jumping around and easy menus
 #+END_SRC
 **** IVY Posframe
 
-
 #+BEGIN_SRC emacs-lisp
 
 (use-package ivy-posframe
@@ -1442,7 +1399,6 @@ Just some jumping around and easy menus
 #+END_SRC
 
 *** Counsel
-
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1520,7 +1476,6 @@ Just some jumping around and easy menus
 
 #+END_SRC
 *** Swiper
-
 #+BEGIN_SRC emacs-lisp
 
 (use-package swiper
@@ -1536,47 +1491,45 @@ Just some jumping around and easy menus
 
 *** Prescient
 
-
 #+BEGIN_SRC emacs-lisp
 
-(use-package prescient
-  :ensure t
-  :config
-  (setq prescient-history-length 200)
-  (setq prescient-save-file "~/.config/emacs/prescient-items")
-  (setq prescient-filter-method '(literal regexp))
-  (prescient-persist-mode 1))
+  (use-package prescient
+    :ensure t
+    :config
+    (setq prescient-history-length 200)
+    (setq prescient-save-file "~/.config/emacs/prescient-items")
+    (setq prescient-filter-method '(literal regexp))
+    (prescient-persist-mode 1))
 
-(use-package ivy-prescient
+  (use-package ivy-prescient
 
-  :ensure t
-  :after (prescient ivy)
-  :config
-  (setq ivy-prescient-sort-commands
-        '(:not counsel-grep
-               counsel-rg
-               counsel-switch-buffer
-               ivy-switch-buffer
-               swiper
-               swiper-multi))
-  (setq ivy-prescient-retain-classic-highlighting t)
-  (setq ivy-prescient-enable-filtering nil)
-  (setq ivy-prescient-enable-sorting t)
-  (ivy-prescient-mode 1))
+    :ensure t
+    :after (prescient ivy)
+    :config
+    (setq ivy-prescient-sort-commands
+	  '(:not counsel-grep
+		 counsel-rg
+		 counsel-switch-buffer
+		 ivy-switch-buffer
+		 swiper
+		 swiper-multi))
+    (setq ivy-prescient-retain-classic-highlighting t)
+    (setq ivy-prescient-enable-filtering nil)
+    (setq ivy-prescient-enable-sorting t)
+    (ivy-prescient-mode 1))
 
-;; (dw/leader-key-def
-;;   "r"   '(ivy-resume :which-key "ivy resume")
-;;   "f"   '(:ignore t :which-key "files")
-;;   "ff"  '(counsel-find-file :which-key "open file")
-;;   "C-f" 'counsel-find-file
-;;   "fr"  '(counsel-recentf :which-key "recent files")
-;;   "fR"  '(revert-buffer :which-key "revert file")
-;;   "fj"  '(counsel-file-jump :which-key "jump to file") )
+  ;; (dw/leader-key-def
+  ;;   "r"   '(ivy-resume :which-key "ivy resume")
+  ;;   "f"   '(:ignore t :which-key "files")
+  ;;   "ff"  '(counsel-find-file :which-key "open file")
+  ;;   "C-f" 'counsel-find-file
+  ;;   "fr"  '(counsel-recentf :which-key "recent files")
+  ;;   "fR"  '(revert-buffer :which-key "revert file")
+  ;;   "fj"  '(counsel-file-jump :which-key "jump to file") )
 #+END_SRC
 
 
 *** FLX AMX
-
 
 #+BEGIN_SRC emacs-lisp
 
@@ -1598,7 +1551,6 @@ Just some jumping around and easy menus
 #+END_SRC
 
 ** LSP
-
 
 #+BEGIN_SRC emacs-lisp
 (use-package lsp-mode
@@ -1660,7 +1612,6 @@ Just some jumping around and easy menus
 #+END_SRC
 
 * doom modeline
-
 #+BEGIN_SRC emacs-lisp
 
 (use-package doom-modeline
@@ -1743,7 +1694,6 @@ Just some jumping around and easy menus
 #+END_SRC
 * projectile
 
-
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :ensure t
@@ -1772,7 +1722,6 @@ Just some jumping around and easy menus
 * GIT
 
 ** ghub
-
 #+BEGIN_SRC emacs-lisp
 
 (use-package ghub
@@ -1791,14 +1740,13 @@ Just some jumping around and easy menus
 #+END_SRC
 
 ** MAGIT
-
 #+BEGIN_SRC emacs-lisp
 (use-package magit
   :ensure t
   :bind (("C-c m" . magit-status)
          ("s-g" . magit-status))
   ;; :commands (magit-status magit-get-current-branch)
-  ;;  :custom
+;;  :custom
   ;; (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
 
 
@@ -1863,7 +1811,6 @@ Just some jumping around and easy menus
 
 #+END_SRC
 ** magit todos
-
 #+begin_src emacs-lisp
 (use-package magit-todos
   :ensure t
@@ -1871,7 +1818,6 @@ Just some jumping around and easy menus
   :defer t)
 #+end_src
 ** git gutter
-
 #+BEGIN_SRC emacs-lisp
 
 (use-package git-gutter
@@ -1892,7 +1838,6 @@ Just some jumping around and easy menus
   (set-face-foreground 'git-gutter:deleted "LightCoral"))
 #+END_SRC
 * Flyspell
-
 
 Flyspell offers on-the-fly spell checking. We can enable flyspell for all
 text-modes with this snippet.
@@ -1928,9 +1873,9 @@ text-modes with this snippet.
 
 #+END_SRC
 
+
 * Modes
 ** Python
-
 
 
 I use LSP for python.
@@ -1985,7 +1930,6 @@ I use LSP for python.
 #+END_SRC
 
 ** YAML
-
 #+BEGIN_SRC emacs-lisp
 
 (use-package yaml-mode
@@ -1997,7 +1941,6 @@ I use LSP for python.
 
 I use =org-agenda= along with =org-capture= for appointments and such.
 *** Basic org up
-
 #+BEGIN_SRC emacs-lisp
 
 ;; Turn on indentation and auto-fill mode for Org files
@@ -2069,62 +2012,9 @@ I use =org-agenda= along with =org-capture= for appointments and such.
           ))
 
   )
-
-
-
 #+END_SRC
 
-
-
-
-*** Org journal
-
-#+begin_src emacs-lisp
-
-(use-package org-journal
-  :ensure t
-  :defer t
-  :init
-  ;; Change default prefix key; needs to be set before loading org-journal
-  (setq org-journal-prefix-key "C-c j ")
-  :config
-  (setq org-journal-dir "~/org/journal/"
-        org-journal-date-format "%A, %d/%m/%Y")
-
-  (setq org-journal-file-format "%Y-%m-%d-%a.org")
-
-  (defun org-journal-file-header-func (time)
-    "Custom function to create journal header."
-    (concat
-     (pcase org-journal-file-type
-       (`daily "#+TITLE: Daily Journal\n#+STARTUP: showeverything")
-       (`weekly "#+TITLE: Weekly Journal\n#+STARTUP: folded")
-       (`monthly "#+TITLE: Monthly Journal\n#+STARTUP: folded")
-       (`yearly "#+TITLE: Yearly Journal\n#+STARTUP: folded"))))
-
-  (setq org-journal-file-header 'org-journal-file-header-func)
-
-  (defun org-journal-find-location ()
-    ;; Open today's journal, but specify a non-nil prefix argument in order to
-    ;; inhibit inserting the heading; org-capture will insert the heading.
-    (org-journal-new-entry t)
-    (unless (eq org-journal-file-type 'daily)
-      (org-narrow-to-subtree))
-    (goto-char (point-max)))
-
-
-  ;; (setq org-journal-enable-agenda-integration
-  ;;     ;;org-icalendar-store-UID t
-  ;;     org-icalendar-include-todo "all"
-  ;;     org-icalendar-combined-agenda-file "~/org/org-journal.ics")
-
-
-  )
-#+end_src
-
-
 *** org tempo
-
 
 #+BEGIN_SRC emacs-lisp
 (require 'org-tempo)
@@ -2138,7 +2028,6 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 (add-to-list 'org-structure-template-alist '("json" . "src json"))
 #+END_SRC
 *** org super star
-
 
 #+BEGIN_SRC emacs-lisp
 
@@ -2185,7 +2074,6 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 
 *** org bullets
 
-
 #+begin_src emacs-lisp
 
 (use-package org-bullets
@@ -2203,17 +2091,12 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 #+end_src
 *** Capture templates
 
-
-#+BEGIN_SRC emacs-lisp
-
+#+begin_src emacs-lisp
 (setq org-capture-templates
-      '(("j" "Journal entry" plain (function org-journal-find-location)
-         "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
-         :jump-to-captured t :immediate-finish t)
+      '(("t" "Todo" entry (file+headline "~/org/notes.org" "Task List")
+         "* TODO %?\n%U" :empty-lines 1)
 
-        ("t" "TODO" plain (function org-journal-find-location)
-         "** TODO %(format-time-string org-journal-time-format)%^{Title}"
-         :immediate-finish t)
+        ("l" "Logbook entry" entry (file+datetree "logbook-work.org") "** %U - %^{Activity}_ %^G :LOG:")
 
 
         ("P" "Research project" entry (file "~/org/projects.org")
@@ -2235,13 +2118,14 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 
         ("i" "idea" entry(file "~/org/ideas.org") "* TODO %? %t" :empty-lines 1)
 
+                                        ;       ("F" "Cliplink capture fitting" entry (file+headline  "~/org/fitting.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
 
         )
       )
 
 
+;;
 #+END_SRC
-
 
 When editing org-files with source-blocks, we want the source blocks to
 be themed as they would in their native mode.
@@ -2265,7 +2149,6 @@ This is quite an ugly fix for allowing code markup for expressions like
 #+END_SRC
 
 ** LaTeX and org-mode LaTeX export
-
 #+BEGIN_SRC emacs-lisp
 (use-package latex
                                         ; nil
@@ -2325,7 +2208,6 @@ This is quite an ugly fix for allowing code markup for expressions like
 #+END_SRC
 
 ** Stan
-
 
 #+BEGIN_SRC emacs-lisp
 ;; Uncomment the line below if not required elsewhere.
@@ -2398,7 +2280,6 @@ This is quite an ugly fix for allowing code markup for expressions like
 
 ** Markdown
 
-
 This makes =.md=-files open in =markdown-mode=.
 
 #+BEGIN_SRC emacs-lisp
@@ -2429,7 +2310,6 @@ I use =Paredit= when editing lisp code, we enable this for all lisp-modes.
 
 *** Emacs Lisp
 
-
 In =emacs-lisp-mode= we can enable =eldoc-mode= to display information
 about a function or a variable in the echo area.
 
@@ -2438,9 +2318,9 @@ about a function or a variable in the echo area.
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 #+END_SRC
 
+
 * Writing and Focus
 ** Darkroom
-
 
 #+BEGIN_SRC emacs-lisp
 (use-package darkroom
@@ -2453,7 +2333,6 @@ about a function or a variable in the echo area.
 #+END_SRC
 
 ** Focus
-
 #+BEGIN_SRC emacs-lisp
 (use-package focus
   :ensure t
@@ -2462,7 +2341,6 @@ about a function or a variable in the echo area.
 #+END_SRC
 
 * Telegram
-
 #+BEGIN_SRC emacs-lisp
 
 ;; (use-package tracking
@@ -2520,7 +2398,6 @@ about a function or a variable in the echo area.
 
 * spotify
 
-
 setup for counsel spoify
 
 #+BEGIN_SRC emacs-lisp
@@ -2534,7 +2411,6 @@ setup for counsel spoify
 
 
 * Key bindings
-
 
 Inspired by [[http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs][this StackOverflow post]] I keep a =custom-bindings-map= that
 holds all my custom bindings. This map can be activated by toggling a
@@ -2556,7 +2432,6 @@ defined.
 
 
 * diminish
-
 #+BEGIN_SRC emacs-lisp
 
 
@@ -2587,3 +2462,4 @@ defined.
 
 #+END_SRC
 
+* License
