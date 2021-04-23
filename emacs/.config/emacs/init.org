@@ -277,7 +277,7 @@ Automaticly revert =doc-view=-buffers when the file changes on disk.
 #+END_SRC
 ** tramp
 #+begin_src emacs-lisp
-  (setq tramp-default-method "ssh")
+(setq tramp-default-method "ssh")
 #+end_src
 * Visual
 ** Font
@@ -1891,6 +1891,13 @@ I use LSP for python.
 
   )
 
+(use-package sphinx-doc
+  :ensure t
+  :hook (python-mode . sphinx-doc-mode)
+  :config
+  (setq sphinx-doc-include-types t)
+
+  )
 
 (setq python-shell-interpreter "python3"
       python-shell-interpreter-args "-i")
@@ -1915,6 +1922,8 @@ I use LSP for python.
   )
 
 #+END_SRC
+
+#+RESULTS:
 
 
 #+BEGIN_SRC emacs-lisp
@@ -2149,19 +2158,19 @@ I use =org-agenda= along with =org-capture= for appointments and such.
 (use-package org-download
   :ensure t
   :after org
-   
-   :defer nil
-   :custom
-   (org-download-method 'directory)
-   (org-download-image-dir "~/org/pictures")
-   (org-download-heading-lvl nil)
-   (org-download-timestamp "%Y%m%d-%H%M%S_")
-   (org-image-actual-width 300)
-   (org-download-screenshot-method "/usr/local/bin/pngpaste %s")
-   :bind
-   ("C-M-y" . org-download-screenshot)
-   :config
-   (require 'org-download))
+
+  :defer nil
+  :custom
+  (org-download-method 'directory)
+  (org-download-image-dir "~/org/pictures")
+  (org-download-heading-lvl nil)
+  (org-download-timestamp "%Y%m%d-%H%M%S_")
+  (org-image-actual-width 300)
+  (org-download-screenshot-method "/usr/local/bin/pngpaste %s")
+  :bind
+  ("C-M-y" . org-download-screenshot)
+  :config
+  (require 'org-download))
 #+end_src
 
 #+RESULTS:
@@ -2498,12 +2507,12 @@ setup for counsel spoify
 
 * Twitter
 #+begin_src emacs-lisp
-  (use-package twittering-mode
-    :ensure t
-    :defer t
+(use-package twittering-mode
+  :ensure t
+  :defer t
 
 
-    )
+  )
 #+end_src
 
 #+RESULTS:
