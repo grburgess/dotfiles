@@ -1389,10 +1389,16 @@ Just some jumping around and easy menus
   (ivy-posframe-height     10)
   (ivy-posframe-min-height 10)
   :config
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center)))
-  ;; (setq ivy-posframe-parameters '((parent-frame . nil)
-  ;;                                 (left-fringe . 8)
-  ;;                                 (right-fringe . 8)))
+  (setq ivy-posframe-display-functions-alist
+	'((complete-symbol . ivy-posframe-display-at-point)
+	  (swiper          . ivy-display-function-fallback)
+	  (t . ivy-posframe-display-at-frame-center)
+	  
+
+	  ))
+  (setq ivy-posframe-parameters '((parent-frame . nil)
+                                  (left-fringe . 8)
+                                  (right-fringe . 8)))
   (ivy-posframe-mode 1))
 
 
