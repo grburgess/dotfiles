@@ -7,7 +7,7 @@ alias necromancer="ssh -X necromancer.mpe.mpg.de"
 
 #alias emacs="/usr/local/bin/emacs -nw"
 alias notebook="jupyter notebook"
-
+alias lab="jupyter lab"
 
 alias ..="cd .."
 alias ...="cd ../.."

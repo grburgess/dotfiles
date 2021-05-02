@@ -1381,7 +1381,7 @@ Just some jumping around and easy menus
 #+BEGIN_SRC emacs-lisp
 
 (use-package ivy-posframe
-  :disabled
+  ;:disabled
   :ensure t
   :custom
   (ivy-posframe-width      115)
@@ -1397,6 +1397,9 @@ Just some jumping around and easy menus
 
 
 #+END_SRC
+
+#+RESULTS:
+: t
 
 *** Counsel
 
@@ -1570,8 +1573,12 @@ Just some jumping around and easy menus
   (setq lsp-restart 'auto-restart)
   (setq lsp-enable-completion-at-point t)
   (setq lsp-log-io nil)
+
   (lsp-register-custom-settings
    '(("pyls.plugins.pyls_mypy.enabled" t t)
+     ("pyls.plugins.jedi_completion.enabled" t t)
+     ("pyls.plugins.jedi_completion.include_params" t t)
+     ("pyls.plugins.jedi_completion.include-class-objects" nil t)
      ("pyls.plugins.pyls_mypy.live_mode" nil t)
      ("pyls.plugins.pyls_black.enabled" t t)
      ("pyls.plugins.pyls_isort.enabled" t t)))
@@ -1582,6 +1589,13 @@ Just some jumping around and easy menus
   (latex-mode . lsp)
   (fortran-mode . lsp)
   )
+
+;; (use-package lsp-pyright
+;;   :ensure t
+;;   :hook (python-mode . (lambda ()
+;;                           (require 'lsp-pyright)
+;;                           (lsp))))  ; or lsp-deferred
+
 
 (use-package lsp-ui
   :ensure t
@@ -1610,6 +1624,9 @@ Just some jumping around and easy menus
 
 
 #+END_SRC
+
+#+RESULTS:
+: t
 
 * doom modeline
 #+BEGIN_SRC emacs-lisp
@@ -1887,6 +1904,9 @@ I use LSP for python.
   :ensure t
   :config
   (pyvenv-tracking-mode 1)
+  (setq pyvenv-mode-line-indicator
+        '(pyvenv-virtual-env-name ("[venv:" pyvenv-virtual-env-name "] ")))
+  (pyvenv-mode +1)
 
 
   )
@@ -1937,6 +1957,45 @@ I use LSP for python.
 ;;   :bind (('?\C-c ?\C-x ?a  . blacken-buffer)))
 
 #+END_SRC
+
+** Jupyter
+
+#+begin_src emacs-lisp
+;; (use-package jupyter
+;;   :ensure t
+;;   :defer t
+;;   :after org
+;;   :init
+;;   (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
+;;                                                        (:session . "py")
+;;                                                        (:kernel . "python3")))
+;;   (add-to-list 'org-structure-template-alist '("j" . "src jupyter-python"))
+
+;;   ;; function to load jupyter package and get kernelspecs from current python env
+;;   (defun my/get-jupyter-aliases ()
+;;     (require 'jupyter)
+;;     (org-babel-jupyter-aliases-from-kernelspecs))
+
+;;   :bind (:map jupyter-org-interaction-mode-map ("C-c h" . nil))
+
+;;   :hook ((pyvenv-workon . my/get-jupyter-aliases)
+;;         (pyvenv-deactivate . my/get/jupyter-aliases)))
+#+end_src
+
+#+RESULTS:
+
+#+begin_src emacs-lisp
+;; (use-package ox-ipynb
+;; ;  :straight (ox-ipynb :type git :host github :repo "jkitchin/ox-ipynb")
+;;   :ensure t
+;;   :defer t
+;;   :after org
+;;   :hook (org-mode . (lambda () (require 'ox-ipynb))))
+#+end_src
+
+#+RESULTS:
+
+
 
 ** YAML
 #+BEGIN_SRC emacs-lisp
