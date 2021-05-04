@@ -1,0 +1,16 @@
+((version 4)
+ ("title")
+ ("content")
+ ("title-or-content"
+  ("bayes" 50 10 s 1597198724.419375)
+  (".*[- ]GRB[- s].*" 100 20 R 1596818708.18127)
+  (".*[- ]gamma-ray burst[- s].*" 100 20 r 1596147179.725621)
+  (".*[- ]bayes[- s].*"  20 r 1597198721.238662))
+ ("tag")
+ ("authors"
+  ("Jochen Greiner" 300 S nil)
+  ("J. Michael Burgess" 300 S nil)
+  ("Johannes Buchner" 300 S nil))
+ ("feed")
+ (mark -600)
+ ("adjust-tags"))
