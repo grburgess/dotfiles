@@ -7,7 +7,6 @@ u#+AUTHOR: J. Michael Burgess
 #+PROPERTY: header-args :tangle ~/dotfiles/emacs/.config/emacs/init.el
 
 
-
 * Configurations
 ** Meta
 
@@ -612,18 +611,18 @@ Some nice visual modes
 
 
 
- (defhydra hydra-folding (:color red)
-   "
+(defhydra hydra-folding (:color red)
+  "
   _o_pen node    _n_ext fold       toggle _f_orward  _s_how current only
   _c_lose node   _p_revious fold   toggle _a_ll
   "
-   ("o" origami-open-node)
-   ("c" origami-close-node)
-   ("n" origami-next-fold)
-   ("p" origami-previous-fold)
-   ("f" origami-forward-toggle-node)
-   ("a" origami-toggle-all-nodes)
-   ("s" origami-show-only-node))
+  ("o" origami-open-node)
+  ("c" origami-close-node)
+  ("n" origami-next-fold)
+  ("p" origami-previous-fold)
+  ("f" origami-forward-toggle-node)
+  ("a" origami-toggle-all-nodes)
+  ("s" origami-show-only-node))
 
 
 (defhydra hydra-index (:color blue)
@@ -747,29 +746,29 @@ Some nice visual modes
    "k" 'kill-this-buffer-unless-scratch
    "w" 'elfeed
    )
-  ( general-def python-mode-map
-    "C-c f" 'py-yapf-buffer
+  ;; ( general-def python-mode-map
+  ;;   "C-c f" 'py-yapf-buffer
+
+  ;;   )
+
+  (general-def lsp-mode-map
+    "C-c f" 'lsp-format-buffer
+
+
+    )
+  ;; Swiper
+  (general-def swiper-map
+    "M-%" 'swiper-query-replace
+    )
+
+  (general-def projectile-mode-map
+    "s-p" 'projectile-command-map
 
     )
 
-  ;; (general-def lsp-mode-map
-  ;;   "C-c C-f" 'lsp-format-buffer
-
-
-  )
-;; Swiper
-(general-def swiper-map
-  "M-%" 'swiper-query-replace
-  )
-
-(general-def projectile-mode-map
-  "s-p" 'projectile-command-map
 
   )
 
-
-
-)
 
 
 #+END_SRC
@@ -894,18 +893,18 @@ Some nice visual modes
     (with-eval-after-load 'hydra
       (define-key origami-mode-map (kbd "C-x f")
         (defhydra hydra-folding (:color red :hint nil)
-   "
+          "
 _o_pen node    _n_ext fold       toggle _f_orward    _F_ill column: %`fill-column
 _c_lose node   _p_revious fold   toggle _a_ll        e_x_it
 "
-   ("o" origami-open-node)
-   ("c" origami-close-node)
-   ("n" origami-next-fold)
-   ("p" origami-previous-fold)
-   ("f" origami-forward-toggle-node)
-   ("a" origami-toggle-all-nodes)
-   ("F" fill-column)
-   ("x" nil :color blue))))))
+          ("o" origami-open-node)
+          ("c" origami-close-node)
+          ("n" origami-next-fold)
+          ("p" origami-previous-fold)
+          ("f" origami-forward-toggle-node)
+          ("a" origami-toggle-all-nodes)
+          ("F" fill-column)
+          ("x" nil :color blue))))))
 
 
 #+end_src
@@ -1628,18 +1627,18 @@ Just some jumping around and easy menus
 #+BEGIN_SRC emacs-lisp
 
 
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp)
-                         ))
-  :config
-  ;;     (add-hook 'pyvenv-post-activate-hooks (lambda () (lsp-restart-workspace)))
+;; (use-package lsp-pyright
+;;   :ensure t
+;;   :hook (python-mode . (lambda ()
+;;                          (require 'lsp-pyright)
+;;                          (lsp)
+;;                          ))
+;;   :config
+;;   ;;     (add-hook 'pyvenv-post-activate-hooks (lambda () (lsp-restart-workspace)))
 
 
 
-  ) ; or lsp-deferred
+                                        ;  ) ; or lsp-deferred
 
 (use-package lsp-mode
   :ensure t
@@ -1678,25 +1677,25 @@ Just some jumping around and easy menus
 
 
 
-  ;; (setq lsp-pyls-server-command '("pylsp"))
-  ;; (setq lsp-pyls-plugins-autopep8-enabled nil)
-  ;; (setq lsp-pyls-plugins-pycodestyle-enabled nil)
-  ;; (setq lsp-pyls-plugins-flake8-enabled t)
-  ;; (setq lsp-pyls-plugins-pyflakes-enabled nil)
-  ;; (setq lsp-pyls-plugins-pydocstyle-enabled t)
-  ;; (setq lsp-pyls-configuration-sources ["flake8"])
+  (setq lsp-pyls-server-command '("pylsp"))
+  (setq lsp-pyls-plugins-autopep8-enabled nil)
+  (setq lsp-pyls-plugins-pycodestyle-enabled nil)
+  (setq lsp-pyls-plugins-flake8-enabled t)
+  (setq lsp-pyls-plugins-pyflakes-enabled nil)
+  (setq lsp-pyls-plugins-pydocstyle-enabled t)
+  (setq lsp-pyls-configuration-sources ["flake8"])
 
-  ;; (lsp-register-custom-settings
-  ;;  '(("pylsp.plugins.pyls_mypy.enabled" t t)
-  ;;    ("pylsp.plugins.jedi_completion.enabled" t t)
-  ;;    ("pylsp.plugins.jedi_completion.include_params" nil t)
-  ;;    ("pylsp.plugins.jedi_completion.include-class-objects" t t)
-  ;;    ("pylsp.plugins.pyls_mypy.live_mode" nil t)
-  ;;    ("pylsp.plugins.pydocstyle.enabled" t t)
-  ;;    ("pylsp.plugins.pyls_black.enabled" t t)
-  ;;    ("pylsp.plugins.pyls_isort.enabled" t t)))
+  (lsp-register-custom-settings
+   '(("pylsp.plugins.pyls_mypy.enabled" t t)
+     ("pylsp.plugins.jedi_completion.enabled" t t)
+     ("pylsp.plugins.jedi_completion.include_params" nil t)
+     ("pylsp.plugins.jedi_completion.include-class-objects" t t)
+     ("pylsp.plugins.pyls_mypy.live_mode" nil t)
+     ("pylsp.plugins.pydocstyle.enabled" t t)
+     ("pylsp.plugins.pyls_black.enabled" t t)
+     ("pylsp.plugins.pyls_isort.enabled" t t)))
 
-  :hook ;((python-mode) . lsp)
+  :hook ((python-mode) . lsp)
   (yaml-mode . lsp)
   (LaTeX-mode . lsp)
   (latex-mode . lsp)
@@ -2000,7 +1999,6 @@ text-modes with this snippet.
 
 
 #+END_SRC
-
 
 * Modes
 ** Python
@@ -2587,8 +2585,6 @@ about a function or a variable in the echo area.
 (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode)
 (add-hook 'lisp-interaction-mode-hook 'turn-on-eldoc-mode)
 #+END_SRC
-
-
 * Writing and Focus
 ** Darkroom
 
