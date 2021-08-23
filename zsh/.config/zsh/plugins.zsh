@@ -72,6 +72,21 @@ zinit pick"shell/completion.zsh" src"shell/key-bindings.zsh" for junegunn/fzf
 zinit for iam4x/zsh-iterm-touchbar
 zinit for bernardop/iterm-tab-color-oh-my-zsh
 
+# it also works with turbo mode:
+zinit ice wait lucid
+
+zinit load redxtech/zsh-fzf-utils
+
+
+#zinit load tysonwolker/iterm-tab-colors
+
+zinit light Aloxaf/fzf-tab
+
+zinit load wfxr/forgit
+
+# zinit load leophys/zsh-plugin-fzf-finder
+
+
 # Spaceship theme
 #zinit ice lucid pick'spaceship.zsh' compile'{lib/*,sections/*,tests/*.zsh}'
 #zinit light denysdovhan/spaceship-prompt
