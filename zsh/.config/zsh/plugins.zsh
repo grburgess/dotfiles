@@ -92,8 +92,8 @@ zinit load wfxr/forgit
 #zinit light denysdovhan/spaceship-prompt
 zinit ice pick"async.zsh" src"pure.zsh"
 zinit light sindresorhus/pure
-zstyle :prompt:pure:prompt:success color '#00FFA2'
-zstyle :prompt:pure:virtualenv color '#BA00FF'
+zstyle :prompt:pure:prompt:success color '#00FF9A'
+zstyle :prompt:pure:virtualenv color '#FF00C9'
 
 
 zinit wait lucid for \
