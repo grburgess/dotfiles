@@ -38,7 +38,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 
 TERM=xterm-24bits
-
+export LC_ALL=en_IN.UTF-8
+export LANG=en_IN.UTF-8
 
 ###### EMACS
 
@@ -74,10 +75,10 @@ export MPLBACKEND='Agg'
 VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3 
 export WORKON_HOME=~/.venv
 
-source /usr/local/bin/virtualenvwrapper.sh
+source ~/.local/bin/virtualenvwrapper.sh
 
 
-export CMDSTAN=/home/jburgess/.cmdstanpy/cmdstan/
+export CMDSTAN=/home/jburgess/.cmdstan/cmdstan/
 
 bindkey -e
 # End of lines configured by zsh-newuser-install
@@ -141,4 +142,6 @@ source "$HOME/.config/zsh/.zinit/bin/zinit.zsh"
 autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
-export PATH="$PATH:$HOME/.rvm/bin"
+#export PATH="$PATH:$HOME/.rvm/bin"
+
+source /home/jburgess/.config/broot/launcher/bash/br
