@@ -13,6 +13,7 @@
 	hydra-mc/mc/unmark-next-like-this
 	kill-region
 	wdired-finish-edit
+	yaml-electric-dash-and-dot
 	))
 
 (setq mc/cmds-to-run-once
@@ -28,8 +29,8 @@
 	handle-switch-frame
 	hydra-mc/mc/edit-lines-and-exit
 	hydra-mc/mc/mark-next-like-this
-	hydra-mc/mc/unmark-next-like-this
 	hydra-mc/mc/mark-previous-like-this
+	hydra-mc/mc/unmark-next-like-this
 	hydra-mc/mc/unmark-previous-like-this
 	indent-for-tab-command
 	ivy-switch-buffer
