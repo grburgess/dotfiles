@@ -21,7 +21,7 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 zinit ice svn
-zinit snippet OMZ::plugins/osx
+zinit snippet OMZ::plugins/macos
 
 zinit ice blockf
 zinit light zsh-users/zsh-completions
