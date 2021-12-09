@@ -788,7 +788,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
 #+BEGIN_SRC emacs-lisp
 (use-package all-the-icons
-  :if window-system
+  :if (display-graphic-p)
   :ensure t
   :config
   (when (not (member "all-the-icons" (font-family-list)))
@@ -808,6 +808,10 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
 
 #+END_SRC
+
+#+RESULTS:
+: t
+
 ** Beacon
 
 Some nice visual modes
@@ -934,27 +938,35 @@ folder, otherwise delete a word"
 ** marginalia
 #+begin_src emacs-lisp
 
-(use-package all-the-icons-completion
-  :ensure t
-  :config
-  (all-the-icons-completion-mode)
-  )
+
+
 
 (use-package marginalia
   :after vertico
   :straight t
   :custom
 
-  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light t))
 
 
-  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup)
-
+  :config
   :init
   (marginalia-mode))
+
+
+(use-package all-the-icons-completion
+  :ensure t
+  :init
+  (all-the-icons-completion-mode)
+  :hook
+  (marginalia-mode-hook . all-the-icons-completion-marginalia-setup))
+
+
+
 #+end_src
 
 #+RESULTS:
+| all-the-icons-completion-marginalia-setup |
 
 ** embark
 #+begin_src emacs-lisp
