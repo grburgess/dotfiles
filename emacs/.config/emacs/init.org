@@ -8,6 +8,11 @@
 
 * Start up
 ** Initialize
+
+
+#+RESULTS:
+: org
+
 #+begin_src emacs-lisp :tangle no
 ;; We can't tangle without org!
 (require 'org)
@@ -23,11 +28,24 @@
 (byte-compile-file (concat user-emacs-directory "init.el"))
 
 
-;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
-(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
-      url-history-file (expand-file-name "url/history" user-emacs-directory))
 
 #+end_src
+
+#+BEGIN_SRC emacs-lisp
+
+
+(defun dw/org-babel-tangle-dont-ask ()
+  ;; Dynamic scoping to the rescue
+  (let ((org-confirm-babel-evaluate nil))
+    (org-babel-tangle)))
+
+(add-hook 'org-mode-hook (lambda () (add-hook 'after-save-hook #'dw/org-babel-tangle-dont-ask
+                                              'run-at-end 'only-in-org-mode)))
+#+END_SRC
+
+#+RESULTS:
+| (lambda nil (add-hook 'after-save-hook #'dw/org-babel-tangle-dont-ask 'run-at-end 'only-in-org-mode)) | org-bullets-mode | org-superstar-mode | org-tempo-setup | turn-on-flyspell | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | dw/org-mode-setup | dw/org-mode-visual-fill |
+
 ** Performance
 
 #+begin_src emacs-lisp
@@ -606,11 +624,20 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 ;; Set the font face based on platform
 
 
-(set-frame-font "Victor Mono 13" nil t)
+
 
 (add-to-list 'default-frame-alist
              '(font . "Victor Mono 13"))
 
+
+;; (add-to-list 'default-frame-alist
+;;              '(font . "JetBrains Mono 13"))
+
+;; (add-to-list 'default-frame-alist
+;;              '(font . "Iosevka Aile 13"))
+
+
+(set-frame-font "Victor Mono 13" nil t)
 
 (set-face-attribute 'default nil :font "Victor Mono 13"
                     ;;:height 170
@@ -631,10 +658,8 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 *** preserve font
 #+begin_src emacs-lisp
 (defun preserve-font ( &rest args)
-  (set-frame-font "Victor Mono 13" nil t)
 
-  (add-to-list 'default-frame-alist
-               '(font . "Victor Mono 13"))
+  (set-frame-font "Victor Mono 13" nil t)
 
 
   (set-face-attribute 'default nil :font "Victor Mono 13"
@@ -649,13 +674,13 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
   ;; Set the variable pitch face
   (set-face-attribute 'variable-pitch nil
-                      ;; :font "Cantarell"
+
                       :font "Iosevka Aile 13"
                       :weight 'light)
 
 
 
-  (set-face-attribute 'org-document-title nil :font "Victor Mono" :weight 'bold :height 1.3)
+  (set-face-attribute 'org-document-title nil :font "Iosevka Aile" :weight 'bold :height 1.3)
   (dolist (face '((org-level-1 . 1.5)
                   (org-level-2 . 1.1)
                   (org-level-3 . 1.05)
@@ -664,10 +689,10 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
                   (org-level-6 . 1.1)
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "Victor Mono" :weight 'regular :height (cdr face)))
+    (set-face-attribute (car face) nil :font "Iosevka Aile" :weight 'regular :height (cdr face)))
 
   ;; Make sure org-indent face is available
-  (require 'org-indent)
+  ;;    (require 'org-indent)
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
   (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
@@ -977,12 +1002,15 @@ folder, otherwise delete a word"
          ("C-." . embark-act))
   :config
 
-  ;; Show Embark actions via which-key
-  (setq embark-action-indicator
-        (lambda (map)
-          (which-key--show-keymap "Embark" map nil nil 'no-paging)
-          #'which-key--hide-popup-ignore-command)
-        embark-become-indicator embark-action-indicator))
+  ;; ;; Show Embark actions via which-key
+  ;; (setq embark-action-indicator
+  ;;       (lambda (map)
+  ;;         (which-key--show-keymap "Embark" map nil nil 'no-paging)
+  ;;         #'which-key--hide-popup-ignore-command)
+  ;;       embark-become-indicator embark-action-indicator)
+
+
+  )
 #+end_src
 
 * Window Management
@@ -1001,13 +1029,13 @@ folder, otherwise delete a word"
 ** winner
 
 #+begin_src emacs-lisp
-(use-package winner
+;; (use-package winner
 
-  :config
-  (winner-mode)
-  (setq  winner-dont-bind-my-keys t)
+;;   :config
+;;   (winner-mode)
+;;   (setq  winner-dont-bind-my-keys t)
 
-  )
+;;   )
 #+end_src
 
 ** fill
@@ -1047,6 +1075,11 @@ folder, otherwise delete a word"
         dired-hide-details-hide-symlink-targets nil
         delete-by-moving-to-trash t)
 
+
+
+  (setq dired-use-ls-dired nil)
+  ( require 'ls-lisp)
+  (setq ls-lisp-use-insert-directory-program nil)
   (autoload 'dired-omit-mode "dired-x")
 
   (add-hook 'dired-load-hook
@@ -1097,6 +1130,418 @@ folder, otherwise delete a word"
 #+end_src
 
 #+RESULTS:
+
+* Org
+
+*** Basic org up
+#+BEGIN_SRC emacs-lisp
+(setq-default fill-column 80)
+;; Turn on indentation and auto-fill mode for Org files
+(defun dw/org-mode-setup ()
+  (org-indent-mode)
+  (variable-pitch-mode 1)
+  (auto-fill-mode 1)
+  (visual-line-mode 1)
+  (diminish org-indent-mode)
+
+  )
+
+(use-package org
+                                        ;  :defer t
+  :hook (org-mode . dw/org-mode-setup)
+  :config
+  (setq org-ellipsis " ▾"
+        org-hide-emphasis-markers t
+        org-src-fontify-natively t
+        org-src-tab-acts-natively t
+        org-edit-src-content-indentation 2
+        org-hide-block-startup nil
+        org-src-preserve-indentation nil
+        org-startup-folded 'content
+        org-cycle-separator-lines 2)
+
+  (setq org-refile-targets '((nil :maxlevel . 2)
+                             (org-agenda-files :maxlevel . 2)))
+
+  (setq org-outline-path-complete-in-steps nil)
+  (setq org-refile-use-outline-path t)
+
+  (setq org-directory "~/org")
+  (setq org-agenda-files (list "~/org/"))
+  (setq org-default-notes-file "~/org/notes.org")
+  (setq org-agenda-file-regexp "\\`[^.].*\\.org\\|.todo\\'")
+
+  (setq org-todo-keywords
+        '((sequence "TODO" "READ" "RESEARCH" "|" "DONE" "DELEGATED" )))
+
+
+
+  (setq org-default-notes-file (concat org-directory "notes.org"))      ;; some sexier setup
+
+  (setq org-hide-emphasis-markers t)
+
+  ;; (font-lock-add-keywords 'org-mode
+  ;;                         '(("^ *\\([-]\\) "
+  ;;                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+  (add-hook 'org-mode-hook 'turn-on-flyspell)
+  (setq org-fontify-done-headline t)
+
+
+  (setq org-todo-keyword-faces
+        '(("TODO" . org-warning) ("READ" . "yellow") ("RESEARCH" . (:foreground "blue" :weight bold))
+          ("CANCELED" . (:foreground "pink" :weight bold))
+          ("WRITING" . (:foreground "red" :weight bold))
+          ("RECIEVED" . (:foreground "red" :background "green" :weight bold))
+          ("SUBMITTED" . (:foreground "blue"))
+          ("ACCEPTED" . (:foreground "green"))
+
+
+          ))
+
+
+
+
+  )
+#+END_SRC
+
+#+RESULTS:
+| org-bullets-mode | org-tempo-setup | org-superstar-mode | turn-on-flyspell | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | dw/org-mode-setup | dw/org-mode-visual-fill | (lambda nil (add-hook 'after-save-hook #'dw/org-babel-tangle-dont-ask 'run-at-end 'only-in-org-mode)) |
+
+*** org super star
+
+#+BEGIN_SRC emacs-lisp
+
+(use-package org-superstar
+  :ensure t
+  :after org
+  :hook (org-mode . org-superstar-mode)
+  :custom
+  (org-superstar-remove-leading-stars t)
+  (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●"))
+
+
+  )
+
+
+
+
+
+;; Increase the size of various headings
+
+#+end_src
+#+begin_src emacs-lisp
+
+
+;; We can't tangle without org!
+(require 'org)
+
+
+(set-face-attribute 'org-document-title nil :font "Iosevka Aile" :weight 'bold :height 1.3)
+(dolist (face '((org-level-1 . 1.2)
+                (org-level-2 . 1.1)
+                (org-level-3 . 1.05)
+                (org-level-4 . 1.0)
+                (org-level-5 . 1.1)
+                (org-level-6 . 1.1)
+                (org-level-7 . 1.1)
+                (org-level-8 . 1.1)))
+  (set-face-attribute (car face) nil :font "Iosevka Aile" :weight 'medium :height (cdr face))
+  )
+
+
+;; Make sure org-indent face is available
+(require 'org-indent)
+
+;; Ensure that anything that should be fixed-pitch in Org files appears that way
+(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+(set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
+(set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+(set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+
+
+
+
+;; Get rid of the background on column views
+(set-face-attribute 'org-column nil :background nil)
+(set-face-attribute 'org-column-title nil :background nil)
+
+
+
+
+
+
+#+end_src
+#+RESULTS:
+
+*** org tempo
+
+#+BEGIN_SRC emacs-lisp
+(require 'org-tempo)
+
+(add-to-list 'org-structure-template-alist '("sh" . "src sh"))
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
+(add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
+(add-to-list 'org-structure-template-alist '("py" . "src python"))
+(add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
+(add-to-list 'org-structure-template-alist '("json" . "src json"))
+#+END_SRC
+*** org bullets
+
+#+begin_src emacs-lisp
+
+(use-package org-bullets
+  :ensure t
+  :after org
+  :commands org-bullets-mode
+  :init
+  (add-hook 'org-mode-hook 'org-bullets-mode)
+  )
+
+
+
+                                        ;(define-key global-map "\C-cc" 'org-capture)
+
+#+end_src
+*** org journal
+
+#+begin_src emacs-lisp
+(use-package org-journal
+  :ensure t
+  :defer t
+  :init
+  ;; Change default prefix key; needs to be set before loading org-journal
+  (setq org-journal-prefix-key "C-c j ")
+  (setq org-journal-file-format "%Y-%m-%d-%a")
+  :config
+
+  (defun org-journal-file-header-func (time)
+    "Custom function to create journal header."
+    (concat
+     (pcase org-journal-file-type
+       (`daily "#+TITLE: Daily Journal\n#+STARTUP: showeverything")
+       (`weekly "#+TITLE: Weekly Journal\n#+STARTUP: folded")
+       (`monthly "#+TITLE: Monthly Journal\n#+STARTUP: folded")
+       (`yearly "#+TITLE: Yearly Journal\n#+STARTUP: folded"))))
+
+  (setq org-journal-file-header 'org-journal-file-header-func)
+
+
+  (setq org-journal-dir "~/org/journal/"
+        org-journal-date-format "%A, %d/%m/%Y")
+
+  (defun org-journal-save-entry-and-exit()
+    "Simple convenience function.
+  Saves the buffer of the current day's entry and kills the window
+  Similar to org-capture like behavior"
+    (interactive)
+    (save-buffer)
+    (kill-buffer-and-window))
+  (define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
+
+
+
+
+  (defun org-journal-find-location ()
+    ;; Open today's journal, but specify a non-nil prefix argument in order to
+    ;; inhibit inserting the heading; org-capture will insert the heading.
+    (org-journal-new-entry t)
+    (unless (eq org-journal-file-type 'daily)
+      (org-narrow-to-subtree))
+    (goto-char (point-max)))
+
+
+  )
+
+
+
+
+#+end_src
+*** org download
+
+#+begin_src emacs-lisp
+(use-package org-download
+  :ensure t
+  :after org
+
+  :defer nil
+  :custom
+  (org-download-method 'directory)
+  (org-download-image-dir "~/org/pictures")
+  (org-download-heading-lvl nil)
+  (org-download-timestamp "%Y%m%d-%H%M%S_")
+  (org-image-actual-width 300)
+  (org-download-screenshot-method "/usr/local/bin/pngpaste %s")
+  :bind
+  ("C-M-y" . org-download-screenshot)
+  :config
+  (require 'org-download))
+#+end_src
+
+#+RESULTS:
+: org-download-screenshot
+
+*** Capture templates
+
+
+#+begin_src emacs-lisp
+(setq org-capture-templates
+      '(("t" "TODO" plain (function org-journal-find-location)
+         "** TODO %(format-time-string org-journal-time-format)%^{Title}"
+         :immediate-finish t)
+
+
+        ;; ("t" "Todo" entry (file+headline "~/org/notes.org" "Task List")
+        ;;  "* TODO %?\n%U" :empty-lines 1)
+
+        ;; ("l" "Logbook entry" entry (file+datetree "logbook-work.org") "** %U - %^{Activity}_ %^G :LOG:")
+
+        ("j" "Journal entry" plain (function org-journal-find-location)
+         "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
+         :jump-to-captured t :immediate-finish t)
+
+        ("P" "Research project" entry (file "~/org/projects.org")
+         "* TODO %^{Project title} :%^G:\n:PROPERTIES:\n:CREATED: %U\n:END:\n%^{Project description}\n** TODO Literature review\n** TODO %?\n** TODO Summary\n** TODO Reports\n** Ideas\n" :clock-in t :clock-resume t)
+
+        ("a" "Research Article" entry(file+headline "~/org/publications.org" "Working articles") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+        ("r" "Ref. Report" entry(file+headline "~/org/publications.org" "Referee reports") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+        ("c" "Coding tips" entry(file+headline "~/org/coding.org" "Refile") "** READ %^{description} %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+                                        ;    ("C" "Cliplink capture code" entry (file+headline  "~/org/coding.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
+
+        ("f" "Fitting" entry(file+headline "~/org/fitting.org" "Refile") "** READ %^{description}  %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
+
+        ("x" "arXiv" entry(file+headline "~/org/arxiv.org" "To read") "** READ %^L %t")
+
+
+
+        ("i" "idea" entry(file "~/org/ideas.org") "* TODO %? %t" :empty-lines 1)
+
+                                        ;       ("F" "Cliplink capture fitting" entry (file+headline  "~/org/fitting.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
+
+        )
+      )
+
+
+;;
+#+END_SRC
+
+When editing org-files with source-blocks, we want the source blocks to
+be themed as they would in their native mode.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      org-confirm-babel-evaluate nil
+      org-edit-src-content-indentation 0)
+#+END_SRC
+
+This is quite an ugly fix for allowing code markup for expressions like
+="this string"=, because the quotation marks causes problems.
+
+#+BEGIN_SRC emacs-lisp
+;;(require 'org)
+(eval-after-load "org"
+  '(progn
+     (setcar (nthcdr 2 org-emphasis-regexp-components) " \t\n,")
+     (custom-set-variables `(org-emphasis-alist ',org-emphasis-alist))))
+#+END_SRC
+
+*** ROAM
+
+#+begin_src emacs-lisp
+
+
+(use-package org-roam
+  :ensure t
+  :init
+  (setq org-roam-v2-ack t)
+  (setq org-roam-dailies-directory "journal/")
+  :custom
+  (org-roam-directory "~/Documents/roam")
+
+  (org-roam-completion-everywhere t)
+
+  (org-roam-capture-templates
+   '(("d" "default" plain "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+      :unnarrowed t)
+     ("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: project")
+      :unnarrowed t)
+     ("b" "brainstorm" plain "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: brainstorm")
+      :unnarrowed t)
+     ("m" "meeting" plain "* Topic\n\n%?\n\n* Attending\n\n* Notes\n\n ** Conclusion\n\n"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: project")
+      :unnarrowed t)
+     ("a" "article" plain "*[[${link}][${description}]]\n\n* Notes\n\n"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: article")
+      :unnarrowed t)
+
+     )
+   )
+
+  (org-roam-dailies-capture-templates
+   '(("d" "default" entry "* %<%I:%M %p>: %?"
+      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+
+
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         :map org-mode-map
+         ("C-M-i"    . completion-at-point)
+         :map org-roam-dailies-map
+         ("Y" . org-roam-dailies-capture-yesterday)
+         ("T" . org-roam-dailies-capture-tomorrow))
+  :bind-keymap
+  ("C-c n d" . org-roam-dailies-map)
+  :config
+  (require 'org-roam-dailies) ;; Ensure the keymap is available
+                                        ;  (org-roam-db-autosync-mode)
+
+
+  (org-roam-setup))
+
+
+
+
+
+#+end_src
+
+#+RESULTS:
+: org-roam-dailies-capture-tomorrow
+
+*** roam server
+#+begin_src emacs-lisp
+(use-package org-roam-ui
+  :straight
+  (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+  :after org-roam
+  ;;    :hook
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  ;;:hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
+#+end_src
+
+
+#+RESULTS:
+| org-roam-ui-mode | ivy-mode | all-the-icons-ivy-setup | global-company-mode | tramp-register-archive-file-name-handler | magit-maybe-define-global-key-bindings |
 
 * LSP
 #+begin_src emacs-lisp
@@ -1379,6 +1824,35 @@ adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 : t
 
 *
+
+*** Flyspell
+
+Flyspell offers on-the-fly spell checking. We can enable flyspell for all
+text-modes with this snippet.
+
+#+BEGIN_SRC emacs-lisp
+
+
+
+(use-package flyspell
+                                        ; nil
+  :commands (ispell-change-dictionary
+             ispell-word
+             flyspell-buffer
+             flyspell-mode
+             flyspell-region)
+  :config
+  (setq flyspell-issue-message-flag nil)
+  (setq flyspell-issue-welcome-flag nil)
+  (setq ispell-program-name "/usr/local/bin/ispell")
+  (setq ispell-dictionary "american")
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  )
+#+END_SRC
+
+#+RESULTS:
+: t
+
 
 ** GIT
 *** ghub
@@ -1735,6 +2209,64 @@ I use LSP for python.
   )
 #+END_SRC
 *** LaTeX and org-mode LaTeX export
+#+begin_src emacs-lisp
+(use-package latex
+  :straight (:type built-in)                           ; nil
+  :mode
+  ("\\.tex\\'" . latex-mode)
+  :bind
+  (:map LaTeX-mode-map
+        ("M-<delete>" . TeX-remove-macro)
+        ("C-c C-r" . reftex-query-replace-document)
+        ("C-c C-g" . reftex-grep-document))
+  :init
+
+
+  :config
+
+  (setq-default TeX-master nil ; by each new fie AUCTEX will ask for a master fie.
+                TeX-PDF-mode t
+                TeX-engine 'xetex)     ; optional
+  (auto-fill-mode 1)
+  (setq TeX-auto-save t
+        TeX-save-query nil       ; don't prompt for saving the .tex file
+        TeX-parse-self t
+        TeX-show-compilation nil         ; if `t`, automatically shows compilation log
+        LaTeX-babel-hyphen nil ; Disable language-specific hyphen insertion.
+        ;; `"` expands into csquotes macros (for this to work, babel pkg must be loaded after csquotes pkg).
+        LaTeX-csquotes-close-quote "}"
+        LaTeX-csquotes-open-quote "\\enquote{"
+        TeX-file-extensions '("Rnw" "rnw" "Snw" "snw" "tex" "sty" "cls" "ltx" "texi" "texinfo" "dtx"))
+
+
+  (setq reftex-plug-into-AUCTeX t)
+  (setq reftex-default-bibliography '("/Users/jburgess/Documents/complete_bib.bib"))
+
+  (add-to-list 'safe-local-variable-values
+               '(TeX-command-extra-options . "-shell-escape"))
+
+  ;; Font-lock for AuCTeX
+  ;; Note: '«' and '»' is by pressing 'C-x 8 <' and 'C-x 8 >', respectively
+  (font-lock-add-keywords 'latex-mode (list (list "\\(«\\(.+?\\|\n\\)\\)\\(+?\\)\\(»\\)" '(1 'font-latex-string-face t) '(2 'font-latex-string-face t) '(3 'font-latex-string-face t))))
+  ;; Add standard Sweave file extensions to the list of files recognized  by AuCTeX.
+  (add-hook 'TeX-mode-hook (lambda () (reftex-isearch-minor-mode)))
+  (add-hook 'LaTeX-mode-hook #'TeX-fold-mode) ;; Automatically activate TeX-fold-mode.
+  (add-hook 'LaTeX-mode-hook 'TeX-fold-buffer t)
+
+  :hook (
+
+         (LaTeX-mode . reftex-mode)
+         (LaTeX-mode . visual-line-mode)
+         (LaTeX-mode . flyspell-mode)
+         (LaTeX-mode . LaTeX-math-mode)
+         (LaTeX-mode . turn-on-reftex)
+
+         )
+  )
+
+
+
+#+end_src
 *** markdown
 #+begin_src emacs-lisp
 (use-package markdown-mode
@@ -1756,402 +2288,29 @@ I use LSP for python.
   (add-hook 'markdown-mode-hook 'dw/markdown-mode-hook))
 #+end_src
 *** Docker
-* Org
 
-I use =org-agenda= along with =org-capture= for appointments and such.
-*** Basic org up
-#+BEGIN_SRC emacs-lisp
-
-;; Turn on indentation and auto-fill mode for Org files
-(defun dw/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (auto-fill-mode 1)
-  (visual-line-mode 1)
-                                        ;(diminish org-indent-mode)
-  )
-
-(use-package org
+#+begin_src emacs-lisp
+(use-package dockerfile-mode
   :defer t
-  :hook (org-mode . dw/org-mode-setup)
-  :config
-  (setq org-ellipsis " ▾"
-        org-hide-emphasis-markers t
-        org-src-fontify-natively t
-        org-src-tab-acts-natively t
-        org-edit-src-content-indentation 2
-        org-hide-block-startup nil
-        org-src-preserve-indentation nil
-        org-startup-folded 'content
-        org-cycle-separator-lines 2)
-
-  ;; (setq org-modules
-  ;;       '(org-crypt
-  ;;         org-habit
-  ;;         org-bookmark
-  ;;         org-eshell
-  ;;         org-irc))
-
-  (setq org-refile-targets '((nil :maxlevel . 2)
-                             (org-agenda-files :maxlevel . 2)))
-
-  (setq org-outline-path-complete-in-steps nil)
-  (setq org-refile-use-outline-path t)
-
-  (setq org-directory "~/org")
-  (setq org-agenda-files (list "~/org/"))
-  (setq org-default-notes-file "~/org/notes.org")
-  (setq org-agenda-file-regexp "\\`[^.].*\\.org\\|.todo\\'")
-
-  (setq org-todo-keywords
-        '((sequence "TODO" "READ" "RESEARCH" "|" "DONE" "DELEGATED" )))
-
-
-
-  (setq org-default-notes-file (concat org-directory "notes.org"))      ;; some sexier setup
-
-  (setq org-hide-emphasis-markers t)
-
-  (font-lock-add-keywords 'org-mode
-                          '(("^ *\\([-]\\) "
-                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-  (add-hook 'org-mode-hook 'turn-on-flyspell)
-  (setq org-fontify-done-headline t)
-
-
-  (setq org-todo-keyword-faces
-        '(("TODO" . org-warning) ("READ" . "yellow") ("RESEARCH" . (:foreground "blue" :weight bold))
-          ("CANCELED" . (:foreground "pink" :weight bold))
-          ("WRITING" . (:foreground "red" :weight bold))
-          ("RECIEVED" . (:foreground "red" :background "green" :weight bold))
-          ("SUBMITTED" . (:foreground "blue"))
-          ("ACCEPTED" . (:foreground "green"))
-
-
-          ))
-
-  )
-#+END_SRC
-
-#+RESULTS:
-| org-bullets-mode | org-superstar-mode | org-tempo-setup | turn-on-flyspell | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | dw/org-mode-setup | (lambda nil (add-hook 'after-save-hook #'dw/org-babel-tangle-dont-ask 'run-at-end 'only-in-org-mode)) |
-
-*** org tempo
-
-#+BEGIN_SRC emacs-lisp
-(require 'org-tempo)
-
-(add-to-list 'org-structure-template-alist '("sh" . "src sh"))
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
-(add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
-(add-to-list 'org-structure-template-alist '("py" . "src python"))
-(add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
-(add-to-list 'org-structure-template-alist '("json" . "src json"))
-#+END_SRC
-*** org super star
-
-#+BEGIN_SRC emacs-lisp
-
-(use-package org-superstar
-  :ensure t
-  :after org
-  :hook (org-mode . org-superstar-mode)
-  :custom
-  (org-superstar-remove-leading-stars t)
-  (org-superstar-headline-bullets-list '("◉" "○" "●" "○" "●" "○" "●")))
-
-;; Increase the size of various headings
-(set-face-attribute 'org-document-title nil :font "Iosevka Aile" :weight 'bold :height 1.3)
-(dolist (face '((org-level-1 . 1.2)
-                (org-level-2 . 1.1)
-                (org-level-3 . 1.05)
-                (org-level-4 . 1.0)
-                (org-level-5 . 1.1)
-                (org-level-6 . 1.1)
-                (org-level-7 . 1.1)
-                (org-level-8 . 1.1)))
-  (set-face-attribute (car face) nil :font "Iosevka Aile" :weight 'medium :height (cdr face)))
-
-
-;; Make sure org-indent face is available
-(require 'org-indent)
-
-;; Ensure that anything that should be fixed-pitch in Org files appears that way
-(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-(set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
-(set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
-(set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
-(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
-
-
-
-
-;; Get rid of the background on column views
-(set-face-attribute 'org-column nil :background nil)
-(set-face-attribute 'org-column-title nil :background nil)
-
-#+end_src
-
-#+RESULTS:
-
-*** org bullets
-
-#+begin_src emacs-lisp
-
-(use-package org-bullets
-  :ensure t
-  :after org
-  :commands org-bullets-mode
-  :init
-  (add-hook 'org-mode-hook 'org-bullets-mode)
-  )
-
-
-
-                                        ;(define-key global-map "\C-cc" 'org-capture)
-
-#+end_src
-*** org journal
-
-#+begin_src emacs-lisp
-(use-package org-journal
-  :ensure t
-  :defer t
-  :init
-  ;; Change default prefix key; needs to be set before loading org-journal
-  (setq org-journal-prefix-key "C-c j ")
-  (setq org-journal-file-format "%Y-%m-%d-%a")
-  :config
-
-  (defun org-journal-file-header-func (time)
-    "Custom function to create journal header."
-    (concat
-     (pcase org-journal-file-type
-       (`daily "#+TITLE: Daily Journal\n#+STARTUP: showeverything")
-       (`weekly "#+TITLE: Weekly Journal\n#+STARTUP: folded")
-       (`monthly "#+TITLE: Monthly Journal\n#+STARTUP: folded")
-       (`yearly "#+TITLE: Yearly Journal\n#+STARTUP: folded"))))
-
-  (setq org-journal-file-header 'org-journal-file-header-func)
-
-
-  (setq org-journal-dir "~/org/journal/"
-        org-journal-date-format "%A, %d/%m/%Y")
-
-  (defun org-journal-save-entry-and-exit()
-    "Simple convenience function.
-  Saves the buffer of the current day's entry and kills the window
-  Similar to org-capture like behavior"
-    (interactive)
-    (save-buffer)
-    (kill-buffer-and-window))
-  (define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
-
-
-
-
-  (defun org-journal-find-location ()
-    ;; Open today's journal, but specify a non-nil prefix argument in order to
-    ;; inhibit inserting the heading; org-capture will insert the heading.
-    (org-journal-new-entry t)
-    (unless (eq org-journal-file-type 'daily)
-      (org-narrow-to-subtree))
-    (goto-char (point-max)))
-
-
-  )
-
-
-
-
-#+end_src
-*** org download
-
-#+begin_src emacs-lisp
-(use-package org-download
-  :ensure t
-  :after org
-
-  :defer nil
-  :custom
-  (org-download-method 'directory)
-  (org-download-image-dir "~/org/pictures")
-  (org-download-heading-lvl nil)
-  (org-download-timestamp "%Y%m%d-%H%M%S_")
-  (org-image-actual-width 300)
-  (org-download-screenshot-method "/usr/local/bin/pngpaste %s")
-  :bind
-  ("C-M-y" . org-download-screenshot)
-  :config
-  (require 'org-download))
-#+end_src
-
-#+RESULTS:
-: org-download-screenshot
-
-*** Capture templates
-
-
-#+begin_src emacs-lisp
-(setq org-capture-templates
-      '(("t" "TODO" plain (function org-journal-find-location)
-         "** TODO %(format-time-string org-journal-time-format)%^{Title}"
-         :immediate-finish t)
-
-
-        ;; ("t" "Todo" entry (file+headline "~/org/notes.org" "Task List")
-        ;;  "* TODO %?\n%U" :empty-lines 1)
-
-        ;; ("l" "Logbook entry" entry (file+datetree "logbook-work.org") "** %U - %^{Activity}_ %^G :LOG:")
-
-        ("j" "Journal entry" plain (function org-journal-find-location)
-         "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
-         :jump-to-captured t :immediate-finish t)
-
-        ("P" "Research project" entry (file "~/org/projects.org")
-         "* TODO %^{Project title} :%^G:\n:PROPERTIES:\n:CREATED: %U\n:END:\n%^{Project description}\n** TODO Literature review\n** TODO %?\n** TODO Summary\n** TODO Reports\n** Ideas\n" :clock-in t :clock-resume t)
-
-        ("a" "Research Article" entry(file+headline "~/org/publications.org" "Working articles") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-        ("r" "Ref. Report" entry(file+headline "~/org/publications.org" "Referee reports") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-        ("c" "Coding tips" entry(file+headline "~/org/coding.org" "Refile") "** READ %^{description} %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-                                        ;    ("C" "Cliplink capture code" entry (file+headline  "~/org/coding.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
-
-        ("f" "Fitting" entry(file+headline "~/org/fitting.org" "Refile") "** READ %^{description}  %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-        ("x" "arXiv" entry(file+headline "~/org/arxiv.org" "To read") "** READ %^L %t")
-
-
-
-        ("i" "idea" entry(file "~/org/ideas.org") "* TODO %? %t" :empty-lines 1)
-
-                                        ;       ("F" "Cliplink capture fitting" entry (file+headline  "~/org/fitting.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
-
-        )
-      )
-
-
-;;
-#+END_SRC
-
-When editing org-files with source-blocks, we want the source blocks to
-be themed as they would in their native mode.
-
-#+BEGIN_SRC emacs-lisp
-(setq org-src-fontify-natively t
-      org-src-tab-acts-natively t
-      org-confirm-babel-evaluate nil
-      org-edit-src-content-indentation 0)
-#+END_SRC
-
-This is quite an ugly fix for allowing code markup for expressions like
-="this string"=, because the quotation marks causes problems.
-
-#+BEGIN_SRC emacs-lisp
-;;(require 'org)
-(eval-after-load "org"
-  '(progn
-     (setcar (nthcdr 2 org-emphasis-regexp-components) " \t\n,")
-     (custom-set-variables `(org-emphasis-alist ',org-emphasis-alist))))
-#+END_SRC
-
-*** ROAM
-
-#+begin_src emacs-lisp
-
-
-(use-package org-roam
-  :ensure t
-  :init
-  (setq org-roam-v2-ack t)
-  (setq org-roam-dailies-directory "journal/")
-  :custom
-  (org-roam-directory "~/Documents/roam")
-
-  (org-roam-completion-everywhere t)
-
-  (org-roam-capture-templates
-   '(("d" "default" plain "%?"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
-      :unnarrowed t)
-     ("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: project")
-      :unnarrowed t)
-     ("b" "brainstorm" plain "%?"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: brainstorm")
-      :unnarrowed t)
-     ("m" "meeting" plain "* Topic\n\n%?\n\n* Attending\n\n* Notes\n\n ** Conclusion\n\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: project")
-      :unnarrowed t)
-     ("a" "article" plain "*[[${link}][${description}]]\n\n* Notes\n\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: article")
-      :unnarrowed t)
-
-     )
-   )
-
-  (org-roam-dailies-capture-templates
-   '(("d" "default" entry "* %<%I:%M %p>: %?"
-      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
-
-
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert)
-         :map org-mode-map
-         ("C-M-i"    . completion-at-point)
-         :map org-roam-dailies-map
-         ("Y" . org-roam-dailies-capture-yesterday)
-         ("T" . org-roam-dailies-capture-tomorrow))
-  :bind-keymap
-  ("C-c n d" . org-roam-dailies-map)
-  :config
-  (require 'org-roam-dailies) ;; Ensure the keymap is available
-                                        ;  (org-roam-db-autosync-mode)
-
-
-  (org-roam-setup))
-
-
-
-
-
-#+end_src
-
-#+RESULTS:
-: org-roam-dailies-capture-tomorrow
-
-*** roam server
-#+begin_src emacs-lisp
-(use-package org-roam-ui
   :straight
-  (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
-  :after org-roam
-  ;;    :hook
-  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
-  ;;         a hookable mode anymore, you're advised to pick something yourself
-  ;;         if you don't care about startup time, use
-  ;;:hook (after-init . org-roam-ui-mode)
+  (:host github :repo "spotify/dockerfile-mode" :branch "master" :files ("*.el" "out"))
+
   :config
-  (setq org-roam-ui-sync-theme t
-        org-roam-ui-follow t
-        org-roam-ui-update-on-save t
-        org-roam-ui-open-on-start t))
+
+  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+
+
+  )
+
+
+
+(use-package docker-compose-mode
+  :ensure t
+
+  )
+
 #+end_src
 
-
-#+RESULTS:
-| org-roam-ui-mode | ivy-mode | all-the-icons-ivy-setup | global-company-mode | tramp-register-archive-file-name-handler | magit-maybe-define-global-key-bindings |
-
-* Writing and Focus
 ** secret
 #+begin_src emacs-lisp
 (use-package secret-mode
@@ -2184,32 +2343,7 @@ This is quite an ugly fix for allowing code markup for expressions like
   :defer t
   )
 #+END_SRC
-** Flyspell
-
-Flyspell offers on-the-fly spell checking. We can enable flyspell for all
-text-modes with this snippet.
-
-#+BEGIN_SRC emacs-lisp
-
-
-
-(use-package flyspell
-                                        ; nil
-  :commands (ispell-change-dictionary
-             ispell-word
-             flyspell-buffer
-             flyspell-mode
-             flyspell-region)
-  :config
-  (setq flyspell-issue-message-flag nil)
-  (setq flyspell-issue-welcome-flag nil)
-                                        ;     (setq ispell-program-name "aspell")
-  (setq ispell-dictionary "american")
-  (add-hook 'text-mode-hook 'flyspell-mode)
-  )
-#+END_SRC
-
-
+* Writing and Focus
 * Addons
 ** Telegram
 #+BEGIN_SRC emacs-lisp
