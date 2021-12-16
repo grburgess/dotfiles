@@ -117,7 +117,7 @@
 
 (setq visible-bell t)
 
-(set-fringe-mode 10)
+(set-fringe-mode 5)
 
 (dolist (mode
          '(tool-bar-mode                ; No toolbars, more room fo
@@ -131,9 +131,12 @@
 ** Transparent
 #+begin_src emacs-lisp
 
-(set-frame-parameter (selected-frame) 'alpha '(90 . 90))
-(add-to-list 'default-frame-alist '(alpha . (90 . 90)))
+(set-frame-parameter (selected-frame) 'alpha '(85 . 85))
+(add-to-list 'default-frame-alist '(alpha . (85 . 85)))
 #+end_src
+
+#+RESULTS:
+: ((alpha 85 . 85) (alpha 95 . 95) (font . Fira Mono 13) (alpha 90 . 90) (left-fringe . 5) (right-fringe . 5) (vertical-scroll-bars))
 
 ** Cleanliness is Godliness
 *** no littering
@@ -257,12 +260,12 @@ the buffer is buried."
 
 ** File saving
 #+begin_src emacs-lisp
-(use-package super-save
-  :defer 1
-  :diminish super-save-mode
-  :config
-  (super-save-mode +1)
-  (setq super-save-auto-save-when-idle t))
+;; (use-package super-save
+;;   :defer 1
+;;   :diminish super-save-mode
+;;   :config
+;;   (super-save-mode +1)
+;;   (setq super-save-auto-save-when-idle t))
 
 
 ;; Revert Dired and other buffers
@@ -456,7 +459,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
    ;;"C-s" 'swiper
    "C-M-y" 'consult-yank-from-kill-ring
    "M-y" 'consult-yank-pop
-   "M-g g" 'consult-goto-line
+   "M-g M-g" 'consult-goto-line
    "M-s" 'isearch-forward
    "C->" 'hydra-mc/body
    "C-<backspace>" 'crux-kill-line-backwards
@@ -754,7 +757,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 (diminish 'auto-revert-mode)
 (diminish 'yas-mode)
 (diminish 'yas-global-mode)
-(diminish 'ivy-mode)
+
 ;; (diminish 'sphinx-doc-mode)
 (diminish 'which-key-mode)
 (diminish 'global-eldoc-mode)
@@ -892,11 +895,43 @@ Some nice visual modes
   (setq history-length 25)
   (savehist-mode 1))
 
+
+;; (use-package prescient
+;;   :ensure t
+;;   :config
+;;   (setq prescient-history-length 200)
+;;   (setq prescient-save-file "~/.config/emacs/prescient-items")
+;;   (setq prescient-filter-method '(literal regexp))
+;;   (prescient-persist-mode 1)
+
+;;   )
+
+;; (use-package ivy-prescient
+
+;;   :ensure t
+;;   :after (prescient ivy)
+;;   :config
+;;   (setq ivy-prescient-sort-commands
+;;         '(:not counsel-grep
+;;                counsel-rg
+;;                counsel-switch-buffer
+;;                ivy-switch-buffer
+;;                swiper
+;;                swiper-multi))
+;;   (setq ivy-prescient-retain-classic-highlighting t)
+;;   (setq ivy-prescient-enable-filtering nil)
+;;   (setq ivy-prescient-enable-sorting t)
+;;   (ivy-prescient-mode 1))
+
 ;; Individual history elements can be configured separately
 ;;(put 'minibuffer-history 'history-length 25)
 ;;(put 'evil-ex-history 'history-length 50)
 ;;(put 'kill-ring 'history-length 25))
 #+end_src
+
+#+RESULTS:
+: t
+
 ** Vertico
 #+begin_src emacs-lisp
 (defun dw/minibuffer-backward-kill (arg)
@@ -2043,7 +2078,7 @@ I use LSP for python.
   (python-mode . pyvenv-mode)
                                         ;  (python-mode . flycheck-mode)
   (python-mode . company-mode)
-  (python-mode . blacken-mode)
+                                        ;(python-mode . blacken-mode)
   (python-mode . yas-minor-mode)
   :custom
   ;; NOTE: Set these if Python 3 is called "python3" on your system!
@@ -2216,6 +2251,20 @@ I use LSP for python.
 
 #+RESULTS:
 
+*** Julia
+#+begin_src emacs-lisp
+(use-package julia-mode
+  :ensure t
+  )
+
+(use-package lsp-julia
+  :config
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.7"))
+
+#+end_src
+
+#+RESULTS:
+: t
 
 *** YAML
 #+BEGIN_SRC emacs-lisp
@@ -2425,7 +2474,6 @@ I use LSP for python.
         telega-use-tracking-for '(any pin unread)
         telega-chat-use-markdown-formatting t
         telega-emoji-use-images t
-        telega-completing-read-function #'ivy-completing-read
         telega-msg-rainbow-title t
         telega-chat-fill-column 75))
 
