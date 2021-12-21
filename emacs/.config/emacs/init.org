@@ -1001,6 +1001,24 @@ folder, otherwise delete a word"
 #+RESULTS:
 : dw/minibuffer-backward-kill
 
+** company
+
+#+begin_src emacs-lisp
+(use-package company
+  :ensure t
+  :bind (:map company-active-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous))
+  :config
+  (setq company-idle-delay 0.1)
+  (global-company-mode t)
+  )
+
+#+end_src
+
+#+RESULTS:
+: company-select-previous
+
 ** region completion Corfu
 #+begin_src emacs-lisp
 ;; (use-package corfu
