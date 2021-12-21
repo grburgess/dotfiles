@@ -131,8 +131,8 @@
 ** Transparent
 #+begin_src emacs-lisp
 
-(set-frame-parameter (selected-frame) 'alpha '(85 . 85))
-(add-to-list 'default-frame-alist '(alpha . (85 . 85)))
+(set-frame-parameter (selected-frame) 'alpha '(85 . 70))
+(add-to-list 'default-frame-alist '(alpha . (85 . 70)))
 #+end_src
 
 #+RESULTS:
@@ -1910,23 +1910,28 @@ text-modes with this snippet.
 *** ghub
 #+BEGIN_SRC emacs-lisp
 
-(use-package ghub
-  :ensure t
+;; (use-package ghub
+;;   :ensure t
 
 
-  )
+;;   )
 
-(use-package ghub+
-  :ensure t
+;; (use-package ghub+
+;;   :ensure t
 
 
-  )
+;;   )
 
 
 #+END_SRC
 
 *** MAGIT
 #+BEGIN_SRC emacs-lisp
+(use-package with-editor
+  :ensure t
+  )
+
+
 (use-package magit
   :ensure t
   :bind ( ("s-g" . magit-status))
@@ -1936,21 +1941,6 @@ text-modes with this snippet.
 
 
   )
-
-;; (dw/leader-key-def
-;;   "g"   '(:ignore t :which-key "git")
-;;   "gs"  'magit-status
-;;   "gd"  'magit-diff-unstaged
-;;   "gc"  'magit-branch-or-checkout
-;;   "gl"   '(:ignore t :which-key "log")
-;;   "glc" 'magit-log-current
-;;   "glf" 'magit-log-buffer-file
-;;   "gb"  'magit-branch
-;;   "gP"  'magit-push-current
-;;   "gp"  'magit-pull-branch
-;;   "gf"  'magit-fetch
-;;   "gF"  'magit-fetch-all
-;;   "gr"  'magit-rebase)
 
 (use-package git-commit
   :ensure t
