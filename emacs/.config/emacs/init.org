@@ -573,6 +573,20 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   :config
   )
 
+(use-package green-is-the-new-black-theme
+  :ensure t
+  :defer t
+  :config
+  )
+
+(use-package green-phosphor-theme
+  :ensure t
+  :defer t
+  :config
+  )
+
+
+
 (use-package rebecca-theme
   :ensure t
   :defer t
@@ -590,13 +604,34 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   )
 
 
+(use-package nano-theme
+  :straight
+  (:host github :repo "rougier/nano-theme" :branch "master" :files ("*.el"))
+  )
+
+(use-package writerish-dark-theme
+  :straight
+  (:host github :repo "apc/writerish" :branch "master" :files ("*.el"))
+  )
+
+
 (use-package omni-theme
   :straight
   (:host github :repo "getomni/emacs" :branch "main" :files ("*.el"))
   )
 
 
+(use-package matrix-theme
+  :straight
+  (:host github :repo "monkeyjunglejuice/matrix-emacs-theme" :branch "main" :files ("*.el"))
+  )
+
+
+
 #+end_src
+
+#+RESULTS:
+
 *** Load the primary theme
 #+begin_src emacs-lisp
 (load-theme 'brilliance-dull t)
