@@ -2619,20 +2619,24 @@ I use LSP for python.
 
 #+end_src
 
+#+RESULTS:
+
 
 * Writing and Focus
 ** secret
 #+begin_src emacs-lisp
-(use-package secret-mode
+(use-package redacted-mode
+  :ensure t
   :straight
-  (:host github :repo "bkaestner/secret-mode.el" :branch "main" :files ("*.el"))
+  (:host github :repo "bkaestner/redacted.el" :branch "main" :files ("*.el"))
   )
 
 
-(global-set-key [f2] 'secret-mode)
+(global-set-key [f2] 'redacted-mode)
 #+end_src
 
 #+RESULTS:
+: redacted-mode
 
 ** Darkroom
 
