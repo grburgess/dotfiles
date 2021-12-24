@@ -326,7 +326,10 @@ the buffer is buried."
 
 
 
-
+(defhydra python-indent (python-mode-map "C-c TAB")
+  "Adjust python indentation."
+  ("k" py-shift-right "right")
+  ("j" py-shift-left "left"))
 
 
 (defhydra hydra-folding (:color red)
@@ -1967,6 +1970,66 @@ This is quite an ugly fix for allowing code markup for expressions like
 
 #+END_SRC
 
+*** move lines
+#+begin_src emacs-lisp
+
+(use-package move-lines
+  :straight (move-lines
+	     :type git
+	     :host github
+	     :repo "kinnala/move-lines")
+  :after hydra
+  :init
+  (progn
+    (defun tom/shift-left (start end &optional count)
+      "Shift region left and activate hydra."
+      (interactive
+       (if mark-active
+           (list (region-beginning) (region-end) current-prefix-arg)
+         (list (line-beginning-position) (line-end-position) current-prefix-arg)))
+      (python-indent-shift-left start end count)
+      (tom/hydra-move-lines/body))
+
+    (defun tom/shift-right (start end &optional count)
+      "Shift region right and activate hydra."
+      (interactive
+       (if mark-active
+           (list (region-beginning) (region-end) current-prefix-arg)
+         (list (line-beginning-position) (line-end-position) current-prefix-arg)))
+      (python-indent-shift-right start end count)
+      (tom/hydra-move-lines/body))
+
+    (defun tom/move-lines-p ()
+      "Move lines up once and activate hydra."
+      (interactive)
+      (move-lines-up 1)
+      (tom/hydra-move-lines/body))
+
+    (defun tom/move-lines-n ()
+      "Move lines down once and activate hydra."
+      (interactive)
+      (move-lines-down 1)
+      (tom/hydra-move-lines/body))
+
+    (defhydra tom/hydra-move-lines ()
+      "Move one or multiple lines"
+      ("n" move-lines-down "down")
+      ("p" move-lines-up "up")
+      ("j" py-shift-left "left")
+      ("k" py-shift-right "right")))
+
+  :bind (("C-c n" . tom/move-lines-n)
+	 ("C-c p" . tom/move-lines-p))
+
+  :bind (:map python-mode-map
+              ("C-c <" . tom/shift-left)
+              ("C-c >" . tom/shift-right)))
+
+#+end_src
+
+#+RESULTS:
+: tom/shift-right
+
 *** smart parens
 
 #+BEGIN_SRC emacs-lisp
@@ -2061,11 +2124,19 @@ This is quite an ugly fix for allowing code markup for expressions like
 *** origami code folding
 #+begin_src emacs-lisp
 
+(use-package dash
+  :ensure t
+
+  )
+
 ;; Origami code folding
 (use-package origami
   :ensure t
   :commands origami-mode
   :config
+
+  (global-origami-mode 1)
+
   (progn
     (add-hook 'prog-mode-hook 'origami-mode)
     (with-eval-after-load 'hydra
@@ -2620,7 +2691,6 @@ I use LSP for python.
 #+end_src
 
 #+RESULTS:
-
 
 * Writing and Focus
 ** secret
