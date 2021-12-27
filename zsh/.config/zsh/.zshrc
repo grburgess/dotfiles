@@ -111,8 +111,6 @@ export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
 
 
 
-# added by travis gem
-[ -f /Users/jburgess/.travis/travis.sh ] && source /Users/jburgess/.travis/travis.sh
 
 
 
@@ -146,6 +144,7 @@ zinit cdreplay -q   # -q is for quiet; actually run all the `compdef's saved bef
 
 
 eval "$(direnv hook zsh)"
+
 
 
 
