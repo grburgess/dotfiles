@@ -326,11 +326,6 @@ the buffer is buried."
 
 
 
-(defhydra python-indent (python-mode-map "C-c TAB")
-  "Adjust python indentation."
-  ("k" py-shift-right "right")
-  ("j" py-shift-left "left"))
-
 
 (defhydra hydra-folding (:color red)
   "
@@ -464,7 +459,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
    "M-y" 'consult-yank-pop
    "M-g M-g" 'consult-goto-line
    "M-s" 'isearch-forward
-   "C->" 'hydra-mc/body
+   "C-," 'hydra-mc/body
    "C-<backspace>" 'crux-kill-line-backwards
    [remap move-beginning-of-line] 'crux-move-beginning-of-line
    [remap kill-whole-line] 'crux-kill-whole-line
@@ -482,15 +477,15 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   (general-define-key
    :prefix "C-c"
    "c" 'org-capture
-   "p" 'hydra-smartparens/body
+   "]" 'hydra-smartparens/body
    "l" 'org-store-link
    "m" 'hydra-music/body
    "s" 'ispell-word
    "z" 'hydra-index/body
    "g" 'consult-git-grep
-   ;;"r" '(ivy-resume :which-key "ivy resume")
+
    "i" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
-   "o" '((lambda () (interactive) (find-file "~/org")) :which-key "notes")
+
    "t" 'consult-theme
    "<up>" 'windmove-up
    "<down>" 'windmove-down
@@ -530,8 +525,6 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
 
   )
-
-
 
 #+END_SRC
 
@@ -1055,10 +1048,12 @@ Some nice visual modes
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
+
+(global-set-key [f5] 'eshell)
 #+end_src
 
 #+RESULTS:
-: t
+: eshell
 
 *** visual commands
 #+begin_src emacs-lisp
@@ -1785,16 +1780,16 @@ This is quite an ugly fix for allowing code markup for expressions like
       :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
 
 
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert)
+  :bind (("C-c o l" . org-roam-buffer-toggle)
+         ("C-c o f" . org-roam-node-find)
+         ("C-c o i" . org-roam-node-insert)
          :map org-mode-map
          ("C-M-i"    . completion-at-point)
          :map org-roam-dailies-map
          ("Y" . org-roam-dailies-capture-yesterday)
          ("T" . org-roam-dailies-capture-tomorrow))
   :bind-keymap
-  ("C-c n d" . org-roam-dailies-map)
+  ("C-c o d" . org-roam-dailies-map)
   :config
   (require 'org-roam-dailies) ;; Ensure the keymap is available
                                         ;  (org-roam-db-autosync-mode)
@@ -1809,7 +1804,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 #+end_src
 
 #+RESULTS:
-: org-roam-dailies-capture-tomorrow
+: t
 
 *** roam server
 #+begin_src emacs-lisp
@@ -1975,9 +1970,9 @@ This is quite an ugly fix for allowing code markup for expressions like
 
 (use-package move-lines
   :straight (move-lines
-	     :type git
-	     :host github
-	     :repo "kinnala/move-lines")
+             :type git
+             :host github
+             :repo "kinnala/move-lines")
   :after hydra
   :init
   (progn
@@ -2019,11 +2014,8 @@ This is quite an ugly fix for allowing code markup for expressions like
       ("k" py-shift-right "right")))
 
   :bind (("C-c n" . tom/move-lines-n)
-	 ("C-c p" . tom/move-lines-p))
-
-  :bind (:map python-mode-map
-              ("C-c <" . tom/shift-left)
-              ("C-c >" . tom/shift-right)))
+         ("C-c p" . tom/move-lines-p))
+  )
 
 #+end_src
 
@@ -2141,19 +2133,19 @@ This is quite an ugly fix for allowing code markup for expressions like
     (add-hook 'prog-mode-hook 'origami-mode)
     (with-eval-after-load 'hydra
       (define-key origami-mode-map (kbd "C-x f")
-                  (defhydra hydra-folding (:color red :hint nil)
-                    "
+        (defhydra hydra-folding (:color red :hint nil)
+          "
 _o_pen node    _n_ext fold       toggle _f_orward    _F_ill column: %`fill-column
 _c_lose node   _p_revious fold   toggle _a_ll        e_x_it
 "
-                    ("o" origami-open-node)
-                    ("c" origami-close-node)
-                    ("n" origami-next-fold)
-                    ("p" origami-previous-fold)
-                    ("f" origami-forward-toggle-node)
-                    ("a" origami-toggle-all-nodes)
-                    ("F" fill-column)
-                    ("x" nil :color blue))))))
+          ("o" origami-open-node)
+          ("c" origami-close-node)
+          ("n" origami-next-fold)
+          ("p" origami-previous-fold)
+          ("f" origami-forward-toggle-node)
+          ("a" origami-toggle-all-nodes)
+          ("F" fill-column)
+          ("x" nil :color blue))))))
 
 
 #+end_src
@@ -2233,9 +2225,9 @@ text-modes with this snippet.
 
 *** MAGIT
 #+BEGIN_SRC emacs-lisp
-(use-package with-editor
-  :ensure t
-  )
+;; (use-package with-editor
+;;   :ensure t
+;;   )
 
 
 (use-package magit
@@ -2383,6 +2375,17 @@ I use LSP for python.
   ;; NOTE: Set these if Python 3 is called "python3" on your system!
   (python-shell-interpreter "python3")
   :config
+  (progn
+    (defhydra python-indent (python-mode-map "C-c TAB")
+      "Adjust python indentation."
+      ("k" py-shift-right "right")
+      ("j" py-shift-left "left")
+      ("<right>" py-shift-right "right")
+      ("<left>" py-shift-left "left")
+
+      )
+    )
+
   )
 
 (use-package sphinx-doc
@@ -2419,6 +2422,7 @@ I use LSP for python.
 #+END_SRC
 
 #+RESULTS:
+: wcx-restart-python
 
 
 #+BEGIN_SRC emacs-lisp
