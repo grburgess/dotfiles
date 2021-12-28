@@ -88,6 +88,35 @@ zinit load wfxr/forgit
 # zinit load leophys/zsh-plugin-fzf-finder
 
 
+# Option B – a load with Turbo-Mode being in use
+zinit ice wait'0' lucid atload'zsh-startify'
+zinit load zdharma-continuum/zsh-startify
+
+zstyle ":plugin:zsh-startify:shellutils" size 5  # The size of the recently used file list (default: 5)
+zstyle ":plugin:zsh-startify:vim" size 0         # The size of the recently opened in Vim list (default: 5)
+
+######
+
+# zinit ice lucid id-as'GitHub-notify' \
+#         ice on-update-of'~/.cache/zsh-github-issues/new_titles.log' \
+#         notify'New issue: $NOTIFY_MESSAGE'
+# zinit light zdharma-continuum/zsh-github-issues
+
+
+# # GIT stands for 'Github Issue Tracker', the future name of the project
+# GIT_PROJECTS=zdharma-continuum/zsh-github-issues:zdharma/zinit
+
+# zinit ice service"GIT" pick"zsh-github-issues.service.zsh" wait'2' lucid
+# zinit light zdharma-continuum/zsh-github-issues
+
+
+# zinit pack for @github-issues
+# zinit pack for @github-issues-srv
+
+
+####
+
+
 # Spaceship theme
 #zinit ice lucid pick'spaceship.zsh' compile'{lib/*,sections/*,tests/*.zsh}'
 #zinit light denysdovhan/spaceship-prompt
