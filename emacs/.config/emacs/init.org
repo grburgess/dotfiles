@@ -1296,7 +1296,20 @@ folder, otherwise delete a word"
 
 
   )
+
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :ensure t
+  :after (embark consult)
+  :demand t ; only necessary if you have the hook below
+  ;; if you want to have consult previews as you move around an
+  ;; auto-updating embark collect buffer
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
+
+#+RESULTS:
 
 * Window Management
 ** ace window
@@ -1838,9 +1851,9 @@ This is quite an ugly fix for allowing code markup for expressions like
                          (lsp-deferred)))
 
   :custom
-  (lsp-pyright-use-library-code-for-types t)
+  (lsp-pyright-use-library-code-for-types nil)
   (lsp-pyright-multi-root nil)
-  (lsp-pyright-diagnostic-mode "workspace")
+;;  (lsp-pyright-diagnostic-mode "workspace")
   )
 
 
@@ -1935,6 +1948,9 @@ This is quite an ugly fix for allowing code markup for expressions like
 ;;   (push 'company-lsp company-backends))
 
 #+end_src
+
+#+RESULTS:
+: t
 
 * Development
 ** Configuration
