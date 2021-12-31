@@ -1,7 +1,6 @@
-python-language-server[all]==0.19.0
-pyls-black
-pyls-isort
+future
 autopep8
+cmasher
 bayescorner
 betagen
 flake8
@@ -12,11 +11,10 @@ ipykernel
 ipython
 ipywidgets
 ipyparallel
-jupyter
-jupyter-contrib-nbextensions
-jupyter-nbextensions-configurator
-jupyterthemes
+jupytext
 matplotlib
+natsort
+ipympl
 mpltools
 pandas
 rise
@@ -25,8 +23,9 @@ yapf
 numpy
 scipy
 cython
-numba
 numpy-html
+numba
+tbb
 pytest
 pytest-cov
 versioneer
