@@ -1851,7 +1851,7 @@ This is quite an ugly fix for allowing code markup for expressions like
                          (lsp-deferred)))
 
   :custom
-  (lsp-pyright-use-library-code-for-types nil)
+  (lsp-pyright-use-library-code-for-types t)
   (lsp-pyright-multi-root nil)
 ;;  (lsp-pyright-diagnostic-mode "workspace")
   )
@@ -2059,10 +2059,6 @@ This is quite an ugly fix for allowing code markup for expressions like
         sp-autoinsert-quote-if-followed-by-closing-pair nil)
   :hook (prog-mode . smartparens-mode))
 
-
-;; (use-package smartparens
-;;   :ensure t
-;;   :hook (prog-mode . smartparens-mode))
 #+END_SRC
 
 #+RESULTS:
