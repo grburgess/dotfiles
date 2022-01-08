@@ -12,6 +12,7 @@
 	crux-move-beginning-of-line
 	hydra-mc/mc/unmark-next-like-this
 	kill-region
+	py-electric-colon
 	wdired-finish-edit
 	yaml-electric-dash-and-dot
 	))
@@ -19,12 +20,6 @@
 (setq mc/cmds-to-run-once
       '(
 	TeX-next-error
-	beginning-of-buffer
-	c-electric-semi&comma
-	comment-dwim
-	counsel-M-x
-	counsel-find-file
-	end-of-buffer
 	goto-line
 	handle-switch-frame
 	hydra-mc/mc/edit-lines-and-exit
@@ -32,15 +27,5 @@
 	hydra-mc/mc/mark-previous-like-this
 	hydra-mc/mc/unmark-next-like-this
 	hydra-mc/mc/unmark-previous-like-this
-	indent-for-tab-command
-	ivy-switch-buffer
-	lsp-signature-activate
-	lsp-ui-doc--handle-mouse-movement
-	magit-status
-	markdown-outdent-or-delete
-	org-kill-line
-	org-self-insert-command
-	python-indent-shift-left
-	save-some-buffers
-	yaml-electric-backspace
+
 	))

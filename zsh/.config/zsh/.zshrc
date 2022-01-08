@@ -120,7 +120,7 @@ source ~/.config/zsh/emacs.zsh
 
 
 
-zstyle ':completion:*:git-checkout:*' sort false
+zstyle ':completion:*:git-checkout:*' sort true
 # set descriptions format to enable group support
 zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
