@@ -1244,7 +1244,16 @@ folder, otherwise delete a word"
   :custom-face
   (vertico-current ((t (:background "#880833"))))
   :init
-  (vertico-mode))
+  (vertico-mode)
+
+  (setq completion-styles '(orderless)
+      completion-category-overrides '((file (styles basic partial-completion))))
+
+
+
+
+
+  )
 #+end_src
 
 #+RESULTS:
@@ -3163,27 +3172,6 @@ I use LSP for python.
   )
 
 
-
-
-;; Add faces for specific people in the modeline.  There must
-;; be a better way to do this.
-(defun dw/around-tracking-add-buffer (original-func buffer &optional faces)
-  (let* ((name (buffer-name buffer))
-         (face (cond ((s-contains? "Francesca" name) '(all-the-icons-pink))
-                     ((s-contains? "Thomas" name) '(all-the-icons-lgreen))
-                     ((s-contains? "Anastasia" name) '(all-the-icons-lblue))))
-         (result (apply original-func buffer (list face))))
-                                        ;(dw/update-polybar-telegram)
-    result))
-
-(defun dw/after-tracking-remove-buffer (buffer)
-  (dw/update-polybar-telegram))
-
-(advice-add 'tracking-add-buffer :around #'dw/around-tracking-add-buffer)
-                                        ;(advice-add 'tracking-remove-buffer :after #'dw/after-tracking-remove-buffer)
-(advice-remove 'tracking-remove-buffer #'dw/around-tracking-remove-buffer)
-
-
 (use-package telega
   :commands telega
   :config
@@ -3199,7 +3187,7 @@ I use LSP for python.
 #+END_SRC
 
 #+RESULTS:
-: t
+: telega
 
 ** elfeed
 

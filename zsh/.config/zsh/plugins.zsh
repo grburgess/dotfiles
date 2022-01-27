@@ -81,19 +81,13 @@ zinit load redxtech/zsh-fzf-utils
 
 #zinit load tysonwolker/iterm-tab-colors
 
-zinit light Aloxaf/fzf-tab
+#zinit light Aloxaf/fzf-tab
 
 zinit load wfxr/forgit
 
 # zinit load leophys/zsh-plugin-fzf-finder
 
 
-# Option B – a load with Turbo-Mode being in use
-zinit ice wait'0' lucid atload'zsh-startify'
-zinit load zdharma-continuum/zsh-startify
-
-zstyle ":plugin:zsh-startify:shellutils" size 5  # The size of the recently used file list (default: 5)
-zstyle ":plugin:zsh-startify:vim" size 0         # The size of the recently opened in Vim list (default: 5)
 
 ######
 
@@ -122,8 +116,8 @@ zstyle ":plugin:zsh-startify:vim" size 0         # The size of the recently open
 #zinit light denysdovhan/spaceship-prompt
 zinit ice pick"async.zsh" src"pure.zsh"
 zinit light sindresorhus/pure
-zstyle :prompt:pure:prompt:success color '#00FF9A'
-zstyle :prompt:pure:virtualenv color '#FF00C9'
+zstyle :prompt:pure:prompt:success color '#25FFDB'
+zstyle :prompt:pure:virtualenv color '#AB6CFF'
 
 
 zinit wait lucid for \
