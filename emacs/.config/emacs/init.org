@@ -678,7 +678,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   :version "green")
 
 (defun display-line-numbers--turn-on ()
-  "turn on line numbers but excempting certain majore modes defined in `display-line-numbers-exempt-modes'"
+  "turn on line numbers but excempting certain major modes defined in `display-line-numbers-exempt-modes'"
   (if (and
        (not (member major-mode display-line-numbers-exempt-modes))
        (not (minibufferp)))
@@ -960,7 +960,7 @@ Some nice visual modes
     (setq beacon-blink-when-buffer-changes t) ; default t
     (setq beacon-blink-when-window-scrolls t) ; default t
     (setq beacon-blink-when-window-changes t) ; default t
-    (setq beacon-blink-when-focused nil) ; default nil
+    (setq beacon-blink-when-focused t) ; default nil
 
     (setq beacon-blink-duration 0.7) ; default 0.3
     (setq beacon-blink-delay 0.1) ; default 0.3
@@ -971,7 +971,10 @@ Some nice visual modes
     (beacon-mode 1)))
 #+END_SRC
 
-**  rainbow mode
+#+RESULTS:
+: t
+
+** rainbow mode
 #+begin_src emacs-lisp
 (use-package rainbow-mode
   :ensure t
@@ -1246,11 +1249,6 @@ folder, otherwise delete a word"
   :init
   (vertico-mode)
 
-  (setq completion-styles '(orderless)
-      completion-category-overrides '((file (styles basic partial-completion))))
-
-
-
 
 
   )
@@ -1298,8 +1296,15 @@ folder, otherwise delete a word"
   :init
   (setq completion-styles '(orderless)
         completion-category-defaults nil
-        completion-category-overrides '((file (styles . (partial-completion))))))
+        completion-category-overrides '((file (styles basic partial-completion)))
+
+
+        )
+
+  )
 #+end_src
+
+#+RESULTS:
 
 ** consult
 #+begin_src emacs-lisp
@@ -1846,7 +1851,7 @@ Allows to jump into a a directory within the minibuffer
   (setq org-refile-use-outline-path t)
 
   (setq org-directory "~/org")
-  (setq org-agenda-files (list "~/org/"))
+  (setq org-agenda-files (list "~/roam/" "~/roam/journal"))
   (setq org-default-notes-file "~/org/notes.org")
   (setq org-agenda-file-regexp "\\`[^.].*\\.org\\|.todo\\'")
 
@@ -1885,7 +1890,7 @@ Allows to jump into a a directory within the minibuffer
 #+END_SRC
 
 #+RESULTS:
-| org-bullets-mode | org-tempo-setup | org-superstar-mode | turn-on-flyspell | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | dw/org-mode-setup | dw/org-mode-visual-fill | (lambda nil (add-hook 'after-save-hook #'dw/org-babel-tangle-dont-ask 'run-at-end 'only-in-org-mode)) |
+| #[0 \301\211\207 [imenu-create-index-function org-imenu-get-tree] 2] | org-bullets-mode | org-tempo-setup | org-superstar-mode | turn-on-flyspell | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-show-all append local] 5] | #[0 \300\301\302\303\304$\207 [add-hook change-major-mode-hook org-babel-show-result-all append local] 5] | org-babel-result-hide-spec | org-babel-hide-all-hashes | dw/org-mode-setup | dw/org-mode-visual-fill | (lambda nil (add-hook 'after-save-hook #'dw/org-babel-tangle-dont-ask 'run-at-end 'only-in-org-mode)) |
 
 *** org super star
 
@@ -2623,7 +2628,6 @@ text-modes with this snippet.
 #+RESULTS:
 : t
 
-
 ** GIT
 *** ghub
 #+BEGIN_SRC emacs-lisp
@@ -3112,6 +3116,16 @@ I use LSP for python.
 
   )
 
+#+end_src
+
+#+RESULTS:
+
+*** JSON
+#+begin_src emacs-lisp
+(use-package json-mode
+  :ensure t
+
+  )
 #+end_src
 
 #+RESULTS:
