@@ -461,93 +461,94 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package crux
-  :ensure t
-  )
-
-
-
-
-(use-package general
-  :ensure t
-  :config
-  (general-define-key
-   ;;"M-x" 'counsel-M-x
-   ;;"C-s" 'swiper
-   "C-M-y" 'consult-yank-from-kill-ring
-   "M-y" 'consult-yank-pop
-   "M-g M-g" 'consult-goto-line
-   "M-s" 'isearch-forward
-   "C-," 'hydra-mc/body
-   "C-<backspace>" 'crux-kill-line-backwards
-   [remap move-beginning-of-line] 'crux-move-beginning-of-line
-   [remap kill-whole-line] 'crux-kill-whole-line
-   [(shift return)] 'crux-smart-open-line
-   ;;"C-<tab>" 'hs-cycle
-
-   "C-M-v" 'vl/hydra-scroll-other-window/body
-
-   "M-j" (lambda () (interactive)
-           (join-line -1))
-
-   ;;   "M-j" `avy-goto-char-timer
-
-   "C-z" `avy-goto-char-timer
-
-   )
-
-  ;; Cc
-  (general-define-key
-   :prefix "C-c"
-   "c" 'org-capture
-   "]" 'hydra-smartparens/body
-   "l" 'org-store-link
-   "m" 'hydra-music/body
-   "s" 'ispell-word
-   "z" 'hydra-index/body
-   "g" 'consult-git-grep
-
-   "i" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
-
-   "t" 'consult-theme
-   "<up>" 'windmove-up
-   "<down>" 'windmove-down
-   "<left>" 'windmove-left
-   "<right>" 'windmove-right
-
-   )
-  ;; Cx
-  (general-define-key
-   :prefix "C-x"
-   "b" 'consult-buffer
-   "m" 'magit-status
-   "a" 'ace-jump-mode
-   "C-b" 'ibuffer
-   "k" 'kill-this-buffer-unless-scratch
-   "w" 'elfeed
-   )
-  ;; ( general-def python-mode-map
-  ;;   "C-c f" 'py-yapf-buffer
-
-  ;;   )
-
-  (general-def lsp-mode-map
-    "C-c f" 'lsp-format-buffer
-
-
-    )
-  ;; Swiper
-  ;; (general-def swiper-map
-  ;;   "M-%" 'swiper-query-replace
-  ;;   )
-
-  (general-def projectile-mode-map
-    "s-p" 'projectile-command-map
-
+  (use-package crux
+    :ensure t
     )
 
 
-  )
+
+
+  (use-package general
+    :ensure t
+    :config
+    (general-define-key
+     ;;"M-x" 'counsel-M-x
+     ;;"C-s" 'swiper
+     "C-M-y" 'consult-yank-from-kill-ring
+     "M-y" 'consult-yank-pop
+     "M-g M-g" 'consult-goto-line
+     "M-s" 'isearch-forward
+     "C-," 'hydra-mc/body
+     "C-<backspace>" 'crux-kill-line-backwards
+     [remap move-beginning-of-line] 'crux-move-beginning-of-line
+     [remap kill-whole-line] 'crux-kill-whole-line
+     [(shift return)] 'crux-smart-open-line
+     ;;"C-<tab>" 'hs-cycle
+
+     "C-M-v" 'vl/hydra-scroll-other-window/body
+
+     "M-j" (lambda () (interactive)
+             (join-line -1))
+
+     ;;   "M-j" `avy-goto-char-timer
+
+     "C-z" `avy-goto-char-timer
+
+     )
+
+    ;; Cc
+    (general-define-key
+     :prefix "C-c"
+     ;;"c" 'org-capture
+     "c" telega-prefix-map
+     "]" 'hydra-smartparens/body
+     "l" 'org-store-link
+     "m" 'hydra-music/body
+     "s" 'ispell-word
+     "z" 'hydra-index/body
+     "g" 'consult-git-grep
+
+     "i" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
+
+     "t" 'consult-theme
+     "<up>" 'windmove-up
+     "<down>" 'windmove-down
+     "<left>" 'windmove-left
+     "<right>" 'windmove-right
+
+     )
+    ;; Cx
+    (general-define-key
+     :prefix "C-x"
+     "b" 'consult-buffer
+     "m" 'magit-status
+     "a" 'ace-jump-mode
+     "C-b" 'ibuffer
+     "k" 'kill-this-buffer-unless-scratch
+     "w" 'elfeed
+     )
+    ;; ( general-def python-mode-map
+    ;;   "C-c f" 'py-yapf-buffer
+
+    ;;   )
+
+    (general-def lsp-mode-map
+      "C-c f" 'lsp-format-buffer
+
+
+      )
+    ;; Swiper
+    ;; (general-def swiper-map
+    ;;   "M-%" 'swiper-query-replace
+    ;;   )
+
+    (general-def projectile-mode-map
+      "s-p" 'projectile-command-map
+
+      )
+
+
+    )
 
 #+END_SRC
 
@@ -3169,34 +3170,36 @@ I use LSP for python.
 ** Telegram
 #+BEGIN_SRC emacs-lisp
 
-(use-package tracking
-  :defer t
-  :config
-  (setq tracking-faces-priorities '(all-the-icons-pink
-                                    all-the-icons-lgreen
-                                    all-the-icons-lblue))
-  (setq tracking-frame-behavior nil))
+  (use-package tracking
+    :defer t
+    :config
+    (setq tracking-faces-priorities '(all-the-icons-pink
+                                      all-the-icons-lgreen
+                                      all-the-icons-lblue))
+    (setq tracking-frame-behavior nil))
 
-(use-package visual-fill-column
-  :ensure t
-  )
+  (use-package visual-fill-column
+    :ensure t
+    )
 
-(use-package rainbow-identifiers
-  :ensure t
-  )
+  (use-package rainbow-identifiers
+    :ensure t
+    )
 
 
-(use-package telega
-  :commands telega
-  :config
-  (setq telega-user-use-avatars t
-        telega-use-tracking-for '(any pin unread)
-        telega-chat-use-markdown-formatting t
-        telega-emoji-use-images t
-        telega-msg-rainbow-title t
-        telega-chat-fill-column 75))
+  (use-package telega
+    :commands telega
+    :config
+    (setq telega-user-use-avatars t
+          telega-use-tracking-for '(any pin unread)
+          telega-chat-use-markdown-formatting t
+          telega-emoji-use-images t
+          telega-msg-rainbow-title t
+          telega-chat-fill-column 75))
 
-(global-set-key [f1] 'telega)
+  (global-set-key [f1] 'telega)
+
+;  (define-key global-map (kbd "f12") telega-prefix-map)
 
 #+END_SRC
 
