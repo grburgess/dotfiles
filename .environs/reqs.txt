@@ -1,4 +1,5 @@
 future
+isort
 autopep8
 cmasher
 bayescorner
