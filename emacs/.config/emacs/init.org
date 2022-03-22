@@ -461,94 +461,79 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package crux
-    :ensure t
+(use-package crux
+  :ensure t
+  )
+
+
+
+
+(use-package general
+  :ensure t
+  :config
+  (general-define-key
+   "C-M-y" 'consult-yank-from-kill-ring
+   "M-y" 'consult-yank-pop
+   "M-g M-g" 'consult-goto-line
+   "M-s" 'isearch-forward
+   "C-," 'hydra-mc/body
+   "C-<backspace>" 'crux-kill-line-backwards
+   [remap move-beginning-of-line] 'crux-move-beginning-of-line
+   [remap kill-whole-line] 'crux-kill-whole-line
+   [(shift return)] 'crux-smart-open-line
+   ;;"C-<tab>" 'hs-cycle
+   "C-M-v" 'vl/hydra-scroll-other-window/body
+   "M-j" (lambda () (interactive)
+           (join-line -1))
+   "C-z" `avy-goto-char-timer
+   )
+
+  ;; Cc
+  (general-define-key
+   :prefix "C-c"
+   ;;"c" 'org-capture
+   ;;"c" telega-prefix-map
+   "]" 'hydra-smartparens/body
+   "l" 'org-store-link
+   "m" 'hydra-music/body
+   "s" 'ispell-word
+   "z" 'hydra-index/body
+   "g" 'consult-git-grep
+
+   "i" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
+   "t" 'consult-theme
+   "<up>" 'windmove-up
+   "<down>" 'windmove-down
+   "<left>" 'windmove-left
+   "<right>" 'windmove-right
+
+   )
+  ;; Cx
+  (general-define-key
+   :prefix "C-x"
+   "b" 'consult-buffer
+   "m" 'magit-status
+   "a" 'ace-jump-mode
+   "C-b" 'ibuffer
+   "k" 'kill-this-buffer-unless-scratch
+   "w" 'elfeed
+   )
+
+  ( general-def python-mode-map
+    "C-c f" 'jmb/beautify-python
+    )
+
+  ;; (general-def lsp-mode-map
+  ;;   "C-c f" 'lsp-format-buffer
+  ;;      )
+
+  (general-def projectile-mode-map
+    "s-p" 'projectile-command-map
+
     )
 
 
-
-
-  (use-package general
-    :ensure t
-    :config
-    (general-define-key
-     ;;"M-x" 'counsel-M-x
-     ;;"C-s" 'swiper
-     "C-M-y" 'consult-yank-from-kill-ring
-     "M-y" 'consult-yank-pop
-     "M-g M-g" 'consult-goto-line
-     "M-s" 'isearch-forward
-     "C-," 'hydra-mc/body
-     "C-<backspace>" 'crux-kill-line-backwards
-     [remap move-beginning-of-line] 'crux-move-beginning-of-line
-     [remap kill-whole-line] 'crux-kill-whole-line
-     [(shift return)] 'crux-smart-open-line
-     ;;"C-<tab>" 'hs-cycle
-
-     "C-M-v" 'vl/hydra-scroll-other-window/body
-
-     "M-j" (lambda () (interactive)
-             (join-line -1))
-
-     ;;   "M-j" `avy-goto-char-timer
-
-     "C-z" `avy-goto-char-timer
-
-     )
-
-    ;; Cc
-    (general-define-key
-     :prefix "C-c"
-     ;;"c" 'org-capture
-     "c" telega-prefix-map
-     "]" 'hydra-smartparens/body
-     "l" 'org-store-link
-     "m" 'hydra-music/body
-     "s" 'ispell-word
-     "z" 'hydra-index/body
-     "g" 'consult-git-grep
-
-     "i" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
-
-     "t" 'consult-theme
-     "<up>" 'windmove-up
-     "<down>" 'windmove-down
-     "<left>" 'windmove-left
-     "<right>" 'windmove-right
-
-     )
-    ;; Cx
-    (general-define-key
-     :prefix "C-x"
-     "b" 'consult-buffer
-     "m" 'magit-status
-     "a" 'ace-jump-mode
-     "C-b" 'ibuffer
-     "k" 'kill-this-buffer-unless-scratch
-     "w" 'elfeed
-     )
-    ;; ( general-def python-mode-map
-    ;;   "C-c f" 'py-yapf-buffer
-
-    ;;   )
-
-    (general-def lsp-mode-map
-      "C-c f" 'lsp-format-buffer
-
-
-      )
-    ;; Swiper
-    ;; (general-def swiper-map
-    ;;   "M-%" 'swiper-query-replace
-    ;;   )
-
-    (general-def projectile-mode-map
-      "s-p" 'projectile-command-map
-
-      )
-
-
-    )
+  )
 
 #+END_SRC
 
@@ -942,6 +927,63 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 #+RESULTS:
 : t
 
+** pulsar
+#+begin_src emacs-lisp
+
+(use-package pulsar
+  :ensure t
+  :straight
+  (:host github :repo "protesilaos/pulsar" :branch "main" :files ("*.el"))
+  :config
+
+  (customize-set-variable
+   'pulsar-pulse-functions ; Read the doc string for why not `setq'
+   '(recenter-top-bottom
+     move-to-window-line-top-bottom
+     reposition-window
+     bookmark-jump
+     other-window
+     delete-window
+     delete-other-windows
+     forward-page
+     backward-page
+     scroll-up-command
+     scroll-down-command
+     windmove-right
+     windmove-left
+     windmove-up
+     windmove-down
+     windmove-swap-states-right
+     windmove-swap-states-left
+     windmove-swap-states-up
+     windmove-swap-states-down
+     tab-new
+     tab-close
+     tab-next
+     org-next-visible-heading
+     org-previous-visible-heading
+     org-forward-heading-same-level
+     org-backward-heading-same-level
+     outline-backward-same-level
+     outline-forward-same-level
+     outline-next-visible-heading
+     outline-previous-visible-heading
+     outline-up-heading))
+
+  (setq pulsar-face 'pulsar-magenta)
+  (setq pulsar-delay 0.055)
+
+  ;; integration with the `consult' package:
+  (add-hook 'consult-after-jump-hook #'pulsar-recenter-top)
+  (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
+
+
+
+
+  )
+
+
+#+end_src
 ** Beacon
 
 Some nice visual modes
@@ -982,6 +1024,15 @@ Some nice visual modes
   :hook (prog-mode . rainbow-mode )
   )
 #+end_src
+
+** svglib
+#+begin_src emacs-lisp
+(use-package svg-lib
+  :ensure t
+  )
+#+end_src
+
+#+RESULTS:
 
 * eshell
 ** configuration
@@ -1257,6 +1308,30 @@ folder, otherwise delete a word"
 
 #+RESULTS:
 : dw/minibuffer-backward-kill
+*** posframe
+#+begin_src emacs-lisp
+;; (use-package posframe :demand)
+;; (use-package vertico-posframe
+;;   :straight (vertico-posframe :host github :repo "tumashu/vertico-posframe")
+;;                                         ;:disabled
+;;   :config
+;;   (setq vertico-posframe-parameters
+;;         '((left-fringe . 8)
+;;           (right-fringe . 8)
+;;           (alpha . 95)
+;;           ))
+;;   (defun my/posframe-poshandler-p0.5p0-to-f0.5p1 (info)
+;;     (let ((x (car (posframe-poshandler-p0.5p0-to-f0.5f0 info)))
+
+;;           (y (cdr (posframe-poshandler-point-1 info nil t))))
+;;       (cons x y)))
+;;   (setq vertico-posframe-poshandler 'my/posframe-poshandler-p0.5p0-to-f0.5p1)
+;;   (vertico-posframe-mode 1))
+
+#+end_src
+
+#+RESULTS:
+: t
 
 ** company
 
@@ -1278,18 +1353,21 @@ folder, otherwise delete a word"
 
 ** region completion Corfu
 #+begin_src emacs-lisp
-;; (use-package corfu
-;;   :straight '(corfu :host github
-;;                     :repo "minad/corfu")
-;;   :bind (:map corfu-map
-;;               ("C-j" . corfu-next)
-;;               ("C-k" . corfu-previous)
-;;               ("C-f" . corfu-insert))
-;;   :custom
-;;   (corfu-cycle t)
-;;   :config
-;;   (corfu-global-mode))
+(use-package corfu
+  :straight '(corfu :host github
+                    :repo "minad/corfu")
+  :bind (:map corfu-map
+              ("C-j" . corfu-next)
+              ("C-k" . corfu-previous)
+              ("C-f" . corfu-insert))
+  :custom
+  (corfu-cycle t)
+  :config
+  (corfu-global-mode))
 #+end_src
+
+#+RESULTS:
+
 ** Orderless
 #+begin_src emacs-lisp
 (use-package orderless
@@ -1353,6 +1431,18 @@ Allows to jump into a a directory within the minibuffer
 #+RESULTS:
 : consult-dir-jump-file
 
+** kind icon
+#+begin_src emacs-lisp
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  :custom
+  (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+#+end_src
+
+#+RESULTS:
 
 ** marginalia
 #+begin_src emacs-lisp
@@ -2770,11 +2860,22 @@ I use LSP for python.
 
 #+BEGIN_SRC emacs-lisp
 
+(use-package py-isort
+  :ensure t
+  :after python
+  )
+
 (use-package blacken
+  :after python
   :init
   (setq-default blacken-fast-unsafe t)
   (setq-default blacken-line-length 80)
   )
+
+(defun jmb/beautify-python ()
+  (interactive)
+  (blacken-buffer)
+  (py-isort-buffer))
 
 
 (use-package pyvenv
@@ -2792,7 +2893,7 @@ I use LSP for python.
 (use-package python-mode
   :hook
   (python-mode . pyvenv-mode)
-                                        ;  (python-mode . flycheck-mode)
+                                        ;(python-mode . flycheck-mode)
   (python-mode . company-mode)
                                         ;(python-mode . blacken-mode)
   (python-mode . yas-minor-mode)
@@ -2826,11 +2927,7 @@ I use LSP for python.
 
 
 (defun wcx-restart-python ()
-
-  ;; (set-variable 'ycmd-server-command `(,(executable-find "python3") ,(file-truename "~/.emacs.d/ycmd/ycmd/")))
-  (pyvenv-restart-python)
-  ;; (ycmd-restart-semantic-server)
-  )
+  (pyvenv-restart-python))
 
 
 ;; (use-package auto-virtualenvwrapper
@@ -2873,7 +2970,8 @@ I use LSP for python.
   :straight
   (:host github :repo "stan-dev/stan-mode" :branch "master" :files ("stan-mode/stan-mode.el" "stan-mode/stan-keywords.el"))
   ;;  :ensure t
-  :mode ("\\.stan\\'" . stan-mode)
+  :mode (("\\.stan\\'" . stan-mode)
+         ("\\.stanfunctions\\'" . stan-mode))
   :hook (stan-mode . stan-mode-setup)
 
   :config
@@ -2940,7 +3038,7 @@ I use LSP for python.
 #+END_SRC
 
 #+RESULTS:
-: ((\.stan\' . stan-mode) (\.dockerfile\' . dockerfile-mode) (/Dockerfile\(?:\.[^/\]*\)?\' . dockerfile-mode) (\.md\' . markdown-mode) (\.tex\' . latex-mode) (\.yml$ . yaml-mode) (\.\(e?ya?\|ra\)ml\' . yaml-mode) (/git-rebase-todo\' . git-rebase-mode) (\.\(?:md\|markdown\|mkd\|mdown\|mkdn\|mdwn\)\' . markdown-mode) (\.hva\' . latex-mode) (\.envrc\' . direnv-envrc-mode) (\.gpg\(~\|\.~[0-9]+~\)?\' nil epa-file) (\.elc\' . elisp-byte-code-mode) (\.zst\' nil jka-compr) (\.dz\' nil jka-compr) (\.xz\' nil jka-compr) (\.lzma\' nil jka-compr) (\.lz\' nil jka-compr) (\.g?z\' nil jka-compr) (\.bz2\' nil jka-compr) (\.Z\' nil jka-compr) (\.vr[hi]?\' . vera-mode) (\(?:\.\(?:rbw?\|ru\|rake\|thor\|jbuilder\|rabl\|gemspec\|podspec\)\|/\(?:Gem\|Rake\|Cap\|Thor\|Puppet\|Berks\|Brew\|Vagrant\|Guard\|Pod\)file\)\' . ruby-mode) (\.re?st\' . rst-mode) (\.py[iw]?\' . python-mode) (\.m\' . octave-maybe-mode) (\.less\' . less-css-mode) (\.scss\' . scss-mode) (\.awk\' . awk-mode) (\.\(u?lpc\|pike\|pmod\(\.in\)?\)\' . pike-mode) (\.idl\' . idl-mode) (\.java\' . java-mode) (\.m\' . objc-mode) (\.ii\' . c++-mode) (\.i\' . c-mode) (\.lex\' . c-mode) (\.y\(acc\)?\' . c-mode) (\.h\' . c-or-c++-mode) (\.c\' . c-mode) (\.\(CC?\|HH?\)\' . c++-mode) (\.[ch]\(pp\|xx\|\+\+\)\' . c++-mode) (\.\(cc\|hh\)\' . c++-mode) (\.\(bat\|cmd\)\' . bat-mode) (\.[sx]?html?\(\.[a-zA-Z_]+\)?\' . mhtml-mode) (\.svgz?\' . image-mode) (\.svgz?\' . xml-mode) (\.x[bp]m\' . image-mode) (\.x[bp]m\' . c-mode) (\.p[bpgn]m\' . image-mode) (\.tiff?\' . image-mode) (\.gif\' . image-mode) (\.png\' . image-mode) (\.jpe?g\' . image-mode) (\.webp\' . image-mode) (\.te?xt\' . text-mode) (\.[tT]e[xX]\' . tex-mode) (\.ins\' . tex-mode) (\.ltx\' . latex-mode) (\.dtx\' . doctex-mode) (\.org\' . org-mode) (\.dir-locals\(?:-2\)?\.el\' . lisp-data-mode) (eww-bookmarks\' . lisp-data-mode) (tramp\' . lisp-data-mode) (/archive-contents\' . lisp-data-mode) (places\' . lisp-data-mode) (\.emacs-places\' . lisp-data-mode) (\.el\' . emacs-lisp-mode) (Project\.ede\' . emacs-lisp-mode) (\.\(scm\|stk\|ss\|sch\)\' . scheme-mode) (\.l\' . lisp-mode) (\.li?sp\' . lisp-mode) (\.[fF]\' . fortran-mode) (\.for\' . fortran-mode) (\.p\' . pascal-mode) (\.pas\' . pascal-mode) (\.\(dpr\|DPR\)\' . delphi-mode) (\.\([pP]\([Llm]\|erl\|od\)\|al\)\' . perl-mode) (Imakefile\' . makefile-imake-mode) (Makeppfile\(?:\.mk\)?\' . makefile-makepp-mode) (\.makepp\' . makefile-makepp-mode) (\.mk\' . makefile-bsdmake-mode) (\.make\' . makefile-bsdmake-mode) (GNUmakefile\' . makefile-gmake-mode) ([Mm]akefile\' . makefile-bsdmake-mode) (\.am\' . makefile-automake-mode) (\.texinfo\' . texinfo-mode) (\.te?xi\' . texinfo-mode) (\.[sS]\' . asm-mode) (\.asm\' . asm-mode) (\.css\' . css-mode) (\.mixal\' . mixal-mode) (\.gcov\' . compilation-mode) (/\.[a-z0-9-]*gdbinit . gdb-script-mode) (-gdb\.gdb . gdb-script-mode) ([cC]hange\.?[lL]og?\' . change-log-mode) ([cC]hange[lL]og[-.][0-9]+\' . change-log-mode) (\$CHANGE_LOG\$\.TXT . change-log-mode) (\.scm\.[0-9]*\' . scheme-mode) (\.[ckz]?sh\'\|\.shar\'\|/\.z?profile\' . sh-mode) (\.bash\' . sh-mode) (/PKGBUILD\' . sh-mode) (\(/\|\`\)\.\(bash_\(profile\|history\|log\(in\|out\)\)\|z?log\(in\|out\)\)\' . sh-mode) (\(/\|\`\)\.\(shrc\|zshrc\|m?kshrc\|bashrc\|t?cshrc\|esrc\)\' . sh-mode) (\(/\|\`\)\.\([kz]shenv\|xinitrc\|startxrc\|xsession\)\' . sh-mode) (\.m?spec\' . sh-mode) (\.m[mes]\' . nroff-mode) (\.man\' . nroff-mode) (\.sty\' . latex-mode) (\.cl[so]\' . latex-mode) (\.bbl\' . latex-mode) (\.bib\' . bibtex-mode) (\.bst\' . bibtex-style-mode) (\.sql\' . sql-mode) (\(acinclude\|aclocal\|acsite\)\.m4\' . autoconf-mode) (\.m[4c]\' . m4-mode) (\.mf\' . metafont-mode) (\.mp\' . metapost-mode) (\.vhdl?\' . vhdl-mode) (\.article\' . text-mode) (\.letter\' . text-mode) (\.i?tcl\' . tcl-mode) (\.exp\' . tcl-mode) (\.itk\' . tcl-mode) (\.icn\' . icon-mode) (\.sim\' . simula-mode) (\.mss\' . scribe-mode) (\.f9[05]\' . f90-mode) (\.f0[38]\' . f90-mode) (\.indent\.pro\' . fundamental-mode) (\.\(pro\|PRO\)\' . idlwave-mode) (\.srt\' . srecode-template-mode) (\.prolog\' . prolog-mode) (\.tar\' . tar-mode) (\.\(arc\|zip\|lzh\|lha\|zoo\|[jew]ar\|xpi\|rar\|cbr\|7z\|squashfs\|ARC\|ZIP\|LZH\|LHA\|ZOO\|[JEW]AR\|XPI\|RAR\|CBR\|7Z\|SQUASHFS\)\' . archive-mode) (\.oxt\' . archive-mode) (\.\(deb\|[oi]pk\)\' . archive-mode) (\`/tmp/Re . text-mode) (/Message[0-9]*\' . text-mode) (\`/tmp/fol/ . text-mode) (\.oak\' . scheme-mode) (\.sgml?\' . sgml-mode) (\.x[ms]l\' . xml-mode) (\.dbk\' . xml-mode) (\.dtd\' . sgml-mode) (\.ds\(ss\)?l\' . dsssl-mode) (\.js[mx]?\' . javascript-mode) (\.har\' . javascript-mode) (\.json\' . javascript-mode) (\.[ds]?va?h?\' . verilog-mode) (\.by\' . bovine-grammar-mode) (\.wy\' . wisent-grammar-mode) (\.erts\' . erts-mode) ([:/\]\..*\(emacs\|gnus\|viper\)\' . emacs-lisp-mode) (\`\..*emacs\' . emacs-lisp-mode) ([:/]_emacs\' . emacs-lisp-mode) (/crontab\.X*[0-9]+\' . shell-script-mode) (\.ml\' . lisp-mode) (\.ld[si]?\' . ld-script-mode) (ld\.?script\' . ld-script-mode) (\.xs\' . c-mode) (\.x[abdsru]?[cnw]?\' . ld-script-mode) (\.zone\' . dns-mode) (\.soa\' . dns-mode) (\.asd\' . lisp-mode) (\.\(asn\|mib\|smi\)\' . snmp-mode) (\.\(as\|mi\|sm\)2\' . snmpv2-mode) (\.\(diffs?\|patch\|rej\)\' . diff-mode) (\.\(dif\|pat\)\' . diff-mode) (\.[eE]?[pP][sS]\' . ps-mode) (\.\(?:PDF\|DVI\|OD[FGPST]\|DOCX\|XLSX?\|PPTX?\|pdf\|djvu\|dvi\|od[fgpst]\|docx\|xlsx?\|pptx?\)\' . doc-view-mode-maybe) (configure\.\(ac\|in\)\' . autoconf-mode) (\.s\(v\|iv\|ieve\)\' . sieve-mode) (BROWSE\' . ebrowse-tree-mode) (\.ebrowse\' . ebrowse-tree-mode) (#\*mail\* . mail-mode) (\.g\' . antlr-mode) (\.mod\' . m2-mode) (\.ses\' . ses-mode) (\.docbook\' . sgml-mode) (\.com\' . dcl-mode) (/config\.\(?:bat\|log\)\' . fundamental-mode) (/\.\(authinfo\|netrc\)\' . authinfo-mode) (\.\(?:[iI][nN][iI]\|[lL][sS][tT]\|[rR][eE][gG]\|[sS][yY][sS]\)\' . conf-mode) (\.la\' . conf-unix-mode) (\.ppd\' . conf-ppd-mode) (java.+\.conf\' . conf-javaprop-mode) (\.properties\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-javaprop-mode) (\.toml\' . conf-toml-mode) (\.desktop\' . conf-desktop-mode) (/\.redshift\.conf\' . conf-windows-mode) (\`/etc/\(?:DIR_COLORS\|ethers\|.?fstab\|.*hosts\|lesskey\|login\.?de\(?:fs\|vperm\)\|magic\|mtab\|pam\.d/.*\|permissions\(?:\.d/.+\)?\|protocols\|rpc\|services\)\' . conf-space-mode) (\`/etc/\(?:acpid?/.+\|aliases\(?:\.d/.+\)?\|default/.+\|group-?\|hosts\..+\|inittab\|ksysguarddrc\|opera6rc\|passwd-?\|shadow-?\|sysconfig/.+\)\' . conf-mode) ([cC]hange[lL]og[-.][-0-9a-z]+\' . change-log-mode) (/\.?\(?:gitconfig\|gnokiirc\|hgrc\|kde.*rc\|mime\.types\|wgetrc\)\' . conf-mode) (/\.\(?:asound\|enigma\|fetchmail\|gltron\|gtk\|hxplayer\|mairix\|mbsync\|msmtp\|net\|neverball\|nvidia-settings-\|offlineimap\|qt/.+\|realplayer\|reportbug\|rtorrent\.\|screen\|scummvm\|sversion\|sylpheed/.+\|xmp\)rc\' . conf-mode) (/\.\(?:gdbtkinit\|grip\|mpdconf\|notmuch-config\|orbital/.+txt\|rhosts\|tuxracer/options\)\' . conf-mode) (/\.?X\(?:default\|resource\|re\)s\> . conf-xdefaults-mode) (/X11.+app-defaults/\|\.ad\' . conf-xdefaults-mode) (/X11.+locale/.+/Compose\' . conf-colon-mode) (/X11.+locale/compose\.dir\' . conf-javaprop-mode) (\.~?[0-9]+\.[0-9][-.0-9]*~?\' nil t) (\.\(?:orig\|in\|[bB][aA][kK]\)\' nil t) ([/.]c\(?:on\)?f\(?:i?g\)?\(?:\.[a-zA-Z0-9._-]+\)?\' . conf-mode-maybe) (\.[1-9]\' . nroff-mode) (\.art\' . image-mode) (\.avs\' . image-mode) (\.bmp\' . image-mode) (\.cmyk\' . image-mode) (\.cmyka\' . image-mode) (\.crw\' . image-mode) (\.dcr\' . image-mode) (\.dcx\' . image-mode) (\.dng\' . image-mode) (\.dpx\' . image-mode) (\.fax\' . image-mode) (\.heic\' . image-mode) (\.hrz\' . image-mode) (\.icb\' . image-mode) (\.icc\' . image-mode) (\.icm\' . image-mode) (\.ico\' . image-mode) (\.icon\' . image-mode) (\.jbg\' . image-mode) (\.jbig\' . image-mode) (\.jng\' . image-mode) (\.jnx\' . image-mode) (\.miff\' . image-mode) (\.mng\' . image-mode) (\.mvg\' . image-mode) (\.otb\' . image-mode) (\.p7\' . image-mode) (\.pcx\' . image-mode) (\.pdb\' . image-mode) (\.pfa\' . image-mode) (\.pfb\' . image-mode) (\.picon\' . image-mode) (\.pict\' . image-mode) (\.rgb\' . image-mode) (\.rgba\' . image-mode) (\.tga\' . image-mode) (\.wbmp\' . image-mode) (\.webp\' . image-mode) (\.wmf\' . image-mode) (\.wpg\' . image-mode) (\.xcf\' . image-mode) (\.xmp\' . image-mode) (\.xwd\' . image-mode) (\.yuv\' . image-mode) (\.tgz\' . tar-mode) (\.tbz2?\' . tar-mode) (\.txz\' . tar-mode) (\.tzst\' . tar-mode) (\.drv\' . latex-mode))
+| #[0 \301\300!\210\302\303\304\305F\211\207 [yas-key-syntaxes make-local-variable w_ w_. w_.() ^ ] 4] | stan-snippets-initialize | flycheck-stan-stanc3-setup | flycheck-stan-stanc2-setup | eldoc-stan-setup | company-stan-setup | stan-mode-setup |
 
 *** Jupyter
 
@@ -3138,10 +3236,13 @@ I use LSP for python.
   :ensure t
   :straight
   (:host github :repo "bkaestner/redacted.el" :branch "main" :files ("*.el"))
+  :init
+  (global-set-key [f2] 'redacted-mode)
+
   )
 
 
-(global-set-key [f2] 'redacted-mode)
+
 #+end_src
 
 #+RESULTS:
@@ -3170,36 +3271,38 @@ I use LSP for python.
 ** Telegram
 #+BEGIN_SRC emacs-lisp
 
-  (use-package tracking
-    :defer t
-    :config
-    (setq tracking-faces-priorities '(all-the-icons-pink
-                                      all-the-icons-lgreen
-                                      all-the-icons-lblue))
-    (setq tracking-frame-behavior nil))
+(use-package tracking
+  :defer t
+  :config
+  (setq tracking-faces-priorities '(all-the-icons-pink
+                                    all-the-icons-lgreen
+                                    all-the-icons-lblue))
+  (setq tracking-frame-behavior nil))
 
-  (use-package visual-fill-column
-    :ensure t
-    )
+(use-package visual-fill-column
+  :ensure t
+  )
 
-  (use-package rainbow-identifiers
-    :ensure t
-    )
+(use-package rainbow-identifiers
+  :ensure t
+  )
 
 
-  (use-package telega
-    :commands telega
-    :config
-    (setq telega-user-use-avatars t
-          telega-use-tracking-for '(any pin unread)
-          telega-chat-use-markdown-formatting t
-          telega-emoji-use-images t
-          telega-msg-rainbow-title t
-          telega-chat-fill-column 75))
-
+(use-package telega
+  :commands telega
+  :config
+  (setq telega-user-use-avatars t
+        telega-use-tracking-for '(any pin unread)
+        telega-chat-use-markdown-formatting t
+        telega-emoji-use-images t
+        telega-msg-rainbow-title t
+        telega-chat-fill-column 75)
+  :init
   (global-set-key [f1] 'telega)
+  (define-key global-map (kbd "C-c c") telega-prefix-map)
 
-;  (define-key global-map (kbd "f12") telega-prefix-map)
+  )
+                                        ;  (define-key global-map (kbd "f12") telega-prefix-map)
 
 #+END_SRC
 

@@ -8,6 +8,7 @@
 	TeX-insert-dollar
 	TeX-insert-sub-or-superscript
 	c-electric-paren
+	c-electric-semi&comma
 	counsel-yank-pop
 	crux-move-beginning-of-line
 	hydra-mc/mc/unmark-next-like-this
@@ -27,5 +28,5 @@
 	hydra-mc/mc/mark-previous-like-this
 	hydra-mc/mc/unmark-next-like-this
 	hydra-mc/mc/unmark-previous-like-this
-
+	lsp-ui-doc--handle-mouse-movement
 	))
