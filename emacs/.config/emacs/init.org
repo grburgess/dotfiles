@@ -3231,6 +3231,7 @@ I use LSP for python.
 (use-package mu4e
   :load-path  "/usr/local/share/emacs/site-lisp/mu/mu4e/"
   :straight nil
+
   :config
 
 
@@ -3248,8 +3249,9 @@ I use LSP for python.
 ;; this command is called to sync imap servers:
 (setq mu4e-get-mail-command (concat (executable-find "mbsync") " -a"))
 ;; how often to call it in seconds:
-(setq mu4e-update-interval (* 5 60))
+(setq mu4e-update-interval (* 2 60))
 
+(setq mu4e-index-update-error-warning nil)
 ;; save attachment to desktop by default
 ;; or another choice of yours:
 (setq mu4e-attachment-dir "~/Downloads")
@@ -3407,7 +3409,9 @@ I use LSP for python.
 (setq mu4e-headers-include-related nil)
 ;; by default do not show threads:
 (setq mu4e-headers-show-threads nil)
+:init
 
+(global-set-key [f6] 'mu4e)
 )
 
 #+end_src
