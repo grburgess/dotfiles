@@ -90,6 +90,7 @@ export HDF5_DISABLE_VERSION_CHECK=1
 export HDF5_DIR=/usr/local/opt/hdf5
 
 
+export LS_COLORS="*.rsp=32:*.rsp2=32:*.h5=34:*.pha=33:*.fits=33"
 
 # # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 # export PATH="$PATH:$HOME/.rvm/bin"
