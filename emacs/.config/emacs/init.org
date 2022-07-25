@@ -397,6 +397,15 @@ the buffer is buried."
   ("i" lsp-find-implementation "find implementation")
   ("r" lsp-find-references "find references"))
 
+
+(defhydra hydra-python-format (:color blue)
+  "lsp"
+  ("f" blacken-buffer "blacken")
+  ("i" py-isort-buffer "isort")
+
+  )
+
+
 (defhydra hydra-music (:color red :timeout 4)
   "music"
   ("n" #'musica-play-next "next")
@@ -418,6 +427,41 @@ the buffer is buried."
   ("sn" mc/skip-to-next-like-this "skip to next")
   ("sp" mc/skip-to-previous-like-this "skip to prev")
   )
+
+
+(defhydra hydra-window (:color blue :hint nil)
+  "
+                                                                       ╭─────────┐
+     Move to      Size    Scroll        Split                    Do    │ Windows │
+  ╭────────────────────────────────────────────────────────────────────┴─────────╯
+        ^^            ^_K_^       ^_p_^    ╭─┬─┐^ ^        ╭─┬─┐^ ^         ↺ [_u_] undo layout
+        ^^↑^^           ^^↑^^       ^^↑^^    │ │ │_v_ertical ├─┼─┤_b_alance   ↻ [_r_] restore layout
+      ←   →     _H_ ←   → _L_   ^^ ^^    ╰─┴─╯^ ^        ╰─┴─╯^ ^         ✗ [_d_] close window
+        ^^↓^^           ^^↓^^       ^^↓^^    ╭───┐^ ^        ╭───┐^ ^         ⇋ [_w_] cycle window
+        ^^            ^_J_^       ^_n_^    ├───┤_s_tack    │   │_z_oom
+        ^^ ^^           ^^ ^^       ^^ ^^    ╰───╯^ ^        ╰───╯^ ^
+  --------------------------------------------------------------------------------
+            "
+  ("<tab>" hydra-master/body "back")
+  ("<ESC>" nil "quit")
+  ("n" vl/scroll-up-half-other-window :color red)
+  ("p" vl/scroll-down-half-other-window :color red)
+  ("b" balance-windows)
+  ("d" delete-window)
+  ("H" shrink-window-horizontally :color red)
+  ("<left>" windmove-left :color red)
+  ("J" shrink-window :color red)
+  ("<down>" windmove-down :color red)
+  ("K" enlarge-window :color red)
+  ("<up>" windmove-up :color red)
+  ("L" enlarge-window-horizontally :color red)
+  ("<right>" windmove-right :color red)
+  ("r" winner-redo :color red)
+  ("s" split-window-vertically :color red)
+  ("u" winner-undo :color red)
+  ("v" split-window-horizontally :color red)
+  ("w" other-window)
+  ("z" delete-other-windows))
 
 
 (defhydra hydra-smerge (:color pink
@@ -453,16 +497,28 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   ("k" smerge-kill-current)
   ("q" nil "cancel" :color blue))
 
+(defhydra my-mu4e-quick (:color green)
+  "quick email"
+  ("w" (mu4e-headers-search "flag:unread AND maildir:/mpe/INBOX") "unread work")
+  ("p" (mu4e-headers-search "flag:unread AND maildir:/gmail/INBOX")   "unread personal")
+  ("t" (mu4e-headers-search "date:today..now AND maildir:/mpe/INBOX")   "today work")
+  ("c" (mu4e-compose-new)    "compase a message")
+  ("o" (org-mime-edit-mail-in-org-mode)  "edit message in org mode")
+  ("e" (org-mime-htmlize) "export to html")
+
+
+  )
+
 #+end_src
 
 #+RESULTS:
-: hydra-smerge/body
+: my-mu4e-quick/body
 ** General Key maps
 
 #+BEGIN_SRC emacs-lisp
 
 (use-package crux
-  :ensure t
+  :ensure ;TODO: v
   )
 
 
@@ -482,7 +538,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
    [remap kill-whole-line] 'crux-kill-whole-line
    [(shift return)] 'crux-smart-open-line
    ;;"C-<tab>" 'hs-cycle
-   "C-M-v" 'vl/hydra-scroll-other-window/body
+                                        ;"C-M-v" 'hydra-window/body
    "M-j" (lambda () (interactive)
            (join-line -1))
    "C-z" `avy-goto-char-timer
@@ -517,10 +573,12 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
    "C-b" 'ibuffer
    "k" 'kill-this-buffer-unless-scratch
    "w" 'elfeed
+   "'" 'hydra-window/body
+   "/" 'my-mu4e-quick/body
    )
 
   ( general-def python-mode-map
-    "C-c f" 'jmb/beautify-python
+    "C-c f" 'hydra-python-format/body
     )
 
   ;; (general-def lsp-mode-map
@@ -2461,12 +2519,21 @@ This is quite an ugly fix for allowing code markup for expressions like
   :hook (prog-mode . yas-minor-mode)
   :config
 
+  (setq yas-snippet-dirs '("~/.config/emacs/snippets"))
+
   (yas-reload-all)
   )
 (use-package yasnippet-snippets         ; Collection of snippets
-  :ensure t)
+  :after yasnippet
+  :ensure t
+  :config (yasnippet-snippets-initialize)
+
+  )
 
 #+END_SRC
+
+#+RESULTS:
+: t
 
 *** move lines
 #+begin_src emacs-lisp
@@ -2880,8 +2947,6 @@ text-modes with this snippet.
 *** Python
 
 
-I use LSP for python.
-
 #+BEGIN_SRC emacs-lisp
 
 (use-package py-isort
@@ -2896,35 +2961,42 @@ I use LSP for python.
   (setq-default blacken-line-length 80)
   )
 
-(defun jmb/beautify-python ()
-  (interactive)
-  (blacken-buffer)
-  (py-isort-buffer))
+                                        ; direnv mode allows automatic loading of direnv variables
+(use-package direnv
+  :ensure t
+  :config
+  (direnv-mode))
+
 
 
 (use-package pyvenv
   :ensure t
   :config
+
   (pyvenv-tracking-mode 1)
+
   (setq pyvenv-mode-line-indicator
-        '(pyvenv-virtual-env-name ("[venv:" pyvenv-virtual-env-name "] ")))
-  (pyvenv-mode +1)
+        '(pyvenv-virtual-env-name ("<" pyvenv-virtual-env-name "> "  )))
+
+  (pyvenv-mode 1)
 
 
   )
 
 
 (use-package python-mode
+  :ensure nil
+  :straight nil
   :hook
   (python-mode . pyvenv-mode)
-                                        ;(python-mode . flycheck-mode)
   (python-mode . company-mode)
-                                        ;(python-mode . blacken-mode)
   (python-mode . yas-minor-mode)
   :custom
   ;; NOTE: Set these if Python 3 is called "python3" on your system!
   (python-shell-interpreter "python3")
+  (python-shell-interpreter-args "-i")
   :config
+
   (progn
     (defhydra python-indent (python-mode-map "C-c TAB")
       "Adjust python indentation."
@@ -2936,6 +3008,7 @@ I use LSP for python.
       )
     )
 
+  (yas-reload-all)
   )
 
 (use-package sphinx-doc
@@ -2946,42 +3019,19 @@ I use LSP for python.
 
   )
 
-(setq python-shell-interpreter "python3"
-      python-shell-interpreter-args "-i")
+;; (setq python-shell-interpreter "python3"
+;;       python-shell-interpreter-args "-i")
 
 
 (defun wcx-restart-python ()
   (pyvenv-restart-python))
 
 
-;; (use-package auto-virtualenvwrapper
-;;   :ensure t
-;;   :defer t
-;;   :config
-;;   (add-hook 'python-mode-hook #'auto-virtualenvwrapper-activate)
-;;   (add-hook 'window-configuration-change-hook #'auto-virtualenvwrapper-activate)
-;;   (add-hook 'projectile-after-switch-project-hook #'auto-virtualenvwrapper-activate)
-;;   (add-hook 'pyvenv-post-activate-hooks 'wcx-restart-python)
-
-;;   )
-
 #+END_SRC
 
 #+RESULTS:
 : wcx-restart-python
 
-
-#+BEGIN_SRC emacs-lisp
-
-;; (use-package blacken
-;;   :ensure t
-;;   :diminish blacken-mode
-;;   ;; :hook (python-mode . blacken-mode)
-;;   :config
-;;   ;; (setq blacken-line-length 100)
-;;   :bind (('?\C-c ?\C-x ?a  . blacken-buffer)))
-
-#+END_SRC
 
 *** Stan
 
@@ -3258,13 +3308,22 @@ I use LSP for python.
 #+begin_src emacs-lisp
 ;; load mu4e from the installation path.
 ;; yours might differ check with the Emacs installation
+
+(use-package htmlize
+  :ensure t
+  )
+
+(use-package org-mime
+  :ensure t
+  )
+
 (use-package mu4e
   :load-path  "/usr/local/share/emacs/site-lisp/mu/mu4e/"
   :straight nil
 
   :config
 
-
+  (require 'org-mime)
 
   ;; for sending mails
   (require 'smtpmail)
@@ -3307,16 +3366,6 @@ I use LSP for python.
             ("/mpe/Sent" . ?M)))
 
 
-  (add-to-list 'mu4e-bookmarks
-               (make-mu4e-bookmark
-                :name "Inbox - Gmail"
-                :query "maildir:/gmail/INBOX"
-                :key ?g))
-  (add-to-list 'mu4e-bookmarks
-               (make-mu4e-bookmark
-                :name "Inbox - mpe"
-                :query "maildir:/mpe/INBOX"
-                :key ?e))
 
 
 
@@ -3441,6 +3490,20 @@ I use LSP for python.
   (setq mu4e-headers-show-threads nil)
   :init
 
+
+
+  (setq org-mu4e-convert-to-html t)
+
+  (setq org-mime-export-options '(:section-numbers nil
+                                                   :with-author nil
+                                                   :with-toc nil))
+
+  (add-hook 'org-mime-html-hook
+            (lambda ()
+              (org-mime-change-element-style
+               "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
+                             "#5EFFA5" "#211F20"))))
+
   (global-set-key [f6] 'mu4e)
   )
 
@@ -3457,11 +3520,12 @@ I use LSP for python.
                '(:empty . (:name "Empty"
                                  :shortname ""
                                  :function (lambda (msg) "  "))))
-  (setq mu4e-headers-fields '((:empty         .    2)
+  (setq mu4e-headers-fields '((:empty         .    1)
                               (:human-date    .   12)
+                              (:from          .   22)
                               (:flags         .    6)
                               (:mailing-list  .   10)
-                              (:from          .   22)
+
                               (:subject       .   nil)))
   :config
 
