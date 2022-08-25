@@ -10,8 +10,8 @@
 
 export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
 export PATH="/usr/local/lib/ruby/gems/bin:/usr/local/lib/ruby/gems/2.6.0/bin:/Library/TeX/texbin:/opt/X11/bin:${PATH}"
-
-
+export PATH=/opt/homebrew/bin:$PATH
+export PATH=/usr/local/share/python:$PATH
 source ~/.config/zsh/prompt.zsh
 
 
@@ -59,15 +59,16 @@ fi
 #
 
 # Compilation flags
-export ARCHFLAGS="-arch x86_64"
+#export ARCHFLAGS="-arch x86_64"
 
 # VENV PYTHPN
-VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
 export WORKON_HOME=~/.environs
+export VIRTUALENVWRAPPER_VIRTUALENV=/opt/homebrew/bin/virtualenv
 
-source /usr/local/bin/virtualenvwrapper.sh
-
-export PATH=/usr/local/opt/python/libexec/bin:$PATH
+#source /usr/local/bin/virtualenvwrapper.sh
+source /opt/homebrew/bin/virtualenvwrapper.sh
+#export PATH=/usr/local/opt/python/libexec/bin:$PATH
 
 
 # local
@@ -75,10 +76,13 @@ export ATOMDB=~/.threeml/atomdb
 export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
-export MPLBACKEND='Agg'
+#export MPLBACKEND='Agg'
 
 
 export CMDSTAN=/Users/jburgess/.cmdstanpy/cmdstan
+
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/sw/lib
+
 
 bindkey -e
 # End of lines configured by zsh-newuser-install
@@ -87,8 +91,9 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 # HDF5 Sucks....
 export HDF5_DISABLE_VERSION_CHECK=1
-export HDF5_DIR=/usr/local/opt/hdf5
 
+
+export HDF5_DIR="$(brew --prefix hdf5)"
 
 export LS_COLORS="*.rsp=32:*.rsp2=32:*.h5=34:*.pha=33:*.fits=33;01:*.py=32;01:*.ipynb=36"
 
@@ -113,7 +118,7 @@ export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
 
 source ~/.config/zsh/plugins.zsh 
 
-source ~/.config/zsh/emacs.zsh 
+#source ~/.config/zsh/emacs.zsh
 
 
 

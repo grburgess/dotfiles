@@ -3,30 +3,10 @@
 
 (setq mc/cmds-to-run-for-all
       '(
-	LaTeX-insert-left-brace
-	TeX-insert-backslash
-	TeX-insert-dollar
-	TeX-insert-sub-or-superscript
-	c-electric-paren
-	c-electric-semi&comma
-	counsel-yank-pop
-	crux-move-beginning-of-line
-	hydra-mc/mc/unmark-next-like-this
-	kill-region
-	py-electric-colon
-	wdired-finish-edit
-	yaml-electric-dash-and-dot
+	hydra-mc/mc/mark-next-like-this
 	))
 
 (setq mc/cmds-to-run-once
       '(
-	TeX-next-error
-	goto-line
-	handle-switch-frame
-	hydra-mc/mc/edit-lines-and-exit
-	hydra-mc/mc/mark-next-like-this
-	hydra-mc/mc/mark-previous-like-this
-	hydra-mc/mc/unmark-next-like-this
-	hydra-mc/mc/unmark-previous-like-this
-	lsp-ui-doc--handle-mouse-movement
+	hydra-python-format/body
 	))

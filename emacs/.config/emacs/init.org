@@ -712,7 +712,9 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
         modus-themes-tabs-accented t
         modus-themes-paren-match '(bold intense)
         modus-themes-prompts '(bold intense)
-        modus-themes-completions 'opinionated
+        modus-themes-completions (quote ((matches . (extrabold intense))
+                  (selection . (extrabold intense))
+                  (popup . (extrabold intense))))
         modus-themes-org-blocks nil;'tinted-background
         modus-themes-scale-headings t
         modus-themes-region '(bg-only)
@@ -975,7 +977,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   (doom-modeline-env-version nil)
   (doom-modeline-env-enable-python t)
   (doom-modeline-env-enable-ruby nil)
-  (doom-modeline-env-python-executable "python")
+  (doom-modeline-env-python-executable "python3")
   )
 
 
@@ -985,7 +987,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 #+end_src
 
 #+RESULTS:
-| doom-modeline-init | org-persist-read-all | ivy-mode | all-the-icons-ivy-setup | global-company-mode | tramp-register-archive-file-name-handler | magit-maybe-define-global-key-bindings | table--make-cell-map |
+| org-persist-load-all | doom-modeline-init | tramp-register-archive-file-name-handler | emojify-download-emoji-maybe | magit-maybe-define-global-key-bindings | table--make-cell-map |
 
 ** all the icons
 
@@ -3318,7 +3320,7 @@ text-modes with this snippet.
   )
 
 (use-package mu4e
-  :load-path  "/usr/local/share/emacs/site-lisp/mu/mu4e/"
+  :load-path  " /opt/homebrew/share/emacs/site-lisp/mu/mu4e/"
   :straight nil
 
   :config
@@ -3546,10 +3548,55 @@ text-modes with this snippet.
 #+RESULTS:
 : t
 
+* slack
+#+begin_src emacs-lisp
+(use-package slack
+  :commands (slack-start)
+  :init
+  (setq slack-buffer-emojify t) ;; if you want to enable emoji, default nil
+  (setq slack-prefer-current-team t)
+  :config
+
+  (slack-register-team
+   :name "3ML"
+   :default t
+   :token "xoxc-587428499925-578389449025-3982577003922-3089ae95a2e4b8440a83c58dda078eb67380dbcb23c76caf4ddbf325a4567338"
+   :cookie "xoxd-q6shvamqaBjMoVM6BVtSHGKcIYlfoiAfpAc8robsD2fkhrQe0ZGy0JOq5qNQG9MFNRy8nlx6UpToePKs2zdFL1WnBA%2B20F%2Bweb2j0Fc5%2BAPS%2BNe1uwTuJgdtSBcpPdtsxfsQt2PiLvIKMTSfkhek1yQ1BvvT1gWD%2BnIbDgdsJKIQo%2BWNPa202TCS"
+   :subscribed-channels '(general threeml gammapy)
+   :full-and-display-names t)
+
+  (slack-register-team
+   :name "MPE"
+   :default nil
+   :token "xoxc-244949049927-243999427269-4006507330240-3c17f2420638831da0597dbbc0a5f5c066f44e13a0b2423dd8d7b070a5a2238a"
+   :cookie "xoxd-Q%2FGgbHwEGXv11pGMsCOJFAOKB%2B9nO1eOl6xmcFSHUWCj%2Bf8YEiRNZaIopE54yQJrSzcPmZJT8qaxHL44v1HsVsekzVE3im2mrvPlJ1U5spG6CJhfLuRkGBldJUBxPaCVaFph7ESRcj9EleNZ1nFn2Mm1T%2BcfzbFasa%2FxUCxj9Or4NmSC%2BFg13l%2B7"
+   :subscribed-channels '(general)
+   :full-and-display-names t)
+
+  (slack-register-team
+   :name "runko"
+   :default nil
+   :token "xoxc-693525441700-2321982085987-4006507275072-95c890de19535f0cb134c90a311b8e71acaff1bb1ac7db405c22d728cfbc4aa3"
+   :cookie "xoxd-Q%2FGgbHwEGXv11pGMsCOJFAOKB%2B9nO1eOl6xmcFSHUWCj%2Bf8YEiRNZaIopE54yQJrSzcPmZJT8qaxHL44v1HsVsekzVE3im2mrvPlJ1U5spG6CJhfLuRkGBldJUBxPaCVaFph7ESRcj9EleNZ1nFn2Mm1T%2BcfzbFasa%2FxUCxj9Or4NmSC%2BFg13l%2B7"
+   :subscribed-channels '(general)
+   :full-and-display-names t)
+
+XS
+   )
+
+(use-package alert
+  :commands (alert)
+  :init
+  (setq alert-default-style 'notifier))
+#+end_src
+
+#+RESULTS:
+: notifier
+
 * Writing and Focus
 ** secret
 #+begin_src emacs-lisp
-(use-package redacted-mode
+(use-package redacted
   :ensure t
   :straight
   (:host github :repo "bkaestner/redacted.el" :branch "main" :files ("*.el"))
@@ -3587,6 +3634,9 @@ text-modes with this snippet.
 * Addons
 ** Telegram
 #+BEGIN_SRC emacs-lisp
+(setq telega-server-libs-prefix "/opt/homebrew/")
+
+
 
 (use-package tracking
   :defer t
@@ -3894,3 +3944,4 @@ concatenated."
 
 
 #+end_src
+> 
