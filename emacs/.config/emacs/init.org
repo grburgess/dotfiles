@@ -713,8 +713,8 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
         modus-themes-paren-match '(bold intense)
         modus-themes-prompts '(bold intense)
         modus-themes-completions (quote ((matches . (extrabold intense))
-                  (selection . (extrabold intense))
-                  (popup . (extrabold intense))))
+                                         (selection . (extrabold intense))
+                                         (popup . (extrabold intense))))
         modus-themes-org-blocks nil;'tinted-background
         modus-themes-scale-headings t
         modus-themes-region '(bg-only)
@@ -944,7 +944,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
 (use-package doom-modeline
   ;;:after eshell     ;; Make sure it gets hooked after eshell
-  :hook (after-init . doom-modeline-init)
+  :hook (after-init . doom-modeline-mode)
   :custom-face
   (mode-line ((t (:height 0.85))))
   (mode-line-inactive ((t (:height 0.85))))
@@ -2803,7 +2803,7 @@ text-modes with this snippet.
   :config
   (setq flyspell-issue-message-flag nil)
   (setq flyspell-issue-welcome-flag nil)
-  (setq ispell-program-name "/usr/local/bin/ispell")
+  (setq ispell-program-name "/opt/homebrew/bin/ispell")
   (setq ispell-dictionary "american")
   (add-hook 'text-mode-hook 'flyspell-mode)
   )
@@ -3581,17 +3581,16 @@ text-modes with this snippet.
    :subscribed-channels '(general)
    :full-and-display-names t)
 
-XS
-   )
+  )
 
 (use-package alert
   :commands (alert)
   :init
-  (setq alert-default-style 'notifier))
+  (setq alert-default-style 'osx-notifier))
 #+end_src
 
 #+RESULTS:
-: notifier
+: osx-notifier
 
 * Writing and Focus
 ** secret
@@ -3656,10 +3655,14 @@ XS
 
 
 (use-package telega
+  ;; :stright
+  ;; ((:host github :repo "zevlg/telega.el" :branch "master" :files ("*.el")))
   :commands telega
   :config
+  (setq telega-use-docker t)
+
   (setq telega-user-use-avatars t
-        telega-use-tracking-for '(any pin unread)
+        telega-use-tracking-for '(unread)
         telega-chat-use-markdown-formatting t
         telega-emoji-use-images t
         telega-msg-rainbow-title t
@@ -3674,7 +3677,7 @@ XS
 #+END_SRC
 
 #+RESULTS:
-: telega
+: t
 
 ** elfeed
 

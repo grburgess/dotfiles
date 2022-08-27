@@ -114,7 +114,7 @@ export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
 
-
+FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 
 source ~/.config/zsh/plugins.zsh 
 
