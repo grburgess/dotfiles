@@ -69,7 +69,7 @@ export VIRTUALENVWRAPPER_VIRTUALENV=/opt/homebrew/bin/virtualenv
 #source /usr/local/bin/virtualenvwrapper.sh
 source /opt/homebrew/bin/virtualenvwrapper.sh
 #export PATH=/usr/local/opt/python/libexec/bin:$PATH
-
+export PATH=$PATH:/Users/jburgess/Library/Python/3.10/bin
 
 # local
 export ATOMDB=~/.threeml/atomdb

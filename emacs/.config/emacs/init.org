@@ -267,8 +267,8 @@ the buffer is buried."
   :ensure t
   :config (require 'sublimity)
   (require 'sublimity-scroll)
-  (setq sublimity-scroll-weight 7
-        sublimity-scroll-drift-length 1)
+  (setq sublimity-scroll-weight 5
+        sublimity-scroll-drift-length 5)
                                         ;  (require 'sublimity-map)
   (sublimity-mode 1))
                                         ;  (sublimity-map-set-delay 3))
@@ -2866,21 +2866,6 @@ text-modes with this snippet.
         '(non-empty-second-line
           overlong-summary-line)))
 
-;; (use-package magit-diff
-;;                                         ; nil
-;;   :after magit
-;;   :config
-;;   (setq magit-diff-refine-hunk t))
-
-;; (use-package magit-repos
-;;                                      ; nil
-;;   :after magit
-;;   :commands magit-list-repositories
-;;   :config
-;;   (setq magit-repository-directories
-;;      '(("~/coding/projects" . 1)
-
-;;        )))
 
 (use-package git-timemachine
   :ensure t
@@ -3390,7 +3375,14 @@ text-modes with this snippet.
                     (mu4e-drafts-folder . "/gmail/Drafts")
                     (mu4e-refile-folder . "/gmail/Archive")
                     (mu4e-sent-folder . "/gmail/Sent")
-                    (mu4e-trash-folder . "/gmail/Trash")))
+                    (mu4e-trash-folder . "/gmail/Trash")
+                    (mu4e-compose-signature  .
+                                             (concat
+                                              "-----\n"
+                                              "/J. Michael\n"
+                                              "sent from emacs without a mouse\n"))
+                    )
+            )
 
           ,(make-mu4e-context
             :name "mpe"
@@ -3405,8 +3397,12 @@ text-modes with this snippet.
                                                     :to "jburgess@mpe.mpg.de")))
             :vars '((user-mail-address . "jburgess@mpe.mpg.de")
                     (user-full-name . "J. Michael Burgess")
-                    ;; check your ~/.maildir to see how the subdirectories are called
-                    ;; e.g `ls ~/.maildir/example'
+
+                    (mu4e-compose-signature  .
+                                             (concat
+                                              "-----\n"
+                                              "/J. Michael\n"
+                                              "sent from emacs without a mouse\n"))
                     (mu4e-drafts-folder . "/mpe/Drafts")
                     (mu4e-refile-folder . "/mpe/Archive")
                     (mu4e-sent-folder . "/mpe/Sent")
@@ -3947,4 +3943,4 @@ concatenated."
 
 
 #+end_src
-> 
+>
