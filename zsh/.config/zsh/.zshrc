@@ -93,7 +93,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 export HDF5_DISABLE_VERSION_CHECK=1
 
 
-export HDF5_DIR="$(brew --prefix hdf5)"
+#export HDF5_DIR="$(brew --prefix hdf5)"
+export HDF5_DIR="$(brew --prefix hdf5-mpi)"
 
 export LS_COLORS="*.rsp=32:*.rsp2=32:*.h5=34:*.pha=33:*.fits=33;01:*.py=32;01:*.ipynb=36"
 
@@ -118,7 +119,7 @@ FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 
 source ~/.config/zsh/plugins.zsh 
 
-#source ~/.config/zsh/emacs.zsh
+source ~/.config/zsh/emacs.zsh
 
 
 
