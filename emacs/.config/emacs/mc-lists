@@ -3,11 +3,11 @@
 
 (setq mc/cmds-to-run-for-all
       '(
-	
+	crux-move-beginning-of-line
 	))
 
 (setq mc/cmds-to-run-once
       '(
-	hydra-python-format/body
 	hydra-mc/mc/mark-next-like-this
+	hydra-python-format/body
 	))
