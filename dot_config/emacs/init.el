@@ -49,6 +49,10 @@
 ;; Load the helper package for commands like `straight-x-clean-unused-repos'
 (require 'straight-x)
 
+(use-package chezmoi
+  :config
+  (add-hook 'org-babel-post-tangle-hook #'chezmoi-write))
+
 (use-package bug-hunter
   :ensure t
   )
@@ -447,8 +451,8 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
    "z" 'jmb/org-mode-hydra/body
    "g" 'consult-git-grep
 
-   "i" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/emacs/.config/emacs/init.org"))) :which-key "edit config")
-   "<SPC>" '((lambda () (interactive) (find-file (expand-file-name "~/dotfiles/zsh/.config/zsh/.zshrc"))) :which-key "edit zshrc")
+   "i" '((lambda () (interactive) (chezmoi-find "init.org") :which-key "edit config")
+   "<SPC>" '((lambda () (interactive) (chezmoi-find ".zshrc"))) :which-key "edit zshrc")
    "t" 'consult-theme
    "<up>" 'windmove-up
    "<down>" 'windmove-down
@@ -3202,7 +3206,7 @@ concatenated."
   :config
 
 
-  (setq   elfeed-score-serde-score-file "~/dotfiles/emacs/.config/emacs/elfeed.score")
+  (setq   elfeed-score-serde-score-file "~/.config/emacs/elfeed.score")
   (elfeed-score-enable)
   (define-key elfeed-search-mode-map "=" elfeed-score-map)
 
