@@ -50,8 +50,11 @@
 (require 'straight-x)
 
 (use-package chezmoi
+  :ensure t
+  :after magit
   :config
-  (add-hook 'org-babel-post-tangle-hook #'chezmoi-write))
+  (add-hook 'org-babel-post-tangle-hook #'chezmoi-write)
+  )
 
 (use-package bug-hunter
   :ensure t
@@ -165,6 +168,25 @@ the buffer is buried."
   (sublimity-mode 1))
                                         ;  (sublimity-map-set-delay 3))
 
+(use-package all-the-icons
+  :if (display-graphic-p)
+  :ensure t
+  :demand
+  :config
+  (when (not (member "all-the-icons" (font-family-list)))
+    (all-the-icons-install-fonts t)))
+
+;; (setq
+;;  all-the-icons-mode-icon-alist
+;;  `(,@all-the-icons-mode-icon-alist
+;;    (telega-chat-mode all-the-icons-fileicon "telegram" :v-adjust 0.0
+;;                      :face all-the-icons-blue-alt)
+;;    (telega-root-mode all-the-icons-material "contacts" :v-adjust 0.0)))
+
+;; (use-package all-the-icons-ibuffer
+;;   :ensure t
+;;   :init (all-the-icons-ibuffer-mode 1))
+
 ;; (use-package super-save
 ;;   :defer 1
 ;;   :diminish super-save-mode
@@ -181,320 +203,6 @@ the buffer is buried."
 
 ;; Set default connection mode to SSH
 (setq tramp-default-method "ssh")
-
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-(use-package which-key
-  :ensure t
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 0.7))
-
-(use-package hydra
-  :ensure t
-  :defer 1)
-
-(use-package major-mode-hydra
-  :ensure t
-  :config
-  (require 'all-the-icons)
-  )
-
-
-(defun vl/window-half-height (&optional window)
-  (max 1 (/ (1- (window-height window)) 2)))
-
-(defun vl/scroll-down-half-other-window ()
-  (interactive)
-  (scroll-other-window
-   (vl/window-half-height (other-window-for-scrolling))))
-(defun vl/scroll-up-half-other-window ()
-  (interactive)
-  (scroll-other-window-down
-   (vl/window-half-height (other-window-for-scrolling))))
-
-(pretty-hydra-define jmb/org-mode-hydra
-  (:color red :timeout 2 :quit-key "q" :title "orgmode")
-  ("Actions"
-   (
-    ("t" org-toggle-inline-images "toggle inline images" )
-    ("a" org-agenda "org agenda")
-    ))
-  )
-
-(pretty-hydra-define jmb/tab-move
-  (:color red :timeout 2 :quit-key "q" :title "tabs")
-  ("Actions"
-   (      ("<left>" centaur-tabs-backward "prev tab")
-          ("<right>" centaur-tabs-forward "next tab")
-          ("<up>" centaur-tabs-backward-group "prev. group")
-          ("<down>" centaur-tabs-forward-group "next group")
-          ("k" centaur-tabs-kill-other-buffers-in-current-group "kill all other thabs in this group")
-          ))
-  )
-
-(defhydra hydra-window (:color blue :hint nil)
-  "
-                                                                       ╭─────────┐
-     Move to      Size    Scroll        Split                    Do    │ Windows │
-  ╭────────────────────────────────────────────────────────────────────┴─────────╯
-        ^^            ^_K_^       ^_p_^    ╭─┬─┐^ ^        ╭─┬─┐^ ^         ↺ [_u_] undo layout
-        ^^↑^^           ^^↑^^       ^^↑^^    │ │ │_v_ertical ├─┼─┤_b_alance   ↻ [_r_] restore layout
-      ←   →     _H_ ←   → _L_   ^^ ^^    ╰─┴─╯^ ^        ╰─┴─╯^ ^         ✗ [_d_] close window
-        ^^↓^^           ^^↓^^       ^^↓^^    ╭───┐^ ^        ╭───┐^ ^         ⇋ [_w_] cycle window
-        ^^            ^_J_^       ^_n_^    ├───┤_s_tack    │   │_z_oom
-        ^^ ^^           ^^ ^^       ^^ ^^    ╰───╯^ ^        ╰───╯^ ^
-  --------------------------------------------------------------------------------
-            "
-  ("<tab>" hydra-master/body "back")
-  ("<ESC>" nil "quit")
-  ("n" vl/scroll-up-half-other-window :color red)
-  ("p" vl/scroll-down-half-other-window :color red)
-  ("b" balance-windows)
-  ("d" delete-window)
-  ("H" shrink-window-horizontally :color red)
-  ("<left>" windmove-left :color red)
-  ("J" shrink-window :color red)
-  ("<down>" windmove-down :color red)
-  ("K" enlarge-window :color red)
-  ("<up>" windmove-up :color red)
-  ("L" enlarge-window-horizontally :color red)
-  ("<right>" windmove-right :color red)
-  ("r" winner-redo :color red)
-  ("s" split-window-vertically :color red)
-  ("u" winner-undo :color red)
-  ("v" split-window-horizontally :color red)
-  ("w" other-window)
-  ("z" delete-other-windows))
-
-(pretty-hydra-define hydra-mc (:color red :title "multiple cursors")
-
-  ("Mark"
-   (
-    ("a" mc/mark-all-like-this "mark all")
-    ("n" mc/mark-next-like-this "mark next")
-    ("N" mc/unmark-next-like-this "unmark next")
-    ("p" mc/mark-previous-like-this "mark previous")
-    ("P" mc/unmark-previous-like-this "unmark previous")
-    )
-   "Skip"
-   (
-    ("sn" mc/skip-to-next-like-this "skip to next")
-    ("sp" mc/skip-to-previous-like-this "skip to prev")
-    )
-   "Edit"
-   (
-    ("e" mc/edit-lines "edit lines" :color blue)
-    )
-   )
-  )
-
-(defhydra hydra-folding (:color red)
-  "
-  _o_pen node    _n_ext fold       toggle _f_orward  _s_how current only
-  _c_lose node   _p_revious fold   toggle _a_ll
-  "
-  ("o" origami-open-node)
-  ("c" origami-close-node)
-  ("n" origami-next-fold)
-  ("p" origami-previous-fold)
-  ("f" origami-forward-toggle-node)
-  ("a" origami-toggle-all-nodes)
-  ("s" origami-show-only-node))
-
-(defhydra hydra-rectangle (:color blue)
-  "rectangles"
-  ("s" string-rectange "string")
-  ("i" string-insert-rectangle "string insert"))
-
-(pretty-hydra-define hydra-smartparens (:color red :title "Smartparens")
-  ("Move"
-   (
-    ("f" sp-forward-sexp "forward")
-    ("d" sp-backward-sexp "back")
-    )
-   "Wrap"
-   (
-    ("(" sp-wrap-round "wrap round")
-    ("{" sp-wrap-curly "wrap brace")
-    ("[" sp-wrap-square "wrap square")
-    ("u" sp-unwrap-sexp "unwrap")
-    )
-   "Kill"
-   (("k" sp-kill-sexp "kill")
-    ("K" sp-backward-kill-sexp "backward kill")
-    )
-   "Slurp Barff"
-   (
-    ("s" sp-forward-slurp-sexp "forward slurp")
-    ("S" sp-backward-slurp-sexp "backward slurp")
-    ("b" sp-forward-barf-sexp "forward barf")
-    ("B" sp-backward-barf-sexp "backward barf"))
-   )
-  )
-
-(defhydra hydra-lsp (:color blue)
-  "lsp"
-  ("d" lsp-find-definition "find definition")
-  ("i" lsp-find-implementation "find implementation")
-  ("r" lsp-find-references "find references"))
-
-(pretty-hydra-define hydra-python-format (:color teal :title "Python clean up")
-  ("Format"
-   (
-    ("f" blacken-buffer "blacken")
-    ("i" py-isort-buffer "isort"))
-
-
-   )
-
-  )
-
-(defhydra hydra-smerge (:color pink
-                               :hint nil
-                               :pre (smerge-mode 1)
-                               ;; Disable `smerge-mode' when quitting hydra if
-                               ;; no merge conflicts remain.
-                               :post (smerge-auto-leave))
-  "
-^Move^       ^Keep^               ^Diff^                 ^Other^
-^^-----------^^-------------------^^---------------------^^-------
-_n_ext       _b_ase               _<_: upper/base        _C_ombine
-_p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
-^^           _l_ower              _>_: base/lower        _k_ill current
-^^           _a_ll                _R_efine
-^^           _RET_: current       _E_diff
-"
-  ("n" smerge-next)
-  ("p" smerge-prev)
-  ("b" smerge-keep-base)
-  ("u" smerge-keep-upper)
-  ("l" smerge-keep-lower)
-  ("a" smerge-keep-all)
-  ("RET" smerge-keep-current)
-  ("\C-m" smerge-keep-current)
-  ("<" smerge-diff-base-upper)
-  ("=" smerge-diff-upper-lower)
-  (">" smerge-diff-base-lower)
-  ("R" smerge-refine)
-  ("E" smerge-ediff)
-  ("C" smerge-combine-with-next)
-  ("r" smerge-resolve)
-  ("k" smerge-kill-current)
-  ("q" nil "cancel" :color blue))
-
-(defhydra my-mu4e-quick (:color green)
-  "quick email"
-  ("w" (mu4e-headers-search "flag:unread AND maildir:/mpe/INBOX") "unread work")
-  ("p" (mu4e-headers-search "flag:unread AND maildir:/gmail/INBOX")   "unread personal")
-  ("t" (mu4e-headers-search "date:today..now AND maildir:/mpe/INBOX")   "today work")
-  ("c" (mu4e-compose-new)    "compase a message")
-  ("o" (org-mime-edit-mail-in-org-mode)  "edit message in org mode")
-  ("e" (org-mime-htmlize) "export to html")
-
-
-  )
-
-(pretty-hydra-define jmb/hydra-music (:color red :timeout 4 :title "Music")
-  ("Skip"
-   (
-    ("n" #'musica-play-next "next")
-    ("p" #'musica-play-previous "previous")
-    ("r" #'musica-play-next-random "next random"))
-   "Search"
-
-   (("s" #'musica-search "search")
-    ("i" #'musica-info "info"))
-   "Play"(
-          ("SPC" #'musica-play-pause "play-pause"))
-
-   ))
-
-(use-package crux
-  :ensure ;TODO: v
-  )
-
-
-
-
-(use-package general
-  :ensure t
-  :config
-  (general-define-key
-   "C-M-y" 'consult-yank-from-kill-ring
-   "M-y" 'consult-yank-pop
-   "M-g M-g" 'consult-goto-line
-   "M-s" 'isearch-forward
-   "C-," 'hydra-mc/body
-   "C-<backspace>" 'crux-kill-line-backwards
-   [remap move-beginning-of-line] 'crux-move-beginning-of-line
-   [remap kill-whole-line] 'crux-kill-whole-line
-   [(shift return)] 'crux-smart-open-line
-
-   "C-<tab>" 'jmb/tab-move/body
-                                        ;"C-M-v" 'hydra-window/body
-   "M-j" (lambda () (interactive)
-           (join-line -1))
-   "C-z" 'avy-goto-char-timer
-   )
-
-  ;; Cc
-  (general-define-key
-   :prefix "C-c"
-   ;;"c" 'org-capture
-   ;;"c" telega-prefix-map
-   "]" 'hydra-smartparens/body
-   "l" 'org-store-link
-   "m" 'jmb/hydra-music/body
-   "s" 'ispell-word
-   "z" 'jmb/org-mode-hydra/body
-   "g" 'consult-git-grep
-
-   "i" '((lambda () (interactive) (chezmoi-find "init.org") :which-key "edit config")
-   "<SPC>" '((lambda () (interactive) (chezmoi-find ".zshrc"))) :which-key "edit zshrc")
-   "t" 'consult-theme
-   "<up>" 'windmove-up
-   "<down>" 'windmove-down
-   "<left>" 'windmove-left
-   "<right>" 'windmove-right
-
-   )
-  ;; Cx
-  (general-define-key
-   :prefix "C-x"
-   "b" 'consult-buffer
-   "m" 'magit-status
-   "a" 'ace-jump-mode
-   "C-b" 'ibuffer
-   "k" 'kill-this-buffer-unless-scratch
-   "w" 'elfeed
-   "'" 'hydra-window/body
-   "/" 'my-mu4e-quick/body
-   )
-
-  ( general-def python-mode-map
-    "C-c f" 'hydra-python-format/body
-    )
-
-  ;; (general-def lsp-mode-map
-  ;;   "C-c f" 'lsp-format-buffer
-  ;;      )
-
-  (general-def projectile-mode-map
-    "s-p" 'projectile-command-map
-
-    )
-
-
-  )
-
-(use-package easy-kill
-  :ensure t
-  :bind (([remap kill-ring-save] . #'easy-kill)
-         ([remap mark-sexp]      . #'easy-mark)
-         :map easy-kill-base-map
-         ("," . easy-kill-expand)))
 
 (use-package doom-themes
   :ensure t
@@ -807,24 +515,6 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   (doom-modeline-env-python-executable "python3")
   )
 
-(use-package all-the-icons
-  :if (display-graphic-p)
-  :ensure t
-  :config
-  (when (not (member "all-the-icons" (font-family-list)))
-    (all-the-icons-install-fonts t)))
-
-;; (setq
-;;  all-the-icons-mode-icon-alist
-;;  `(,@all-the-icons-mode-icon-alist
-;;    (telega-chat-mode all-the-icons-fileicon "telegram" :v-adjust 0.0
-;;                      :face all-the-icons-blue-alt)
-;;    (telega-root-mode all-the-icons-material "contacts" :v-adjust 0.0)))
-
-;; (use-package all-the-icons-ibuffer
-;;   :ensure t
-;;   :init (all-the-icons-ibuffer-mode 1))
-
 (use-package pulsar
   :ensure t
   :straight
@@ -909,6 +599,321 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 (use-package svg-lib
   :ensure t
   )
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+(use-package which-key
+  :ensure t
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 0.7))
+
+(use-package hydra
+  :ensure t
+  :defer 1)
+
+(use-package major-mode-hydra
+  :ensure t
+  :after all-the-icons
+  :config
+  (require 'all-the-icons)
+  )
+
+
+(defun vl/window-half-height (&optional window)
+  (max 1 (/ (1- (window-height window)) 2)))
+
+(defun vl/scroll-down-half-other-window ()
+  (interactive)
+  (scroll-other-window
+   (vl/window-half-height (other-window-for-scrolling))))
+(defun vl/scroll-up-half-other-window ()
+  (interactive)
+  (scroll-other-window-down
+   (vl/window-half-height (other-window-for-scrolling))))
+
+(pretty-hydra-define jmb/org-mode-hydra
+  (:color red :timeout 2 :quit-key "q" :title "orgmode")
+  ("Actions"
+   (
+    ("t" org-toggle-inline-images "toggle inline images" )
+    ("a" org-agenda "org agenda")
+    ))
+  )
+
+(pretty-hydra-define jmb/tab-move
+  (:color red :timeout 2 :quit-key "q" :title "tabs")
+  ("Actions"
+   (      ("<left>" centaur-tabs-backward "prev tab")
+          ("<right>" centaur-tabs-forward "next tab")
+          ("<up>" centaur-tabs-backward-group "prev. group")
+          ("<down>" centaur-tabs-forward-group "next group")
+          ("k" centaur-tabs-kill-other-buffers-in-current-group "kill all other thabs in this group")
+          ))
+  )
+
+(defhydra hydra-window (:color blue :hint nil)
+  "
+                                                                       ╭─────────┐
+     Move to      Size    Scroll        Split                    Do    │ Windows │
+  ╭────────────────────────────────────────────────────────────────────┴─────────╯
+        ^^            ^_K_^       ^_p_^    ╭─┬─┐^ ^        ╭─┬─┐^ ^         ↺ [_u_] undo layout
+        ^^↑^^           ^^↑^^       ^^↑^^    │ │ │_v_ertical ├─┼─┤_b_alance   ↻ [_r_] restore layout
+      ←   →     _H_ ←   → _L_   ^^ ^^    ╰─┴─╯^ ^        ╰─┴─╯^ ^         ✗ [_d_] close window
+        ^^↓^^           ^^↓^^       ^^↓^^    ╭───┐^ ^        ╭───┐^ ^         ⇋ [_w_] cycle window
+        ^^            ^_J_^       ^_n_^    ├───┤_s_tack    │   │_z_oom
+        ^^ ^^           ^^ ^^       ^^ ^^    ╰───╯^ ^        ╰───╯^ ^
+  --------------------------------------------------------------------------------
+            "
+  ("<tab>" hydra-master/body "back")
+  ("<ESC>" nil "quit")
+  ("n" vl/scroll-up-half-other-window :color red)
+  ("p" vl/scroll-down-half-other-window :color red)
+  ("b" balance-windows)
+  ("d" delete-window)
+  ("H" shrink-window-horizontally :color red)
+  ("<left>" windmove-left :color red)
+  ("J" shrink-window :color red)
+  ("<down>" windmove-down :color red)
+  ("K" enlarge-window :color red)
+  ("<up>" windmove-up :color red)
+  ("L" enlarge-window-horizontally :color red)
+  ("<right>" windmove-right :color red)
+  ("r" winner-redo :color red)
+  ("s" split-window-vertically :color red)
+  ("u" winner-undo :color red)
+  ("v" split-window-horizontally :color red)
+  ("w" other-window)
+  ("z" delete-other-windows))
+
+(pretty-hydra-define hydra-mc (:color red :title "multiple cursors")
+
+  ("Mark"
+   (
+    ("a" mc/mark-all-like-this "mark all")
+    ("n" mc/mark-next-like-this "mark next")
+    ("N" mc/unmark-next-like-this "unmark next")
+    ("p" mc/mark-previous-like-this "mark previous")
+    ("P" mc/unmark-previous-like-this "unmark previous")
+    )
+   "Skip"
+   (
+    ("sn" mc/skip-to-next-like-this "skip to next")
+    ("sp" mc/skip-to-previous-like-this "skip to prev")
+    )
+   "Edit"
+   (
+    ("e" mc/edit-lines "edit lines" :color blue)
+    )
+   )
+  )
+
+(defhydra hydra-folding (:color red)
+  "
+  _o_pen node    _n_ext fold       toggle _f_orward  _s_how current only
+  _c_lose node   _p_revious fold   toggle _a_ll
+  "
+  ("o" origami-open-node)
+  ("c" origami-close-node)
+  ("n" origami-next-fold)
+  ("p" origami-previous-fold)
+  ("f" origami-forward-toggle-node)
+  ("a" origami-toggle-all-nodes)
+  ("s" origami-show-only-node))
+
+(defhydra hydra-rectangle (:color blue)
+  "rectangles"
+  ("s" string-rectange "string")
+  ("i" string-insert-rectangle "string insert"))
+
+(pretty-hydra-define hydra-smartparens (:color red :title "Smartparens")
+  ("Move"
+   (
+    ("f" sp-forward-sexp "forward")
+    ("d" sp-backward-sexp "back")
+    )
+   "Wrap"
+   (
+    ("(" sp-wrap-round "wrap round")
+    ("{" sp-wrap-curly "wrap brace")
+    ("[" sp-wrap-square "wrap square")
+    ("u" sp-unwrap-sexp "unwrap")
+    )
+   "Kill"
+   (("k" sp-kill-sexp "kill")
+    ("K" sp-backward-kill-sexp "backward kill")
+    )
+   "Slurp Barff"
+   (
+    ("s" sp-forward-slurp-sexp "forward slurp")
+    ("S" sp-backward-slurp-sexp "backward slurp")
+    ("b" sp-forward-barf-sexp "forward barf")
+    ("B" sp-backward-barf-sexp "backward barf"))
+   )
+  )
+
+(defhydra hydra-lsp (:color blue)
+  "lsp"
+  ("d" lsp-find-definition "find definition")
+  ("i" lsp-find-implementation "find implementation")
+  ("r" lsp-find-references "find references"))
+
+(pretty-hydra-define hydra-python-format (:color teal :title "Python clean up")
+  ("Format"
+   (
+    ("f" blacken-buffer "blacken")
+    ("i" py-isort-buffer "isort"))
+
+
+   )
+
+  )
+
+(defhydra hydra-smerge (:color pink
+                               :hint nil
+                               :pre (smerge-mode 1)
+                               ;; Disable `smerge-mode' when quitting hydra if
+                               ;; no merge conflicts remain.
+                               :post (smerge-auto-leave))
+  "
+^Move^       ^Keep^               ^Diff^                 ^Other^
+^^-----------^^-------------------^^---------------------^^-------
+_n_ext       _b_ase               _<_: upper/base        _C_ombine
+_p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
+^^           _l_ower              _>_: base/lower        _k_ill current
+^^           _a_ll                _R_efine
+^^           _RET_: current       _E_diff
+"
+  ("n" smerge-next)
+  ("p" smerge-prev)
+  ("b" smerge-keep-base)
+  ("u" smerge-keep-upper)
+  ("l" smerge-keep-lower)
+  ("a" smerge-keep-all)
+  ("RET" smerge-keep-current)
+  ("\C-m" smerge-keep-current)
+  ("<" smerge-diff-base-upper)
+  ("=" smerge-diff-upper-lower)
+  (">" smerge-diff-base-lower)
+  ("R" smerge-refine)
+  ("E" smerge-ediff)
+  ("C" smerge-combine-with-next)
+  ("r" smerge-resolve)
+  ("k" smerge-kill-current)
+  ("q" nil "cancel" :color blue))
+
+(defhydra my-mu4e-quick (:color green)
+  "quick email"
+  ("w" (mu4e-headers-search "flag:unread AND maildir:/mpe/INBOX") "unread work")
+  ("p" (mu4e-headers-search "flag:unread AND maildir:/gmail/INBOX")   "unread personal")
+  ("t" (mu4e-headers-search "date:today..now AND maildir:/mpe/INBOX")   "today work")
+  ("c" (mu4e-compose-new)    "compase a message")
+  ("o" (org-mime-edit-mail-in-org-mode)  "edit message in org mode")
+  ("e" (org-mime-htmlize) "export to html")
+
+
+  )
+
+(pretty-hydra-define jmb/hydra-music (:color red :timeout 4 :title "Music")
+  ("Skip"
+   (
+    ("n" #'musica-play-next "next")
+    ("p" #'musica-play-previous "previous")
+    ("r" #'musica-play-next-random "next random"))
+   "Search"
+
+   (("s" #'musica-search "search")
+    ("i" #'musica-info "info"))
+   "Play"(
+          ("SPC" #'musica-play-pause "play-pause"))
+
+   ))
+
+(use-package crux
+  :ensure ;TODO: v
+  )
+
+
+
+
+(use-package general
+  :ensure t
+  :config
+  (general-define-key
+   "C-M-y" 'consult-yank-from-kill-ring
+   "M-y" 'consult-yank-pop
+   "M-g M-g" 'consult-goto-line
+   "M-s" 'isearch-forward
+   "C-," 'hydra-mc/body
+   "C-<backspace>" 'crux-kill-line-backwards
+   [remap move-beginning-of-line] 'crux-move-beginning-of-line
+   [remap kill-whole-line] 'crux-kill-whole-line
+   [(shift return)] 'crux-smart-open-line
+
+   "C-<tab>" 'jmb/tab-move/body
+                                        ;"C-M-v" 'hydra-window/body
+   "M-j" (lambda () (interactive)
+           (join-line -1))
+   "C-z" 'avy-goto-char-timer
+   )
+
+  ;; Cc
+  (general-define-key
+   :prefix "C-c"
+   ;;"c" 'org-capture
+   ;;"c" telega-prefix-map
+   "]" 'hydra-smartparens/body
+   "l" 'org-store-link
+   "m" 'jmb/hydra-music/body
+   "s" 'ispell-word
+   "z" 'jmb/org-mode-hydra/body
+   "g" 'consult-git-grep
+
+   "i"  (lambda () (interactive)  (chezmoi-find "~/.config/emacs/init.org"))
+   "<SPC>" (lambda () (interactive)  (chezmoi-find "~/.config/zsh/.zshrc"))
+   "t" 'consult-theme
+   "<up>" 'windmove-up
+   "<down>" 'windmove-down
+   "<left>" 'windmove-left
+   "<right>" 'windmove-right
+
+   )
+  ;; Cx
+  (general-define-key
+   :prefix "C-x"
+   "b" 'consult-buffer
+   "m" 'magit-status
+   "a" 'ace-jump-mode
+   "C-b" 'ibuffer
+   "k" 'kill-this-buffer-unless-scratch
+   "w" 'elfeed
+   "'" 'hydra-window/body
+   "/" 'my-mu4e-quick/body
+   )
+
+  ( general-def python-mode-map
+    "C-c f" 'hydra-python-format/body
+    )
+
+  ;; (general-def lsp-mode-map
+  ;;   "C-c f" 'lsp-format-buffer
+  ;;      )
+
+  (general-def projectile-mode-map
+    "s-p" 'projectile-command-map
+
+    )
+
+
+  )
+
+(use-package easy-kill
+  :ensure t
+  :bind (([remap kill-ring-save] . #'easy-kill)
+         ([remap mark-sexp]      . #'easy-mark)
+         :map easy-kill-base-map
+         ("," . easy-kill-expand)))
 
 (defun read-file (file-path)
   (with-temp-buffer
@@ -2389,13 +2394,9 @@ folder, otherwise delete a word"
 
 ;;   )
 
-;; (use-package with-editor
-;;   :ensure t
-;;   )
-
-
 (use-package magit
   :ensure t
+  :demand t
   :bind ( ("s-g" . magit-status))
   ;; :commands (magit-status magit-get-current-branch)
   ;;  :custom

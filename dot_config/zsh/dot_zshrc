@@ -7,7 +7,6 @@
 
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 
-
 export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
 export PATH="/usr/local/lib/ruby/gems/bin:/usr/local/lib/ruby/gems/2.6.0/bin:/Library/TeX/texbin:/opt/X11/bin:${PATH}"
 export PATH=/opt/homebrew/bin:$PATH
@@ -38,7 +37,6 @@ setopt appendhistory autocd extendedglob
 unsetopt notify
 
 DISABLE_UNTRACKED_FILES_DIRTY="true"
-
 
 TERM=xterm-24bits
 
@@ -117,6 +115,9 @@ export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
 
 FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 
+source ~/.config/zsh/plugins.zsh
+
+source ~/.config/zsh/emacs.zsh
 
 
 
@@ -149,8 +150,5 @@ eval "$(direnv hook zsh)"
 
 
 
-source ~/.config/zsh/plugins.zsh 
-
-source ~/.config/zsh/emacs.zsh
 
 source ~/.config/zsh/alias.zsh
