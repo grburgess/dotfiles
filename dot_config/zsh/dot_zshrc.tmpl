@@ -7,10 +7,15 @@
 
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 
-export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
-export PATH="/usr/local/lib/ruby/gems/bin:/usr/local/lib/ruby/gems/2.6.0/bin:/Library/TeX/texbin:/opt/X11/bin:${PATH}"
+# export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
+# export PATH="/usr/local/lib/ruby/gems/bin:/usr/local/lib/ruby/gems/2.6.0/bin:/Library/TeX/texbin:/opt/X11/bin:${PATH}"
+
+
+{{ if eq .chezmoi.os "darwin" }}
 export PATH=/opt/homebrew/bin:$PATH
-export PATH=/usr/local/share/python:$PATH
+{{ end }}
+
+#export PATH=/usr/local/share/python:$PATH
 source ~/.config/zsh/prompt.zsh
 
 
@@ -60,14 +65,21 @@ fi
 #export ARCHFLAGS="-arch x86_64"
 
 # VENV PYTHPN
-VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
 export WORKON_HOME=~/.environs
+{{ if eq .chezmoi.os "darwin" }}
+export VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
 export VIRTUALENVWRAPPER_VIRTUALENV=/opt/homebrew/bin/virtualenv
-
-#source /usr/local/bin/virtualenvwrapper.sh
 source /opt/homebrew/bin/virtualenvwrapper.sh
-#export PATH=/usr/local/opt/python/libexec/bin:$PATH
 export PATH=$PATH:/Users/jburgess/Library/Python/3.10/bin
+
+{{ else if eq .chezmoi.os "linux" }}
+#export VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
+#export VIRTUALENVWRAPPER_VIRTUALENV=/opt/homebrew/bin/virtualenv
+#source /usr/local/bin/virtualenvwrapper.sh
+
+{{ else }}
+
+{{ end }}
 
 # local
 export ATOMDB=~/.threeml/atomdb
@@ -76,24 +88,29 @@ export MKL_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
 #export MPLBACKEND='Agg'
 
-
+{{ if eq .chezmoi.os "darwin" }}
 export CMDSTAN=/Users/jburgess/.cmdstanpy/cmdstan
+{{ else if eq .chezmoi.os "linux" }}
+export CMDSTAN=/home/jburgess/.cmdstanpy/cmdstan
+{{ else }}
+{{ end }}
+
+{{ if eq .chezmoi.os "darwin" }}
 
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/sw/lib
-
-
 bindkey -e
 # End of lines configured by zsh-newuser-install
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
+{{ end }}
 # HDF5 Sucks....
 export HDF5_DISABLE_VERSION_CHECK=1
 
 
 #export HDF5_DIR="$(brew --prefix hdf5)"
-export HDF5_DIR="$(brew --prefix hdf5-mpi)"
 
+{{ if eq .chezmoi.os "darwin" }}
+export HDF5_DIR="$(brew --prefix hdf5-mpi)"
+{{ end }}
 export LS_COLORS="*.rsp=32:*.rsp2=32:*.h5=34:*.pha=33:*.fits=33;01:*.py=32;01:*.ipynb=36"
 
 # # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
@@ -113,7 +130,11 @@ export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
 
+{{ if eq .chezmoi.os "darwin" }}
+
 FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+{{ end }}
 
 source ~/.config/zsh/plugins.zsh
 
@@ -143,12 +164,8 @@ zinit cdreplay -q   # -q is for quiet; actually run all the `compdef's saved bef
                     # via intercepting the `compdef'-calls and storing them for later
                     # use with `zinit cdreplay')
 
-
+{{ if eq .chezmoi.os "darwin" }}
 eval "$(direnv hook zsh)"
-
-
-
-
-
+{{ end }}
 
 source ~/.config/zsh/alias.zsh
