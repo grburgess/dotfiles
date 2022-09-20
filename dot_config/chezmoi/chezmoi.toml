@@ -1,0 +1,10 @@
+encryption = "gpg"
+[gpg]
+    symmetric = true
+[edit]
+command="emacs"
+args=["-nw"]
+[git]
+autoCommit = true
+autoPush = true
+
