@@ -1,0 +1,9 @@
+logging:
+  'on': true
+  level: INFO
+slurm:
+  user_email: user@email.com
+  modules: null
+  mpi_modules: null
+  python: python
+  store_dir: null

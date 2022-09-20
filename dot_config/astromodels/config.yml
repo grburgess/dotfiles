@@ -1,0 +1,9 @@
+logging:
+  developer: off
+  usr: off
+  startup_warnings: off
+  warn_style: "blink medium_orchid"
+
+modeling:
+  use_parameter_transforms: false
+  ignore_parameter_bounds: true

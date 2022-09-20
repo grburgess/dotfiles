@@ -1,0 +1,57 @@
+# SSH configuration taken from https://docs.mpcdf.mpg.de/faq/
+
+# Correctly resolve short names of gateway machines and HPC nodes
+Match originalhost gate*,draco*,cobra,raven,con01
+    CanonicalDomains mpcdf.mpg.de
+    CanonicalizeFallbackLocal no
+    CanonicalizeHostname yes
+
+# Keep a tunnel open for the day when accessing the gate machines
+Match canonical host gate*,con01.mpcdf.mpg.de
+    User jburgess
+    Compression yes
+    ServerAliveInterval 120
+    ControlMaster auto
+    ControlPersist yes
+    ControlPath ~/.ssh/master-%C
+
+# Keep a tunnel open for the day when accessing the HPC nodes
+Match canonical host draco*,cobra*,raven*
+    User jburgess
+    Compression yes
+    ControlMaster auto
+    ControlPersist yes
+    ControlPath ~/.ssh/master-%C
+    # OpenSSH >=7.3
+    ProxyJump gatezero
+    # OpenSSH <=7.2
+    #ProxyCommand ssh -W %h:%p gatezero
+
+# MPE machinces
+Host necromancer
+     HostName necromancer.mpe.mpg.de
+     User jburgess
+     Proxyjump login1.mpe.mpg.de
+     ControlMaster auto
+     ControlPath /tmp/ssh-%r@%h:%p
+     ControlPersist yes
+
+
+Host azog
+     HostName azog.mpe.mpg.de
+     User jburgess
+     Proxyjump login1.mpe.mpg.de
+     ControlMaster auto
+     ControlPath /tmp/ssh-%r@%h:%p
+     ControlPersist yes
+
+
+# local machinces
+Host plex
+     HostName 10.10.1.100
+     User pi
+
+
+Host retropi
+     HostName 10.10.1.200
+     User pi
