@@ -12,7 +12,16 @@
 
 
 {{ if eq .chezmoi.os "darwin" }}
+
 export PATH=/opt/homebrew/bin:$PATH
+
+{{ else if eq .chezmoi.os "linux" }}
+
+export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
+
+{{ else  }}
+
+
 {{ end }}
 
 #export PATH=/usr/local/share/python:$PATH
@@ -73,9 +82,12 @@ source /opt/homebrew/bin/virtualenvwrapper.sh
 export PATH=$PATH:/Users/jburgess/Library/Python/3.10/bin
 
 {{ else if eq .chezmoi.os "linux" }}
-#export VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
-#export VIRTUALENVWRAPPER_VIRTUALENV=/opt/homebrew/bin/virtualenv
-#source /usr/local/bin/virtualenvwrapper.sh
+
+export PATH=${PATH}:/home/jburgess/.local/bin
+VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export WORKON_HOME=~/.environs
+source ~/.local/bin/virtualenvwrapper.sh
+
 
 {{ else }}
 

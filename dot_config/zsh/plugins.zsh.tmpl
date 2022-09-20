@@ -22,7 +22,10 @@ zinit light-mode for \
 ### End of Zinit's installer chunk
 
 zinit ice svn
+
+{{ if eq .chezmoi.os "darwin" }}
 zinit snippet OMZ::plugins/macos
+{{ end }}
 
 zinit ice blockf
 zinit light zsh-users/zsh-completions
@@ -53,7 +56,10 @@ zinit is-snippet for OMZ::lib/git.zsh
 
 zinit is-snippet for OMZ::plugins/git/git.plugin.zsh
 zinit is-snippet for OMZ::plugins/pip/pip.plugin.zsh
+
+{{ if eq .chezmoi.os "darwin" }}
 zinit is-snippet for OMZ::plugins/iterm2/iterm2.plugin.zsh
+{{ end }}
 zinit is-snippet for OMZ::plugins/common-aliases/common-aliases.plugin.zsh
 
 
@@ -70,50 +76,14 @@ zinit for changyuheng/zsh-interactive-cd
 zinit wait lucid for zdharma-continuum/fast-syntax-highlighting
 zinit pick"shell/completion.zsh" src"shell/key-bindings.zsh" for junegunn/fzf
 
-zinit for iam4x/zsh-iterm-touchbar
-zinit for bernardop/iterm-tab-color-oh-my-zsh
-
 # it also works with turbo mode:
 zinit ice wait lucid
 
 zinit load redxtech/zsh-fzf-utils
 
-
-#zinit load tysonwolker/iterm-tab-colors
-
-#zinit light Aloxaf/fzf-tab
-
 zinit load wfxr/forgit
 
-# zinit load leophys/zsh-plugin-fzf-finder
 
-
-
-######
-
-# zinit ice lucid id-as'GitHub-notify' \
-#         ice on-update-of'~/.cache/zsh-github-issues/new_titles.log' \
-#         notify'New issue: $NOTIFY_MESSAGE'
-# zinit light zdharma-continuum/zsh-github-issues
-
-
-# # GIT stands for 'Github Issue Tracker', the future name of the project
-# GIT_PROJECTS=zdharma-continuum/zsh-github-issues:zdharma/zinit
-
-# zinit ice service"GIT" pick"zsh-github-issues.service.zsh" wait'2' lucid
-# zinit light zdharma-continuum/zsh-github-issues
-
-
-# zinit pack for @github-issues
-# zinit pack for @github-issues-srv
-
-
-####
-
-
-# Spaceship theme
-#zinit ice lucid pick'spaceship.zsh' compile'{lib/*,sections/*,tests/*.zsh}'
-#zinit light denysdovhan/spaceship-prompt
 zinit ice pick"async.zsh" src"pure.zsh"
 zinit light sindresorhus/pure
 zstyle :prompt:pure:prompt:success color '#25FFDB'
