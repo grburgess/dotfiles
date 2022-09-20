@@ -620,6 +620,8 @@ the buffer is buried."
   (require 'all-the-icons)
   )
 
+(defun with-faicon (icon str &optional height v-adjust)
+  (s-concat (all-the-icons-faicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
 
 (defun vl/window-half-height (&optional window)
   (max 1 (/ (1- (window-height window)) 2)))
@@ -633,8 +635,10 @@ the buffer is buried."
   (scroll-other-window-down
    (vl/window-half-height (other-window-for-scrolling))))
 
+(defvar org--title (with-faicon "mars" "Orgy" 1 -0.05))
+
 (pretty-hydra-define jmb/org-mode-hydra
-  (:color red :timeout 2 :quit-key "q" :title "orgmode")
+  (:color red :timeout 2 :quit-key "q" :title org--title)
   ("Actions"
    (
     ("t" org-toggle-inline-images "toggle inline images" )
@@ -642,8 +646,10 @@ the buffer is buried."
     ))
   )
 
+(defvar tab-move--title (with-faicon "bomb" "Tabs" 1 -0.05))
+
 (pretty-hydra-define jmb/tab-move
-  (:color red :timeout 2 :quit-key "q" :title "tabs")
+  (:color red :timeout 2 :quit-key "q" :title tab-move--title)
   ("Actions"
    (      ("<left>" centaur-tabs-backward "prev tab")
           ("<right>" centaur-tabs-forward "next tab")
@@ -687,7 +693,9 @@ the buffer is buried."
   ("w" other-window)
   ("z" delete-other-windows))
 
-(pretty-hydra-define hydra-mc (:color red :title "multiple cursors")
+(defvar mc--title (with-faicon "i-cursor" "Multiple Cursors" 1 -0.05))
+
+(pretty-hydra-define hydra-mc (:color red :title mc--title)
 
   ("Mark"
    (
@@ -727,7 +735,9 @@ the buffer is buried."
   ("s" string-rectange "string")
   ("i" string-insert-rectangle "string insert"))
 
-(pretty-hydra-define hydra-smartparens (:color red :title "Smartparens")
+(defvar parens--title (with-faicon "rebel" "Smart Parens" 1 -0.05))
+
+(pretty-hydra-define hydra-smartparens (:color red :title parens--title)
   ("Move"
    (
     ("f" sp-forward-sexp "forward")
@@ -759,13 +769,13 @@ the buffer is buried."
   ("i" lsp-find-implementation "find implementation")
   ("r" lsp-find-references "find references"))
 
-(pretty-hydra-define hydra-python-format (:color teal :title "Python clean up")
+(defvar python--title (with-faicon "code" "Python Clean Up" 1 -0.05))
+
+(pretty-hydra-define hydra-python-format (:color teal :title python--title)
   ("Format"
    (
     ("f" blacken-buffer "blacken")
     ("i" py-isort-buffer "isort"))
-
-
    )
 
   )
@@ -803,19 +813,35 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   ("k" smerge-kill-current)
   ("q" nil "cancel" :color blue))
 
-(defhydra my-mu4e-quick (:color green)
-  "quick email"
-  ("w" (mu4e-headers-search "flag:unread AND maildir:/mpe/INBOX") "unread work")
-  ("p" (mu4e-headers-search "flag:unread AND maildir:/gmail/INBOX")   "unread personal")
-  ("t" (mu4e-headers-search "date:today..now AND maildir:/mpe/INBOX")   "today work")
-  ("c" (mu4e-compose-new)    "compase a message")
-  ("o" (org-mime-edit-mail-in-org-mode)  "edit message in org mode")
-  ("e" (org-mime-htmlize) "export to html")
+(defvar mail--title (with-faicon "male" "Mail" 1 -0.05))
+
+(pretty-hydra-define my-mu4e-quick (:color blue :title mail--title)
+  ("Unread"
+   (
+    ("w" (mu4e-headers-search "flag:unread AND maildir:/mpe/INBOX") "unread work")
+    ("p" (mu4e-headers-search "flag:unread AND maildir:/gmail/INBOX")   "unread personal"))
+   "Today" (
+            ("t" (mu4e-headers-search "date:today..now AND maildir:/mpe/INBOX")   "today work"))
+   "Compose" (
+
+              ("c" (mu4e-compose-new)    "compase a message"))
+   "Org" (
+          ("o" (org-mime-edit-mail-in-org-mode)  "edit message in org mode")
+          ("e" (org-mime-htmlize) "export to html")
 
 
+          )
+   "Utils"(
+           ("u" (mu4e-update-index) "update")
+
+           )
+
+   )
   )
 
-(pretty-hydra-define jmb/hydra-music (:color red :timeout 4 :title "Music")
+(defvar music--title (with-faicon "music" "Music" 1 -0.05))
+
+(pretty-hydra-define jmb/hydra-music (:color red :timeout 4 :title music--title)
   ("Skip"
    (
     ("n" #'musica-play-next "next")
@@ -827,6 +853,23 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
     ("i" #'musica-info "info"))
    "Play"(
           ("SPC" #'musica-play-pause "play-pause"))
+
+   ))
+
+(defvar slack--title (with-faicon "slack" "Slack" 1 -0.05))
+
+(pretty-hydra-define jmb/hydra-slack (:color red :timeout 4 :title slack--title)
+  ("Select"
+   (
+    ("i" slack-im-select  "im")
+    ("c" slack-channel-select "channel")
+    ("r" #'musica-play-next-random "next random"))
+   "Insert"
+
+   (("e" slack-insert-emoji "emojii")
+   )
+   "Start"(
+          ("s" slack-start "start"))
 
    ))
 
@@ -2049,6 +2092,30 @@ folder, otherwise delete a word"
 
 
   (org-roam-setup))
+
+(defun my/org-roam-copy-todo-to-today ()
+  (interactive)
+  (let ((org-refile-keep t) ;; Set this to nil to delete the original!
+        (org-roam-dailies-capture-templates
+         '(("t" "tasks" entry "%?"
+            :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
+        (org-after-refile-insert-hook #'save-buffer)
+        today-file
+        pos)
+    (save-window-excursion
+      (org-roam-dailies--capture (current-time) t)
+      (setq today-file (buffer-file-name))
+      (setq pos (point)))
+
+    ;; Only refile if the target file is different than the current file
+    (unless (equal (file-truename today-file)
+                   (file-truename (buffer-file-name)))
+      (org-refile nil nil (list "Tasks" today-file nil pos)))))
+
+(add-to-list 'org-after-todo-state-change-hook
+             (lambda ()
+               (when (equal org-state "DONE")
+                 (my/org-roam-copy-todo-to-today))))
 
 (use-package org-roam-ui
   :straight
