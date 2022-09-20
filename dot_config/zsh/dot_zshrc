@@ -117,11 +117,6 @@ export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
 
 FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 
-source ~/.config/zsh/plugins.zsh 
-
-source ~/.config/zsh/emacs.zsh
-
-source ~/.config/zsh/alias.zsh
 
 
 
@@ -154,3 +149,8 @@ eval "$(direnv hook zsh)"
 
 
 
+source ~/.config/zsh/plugins.zsh 
+
+source ~/.config/zsh/emacs.zsh
+
+source ~/.config/zsh/alias.zsh
