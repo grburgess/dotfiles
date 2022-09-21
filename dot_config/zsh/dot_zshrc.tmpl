@@ -126,32 +126,38 @@ export HDF5_DISABLE_VERSION_CHECK=1
 {{ if eq .chezmoi.os "darwin" }}
 export HDF5_DIR="$(brew --prefix hdf5-mpi)"
 {{ end }}
+
+
+source ~/.config/zsh/plugins.zsh
+
+source ~/.config/zsh/emacs.zsh
+
+
 export LS_COLORS="*.rsp=32:*.rsp2=32:*.h5=34:*.pha=33:*.fits=33;01:*.py=32;01:*.ipynb=36"
 
 # # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 # export PATH="$PATH:$HOME/.rvm/bin"
 export FZF_DEFAULT_COMMAND='fd -HI -L --exclude .git --color=always'
-export FZF_DEFAULT_OPTS='
+export FZF_DEFAULT_OPTS="
   --ansi
-  --height 40%
+  --height 80%
   --reverse
   --multi
-  --color fg:#19C78B,bg:#8C1BB0,hl:#1BA3E3,fg+:#000000,bg+:#8C1BB0,hl+:#1FF98C
-'
+  --color fg:#19C78B,bg:#37004F,hl:#FF2387,fg+:#CDCDCD,bg+:#37004F,hl+:#1FF98C
+"
+
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /dev/null || exa --tree --color=always {}) 2> /dev/null | head -200'"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
 
-{{ if eq .chezmoi.os "darwin" }}
 
-FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 
-{{ end }}
+autoload -Uz compinit promptinit
+promptinit
+compinit
 
-source ~/.config/zsh/plugins.zsh
 
-source ~/.config/zsh/emacs.zsh
 
 
 
@@ -161,21 +167,26 @@ zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # preview directory's content with exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview "exa -1 --color=always $realpath"
 # switch group using `,` and `.`
-zstyle ':fzf-tab:*' switch-group ',' '.'
+#zstyle ':fzf-tab:*' switch-group ',' '.'
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
 
-
-
-autoload -Uz compinit
-compinit
 
 zinit cdreplay -q   # -q is for quiet; actually run all the `compdef's saved before
                     #`compinit` call (`compinit' declares the `compdef' function, so
                     # it cannot be used until `compinit' is ran; Zinit solves this
                     # via intercepting the `compdef'-calls and storing them for later
                     # use with `zinit cdreplay')
+
+{{ if eq .chezmoi.os "darwin" }}
+
+FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+{{ end }}
+
+
 
 {{ if eq .chezmoi.os "darwin" }}
 eval "$(direnv hook zsh)"

@@ -23,6 +23,8 @@ zinit light-mode for \
 
 zinit ice svn
 
+
+
 {{ if eq .chezmoi.os "darwin" }}
 zinit snippet OMZ::plugins/macos
 {{ end }}
@@ -37,13 +39,13 @@ source ~/.config/zsh/highlight.zsh
 
 # Binaries
 
-zinit from"gh-r" as"program" for junegunn/fzf
+
 
 zinit from"gh-r" as"program" mv"exa-* -> exa" for ogham/exa
 zinit from"gh-r" as"program" mv"jq-* -> jq" for stedolan/jq
 zinit from"gh-r" as"program" pick"*/rg" for BurntSushi/ripgrep
 zinit from"gh-r" as"program" pick"*/bat" for @sharkdp/bat
-# zinit from"gh-r" as"program" pick"*/**/terminal-notifier" for julienXX/terminal-notifier
+
 
 # Oh-My-Zsh snippets
 zinit is-snippet for OMZ::lib/directories.zsh
@@ -55,14 +57,16 @@ zinit is-snippet for OMZ::lib/git.zsh
 #zinit is-snippet for OMZ::
 
 
-
 zinit is-snippet for OMZ::plugins/git/git.plugin.zsh
 zinit is-snippet for OMZ::plugins/pip/pip.plugin.zsh
 
 {{ if eq .chezmoi.os "darwin" }}
 zinit is-snippet for OMZ::plugins/iterm2/iterm2.plugin.zsh
 {{ end }}
-zinit is-snippet for OMZ::plugins/common-aliases/common-aliases.plugin.zsh
+
+
+
+#zinit is-snippet for OMZ::plugins/common-aliases/common-aliases.plugin.zsh
 
 
 #zinit is-snippet for OMZ::plugins/emacs/emacs.plugin.zsh
@@ -78,12 +82,12 @@ zinit for changyuheng/zsh-interactive-cd
 
 zinit wait lucid for zdharma-continuum/fast-syntax-highlighting
 
-zinit pick"shell/completion.zsh" src"shell/key-bindings.zsh" for junegunn/fzf
+#zinit pick"shell/completion.zsh" src"shell/key-bindings.zsh" for junegunn/fzf
 
 # it also works with turbo mode:
 zinit ice wait lucid
 
-zinit load redxtech/zsh-fzf-utils
+#zinit load redxtech/zsh-fzf-utils
 
 zinit load wfxr/forgit
 
@@ -97,3 +101,4 @@ zstyle :prompt:pure:virtualenv color '#AB6CFF'
 zinit wait lucid for \
       is-snippet "${ZDOTDIR}/alias.zsh"
 
+zinit light Aloxaf/fzf-tab
