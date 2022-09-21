@@ -139,12 +139,25 @@ source ~/.config/zsh/plugins.zsh
 
 source ~/.config/zsh/emacs.zsh
 
+source ~/.config/zsh/alias.zsh
 
 export LS_COLORS="*.rsp=32:*.rsp2=32:*.h5=34:*.pha=33:*.fits=33;01:*.py=32;01:*.ipynb=36"
 
 # # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 # export PATH="$PATH:$HOME/.rvm/bin"
+
+{{ if eq .chezmoi.osRelease.id "raspbian" }}
+
+export FZF_DEFAULT_COMMAND='fdfind -HI -L --exclude .git --color=always'
+
+{{ else }}
+
 export FZF_DEFAULT_COMMAND='fd -HI -L --exclude .git --color=always'
+
+{{ end }}
+
+
+
 export FZF_DEFAULT_OPTS="
   --ansi
   --height 80%
@@ -199,4 +212,3 @@ FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 eval "$(direnv hook zsh)"
 {{ end }}
 
-source ~/.config/zsh/alias.zsh
