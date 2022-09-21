@@ -168,10 +168,12 @@ the buffer is buried."
   (sublimity-mode 1))
                                         ;  (sublimity-map-set-delay 3))
 
+(use-package s)
 (use-package all-the-icons
   :if (display-graphic-p)
   :ensure t
-  :demand
+  :demand t
+      :after s
   :config
   (when (not (member "all-the-icons" (font-family-list)))
     (all-the-icons-install-fonts t)))
@@ -610,32 +612,40 @@ the buffer is buried."
   (setq which-key-idle-delay 0.7))
 
 (use-package hydra
-  :ensure t
-  :defer 1)
+      :ensure t
+      :defer 1)
 
-(use-package major-mode-hydra
-  :ensure t
-  :after all-the-icons
-  :config
-  (require 'all-the-icons)
+    (use-package major-mode-hydra
+      :ensure t
+      :after all-the-icons
+	  :demand t
+      :config
+      (require 'all-the-icons)
+
+      (defun with-faicon (icon str &optional height v-adjust)
+      (s-concat (all-the-icons-faicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
+
+    (defun vl/window-half-height (&optional window)
+      (max 1 (/ (1- (window-height window)) 2)))
+
+    (defun vl/scroll-down-half-other-window ()
+      (interactive)
+      (scroll-other-window
+       (vl/window-half-height (other-window-for-scrolling))))
+    (defun vl/scroll-up-half-other-window ()
+      (interactive)
+      (scroll-other-window-down
+       (vl/window-half-height (other-window-for-scrolling))))
+
+  (defvar org--title (with-faicon "mars" "Orgy" 1 -0.05))
+  (defvar tab-move--title (with-faicon "bomb" "Tabs" 1 -0.05))
+(defvar mc--title (with-faicon "i-cursor" "Multiple Cursors" 1 -0.05))
+(defvar parens--title (with-faicon "rebel" "Smart Parens" 1 -0.05))
+(defvar python--title (with-faicon "code" "Python Clean Up" 1 -0.05))
+(defvar mail--title (with-faicon "male" "Mail" 1 -0.05))
+(defvar music--title (with-faicon "music" "Music" 1 -0.05))
+(defvar slack--title (with-faicon "slack" "Slack" 1 -0.05))
   )
-
-(defun with-faicon (icon str &optional height v-adjust)
-  (s-concat (all-the-icons-faicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
-
-(defun vl/window-half-height (&optional window)
-  (max 1 (/ (1- (window-height window)) 2)))
-
-(defun vl/scroll-down-half-other-window ()
-  (interactive)
-  (scroll-other-window
-   (vl/window-half-height (other-window-for-scrolling))))
-(defun vl/scroll-up-half-other-window ()
-  (interactive)
-  (scroll-other-window-down
-   (vl/window-half-height (other-window-for-scrolling))))
-
-(defvar org--title (with-faicon "mars" "Orgy" 1 -0.05))
 
 (pretty-hydra-define jmb/org-mode-hydra
   (:color red :timeout 2 :quit-key "q" :title org--title)
@@ -645,8 +655,6 @@ the buffer is buried."
     ("a" org-agenda "org agenda")
     ))
   )
-
-(defvar tab-move--title (with-faicon "bomb" "Tabs" 1 -0.05))
 
 (pretty-hydra-define jmb/tab-move
   (:color red :timeout 2 :quit-key "q" :title tab-move--title)
@@ -693,8 +701,6 @@ the buffer is buried."
   ("w" other-window)
   ("z" delete-other-windows))
 
-(defvar mc--title (with-faicon "i-cursor" "Multiple Cursors" 1 -0.05))
-
 (pretty-hydra-define hydra-mc (:color red :title mc--title)
 
   ("Mark"
@@ -735,8 +741,6 @@ the buffer is buried."
   ("s" string-rectange "string")
   ("i" string-insert-rectangle "string insert"))
 
-(defvar parens--title (with-faicon "rebel" "Smart Parens" 1 -0.05))
-
 (pretty-hydra-define hydra-smartparens (:color red :title parens--title)
   ("Move"
    (
@@ -768,8 +772,6 @@ the buffer is buried."
   ("d" lsp-find-definition "find definition")
   ("i" lsp-find-implementation "find implementation")
   ("r" lsp-find-references "find references"))
-
-(defvar python--title (with-faicon "code" "Python Clean Up" 1 -0.05))
 
 (pretty-hydra-define hydra-python-format (:color teal :title python--title)
   ("Format"
@@ -813,8 +815,6 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   ("k" smerge-kill-current)
   ("q" nil "cancel" :color blue))
 
-(defvar mail--title (with-faicon "male" "Mail" 1 -0.05))
-
 (pretty-hydra-define my-mu4e-quick (:color blue :title mail--title)
   ("Unread"
    (
@@ -839,8 +839,6 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
    )
   )
 
-(defvar music--title (with-faicon "music" "Music" 1 -0.05))
-
 (pretty-hydra-define jmb/hydra-music (:color red :timeout 4 :title music--title)
   ("Skip"
    (
@@ -856,8 +854,6 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
    ))
 
-(defvar slack--title (with-faicon "slack" "Slack" 1 -0.05))
-
 (pretty-hydra-define jmb/hydra-slack (:color red :timeout 4 :title slack--title)
   ("Select"
    (
@@ -867,9 +863,9 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
    "Insert"
 
    (("e" slack-insert-emoji "emojii")
-   )
+    )
    "Start"(
-          ("s" slack-start "start"))
+           ("s" slack-start "start"))
 
    ))
 
