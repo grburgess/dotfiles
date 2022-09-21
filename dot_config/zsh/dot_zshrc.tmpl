@@ -19,6 +19,13 @@ export PATH=/opt/homebrew/bin:$PATH
 
 export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
 
+{{ if eq .chezmoi.osRelease.id "raspbian" }}
+
+export PATH="${PATH}:~/.local/bin"
+
+{{ end }}
+
+
 {{ else  }}
 
 
