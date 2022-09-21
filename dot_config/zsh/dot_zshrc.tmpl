@@ -84,7 +84,7 @@ export PATH=$PATH:/Users/jburgess/Library/Python/3.10/bin
 {{ else if eq .chezmoi.os "linux" }}
 
 
-{{ if not eq .chezmoi.osRelease.id "raspian" }}
+{{ if neq .chezmoi.osRelease.id "raspian" }}
 export PATH=${PATH}:/home/jburgess/.local/bin
 VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 export WORKON_HOME=~/.environs
