@@ -36,7 +36,9 @@ zinit load zdharma-continuum/fast-syntax-highlighting
 source ~/.config/zsh/highlight.zsh
 
 # Binaries
-zinit from"gh-r" as"program" for junegunn/fzf-bin
+
+zinit from"gh-r" as"program" for junegunn/fzf
+
 zinit from"gh-r" as"program" mv"exa-* -> exa" for ogham/exa
 zinit from"gh-r" as"program" mv"jq-* -> jq" for stedolan/jq
 zinit from"gh-r" as"program" pick"*/rg" for BurntSushi/ripgrep
@@ -73,7 +75,9 @@ zinit is-snippet for OMZ::plugins/extract/extract.plugin.zsh
 zinit for rupa/z
 zinit for changyuheng/fz
 zinit for changyuheng/zsh-interactive-cd
+
 zinit wait lucid for zdharma-continuum/fast-syntax-highlighting
+
 zinit pick"shell/completion.zsh" src"shell/key-bindings.zsh" for junegunn/fzf
 
 # it also works with turbo mode:
