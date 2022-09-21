@@ -10,3 +10,9 @@ alias wo="workon"
 
 alias et='te'
 alias rm="rm -vi"
+
+{{ if eq .chezmoi.osRelease.id "raspbian" }}
+
+alias fd="fdfind"
+
+{{ end }}
