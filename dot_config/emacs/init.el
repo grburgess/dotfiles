@@ -613,7 +613,7 @@ the buffer is buried."
 
 (use-package hydra
       :ensure t
-      :defer 1)
+      )
 
     (use-package major-mode-hydra
       :ensure t
