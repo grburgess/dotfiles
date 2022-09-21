@@ -146,9 +146,10 @@ export LS_COLORS="*.rsp=32:*.rsp2=32:*.h5=34:*.pha=33:*.fits=33;01:*.py=32;01:*.
 # # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
 # export PATH="$PATH:$HOME/.rvm/bin"
 
-{{ if eq .chezmoi.osRelease.id "raspbian" }}
+{{ if eq .chezmoi.os "linux" }}
 
 export FZF_DEFAULT_COMMAND='fdfind -HI -L --exclude .git --color=always'
+
 
 {{ else }}
 
