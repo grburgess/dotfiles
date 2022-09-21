@@ -133,12 +133,10 @@ export LS_COLORS="*.rsp=32:*.rsp2=32:*.h5=34:*.pha=33:*.fits=33;01:*.py=32;01:*.
 export FZF_DEFAULT_COMMAND='fd -HI -L --exclude .git --color=always'
 export FZF_DEFAULT_OPTS='
   --ansi
-  --info inline
   --height 40%
   --reverse
   --multi
-  --color fg:#1FF088,bg:#000000,hl:#F7FF00,fg+:#B534FA,bg+:#19161B,hl+:#fabd2f
-  --color info:#83a598,prompt:#bdae93,spinner:#fabd2f,pointer:#83a598,marker:#fe8019,header:#665c54
+  --color fg:#19C78B,bg:#8C1BB0,hl:#1BA3E3,fg+:#000000,bg+:#8C1BB0,hl+:#1FF98C
 '
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /dev/null || exa --tree --color=always {}) 2> /dev/null | head -200'"
