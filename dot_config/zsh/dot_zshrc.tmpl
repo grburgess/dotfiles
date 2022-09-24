@@ -191,8 +191,8 @@ zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # preview directory's content with exa when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview "exa -1 --color=always $realpath"
-# switch group using `,` and `.`
-#zstyle ':fzf-tab:*' switch-group ',' '.'
+switch group using `,` and `.`
+zstyle ':fzf-tab:*' switch-group ',' '.'
 
 
 
@@ -207,7 +207,21 @@ zinit cdreplay -q   # -q is for quiet; actually run all the `compdef's saved bef
 
 FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
 
+{{ else}}
+
+
+source ~/sw/fzf-tab-completion/zsh/fzf-zsh-completion.sh
+bindkey '^I' fzf_completion
+
+
+# only for git
+zstyle ':completion:*:*:git:*' fzf-search-display true
+# or for everything
+zstyle ':completion:*' fzf-search-display true
+
+
 {{ end }}
+
 
 
 
