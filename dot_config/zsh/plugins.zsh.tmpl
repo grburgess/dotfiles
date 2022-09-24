@@ -64,8 +64,6 @@ zinit is-snippet for OMZ::plugins/pip/pip.plugin.zsh
 {{ if eq .chezmoi.os "darwin" }}
 zinit is-snippet for OMZ::plugins/iterm2/iterm2.plugin.zsh
 
-zinit light Aloxaf/fzf-tab
-
 {{ end }}
 
 
@@ -104,3 +102,9 @@ zstyle :prompt:pure:virtualenv color '#AB6CFF'
 
 zinit wait lucid for \
       is-snippet "${ZDOTDIR}/alias.zsh"
+
+{{ if eq .chezmoi.os "darwin" }}
+
+zinit light Aloxaf/fzf-tab
+
+{{ end }}
