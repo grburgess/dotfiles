@@ -117,10 +117,12 @@ export CMDSTAN=/home/jburgess/.cmdstanpy/cmdstan
 {{ else }}
 {{ end }}
 
+bindkey -e
+
 {{ if eq .chezmoi.os "darwin" }}
 
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/sw/lib
-bindkey -e
+
 # End of lines configured by zsh-newuser-install
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 {{ end }}
@@ -169,7 +171,7 @@ export FZF_DEFAULT_OPTS="
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /dev/null || exa --tree --color=always {}) 2> /dev/null | head -200'"
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
+# export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
 
 

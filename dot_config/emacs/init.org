@@ -301,7 +301,7 @@ the buffer is buried."
   :if (display-graphic-p)
   :ensure t
   :demand t
-      :after s
+  :after s
   :config
   (when (not (member "all-the-icons" (font-family-list)))
     (all-the-icons-install-fonts t)))
@@ -853,41 +853,41 @@ Some nice visual modes
 ** HYDRA
 #+BEGIN_SRC emacs-lisp
 
-      (use-package hydra
-	:ensure t
-	)
+(use-package hydra
+  :ensure t
+  )
 
-      (use-package major-mode-hydra
-	:ensure t
-	:after all-the-icons
-	    :demand t
-	:config
-	(require 'all-the-icons)
+(use-package major-mode-hydra
+  :ensure t
+  :after all-the-icons
+  :demand t
+  :config
+  (require 'all-the-icons)
 
-	(defun with-faicon (icon str &optional height v-adjust)
-	(s-concat (all-the-icons-faicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
+  (defun with-faicon (icon str &optional height v-adjust)
+    (s-concat (all-the-icons-faicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
 
-      (defun vl/window-half-height (&optional window)
-	(max 1 (/ (1- (window-height window)) 2)))
+  (defun vl/window-half-height (&optional window)
+    (max 1 (/ (1- (window-height window)) 2)))
 
-      (defun vl/scroll-down-half-other-window ()
-	(interactive)
-	(scroll-other-window
-	 (vl/window-half-height (other-window-for-scrolling))))
-      (defun vl/scroll-up-half-other-window ()
-	(interactive)
-	(scroll-other-window-down
-	 (vl/window-half-height (other-window-for-scrolling))))
+  (defun vl/scroll-down-half-other-window ()
+    (interactive)
+    (scroll-other-window
+     (vl/window-half-height (other-window-for-scrolling))))
+  (defun vl/scroll-up-half-other-window ()
+    (interactive)
+    (scroll-other-window-down
+     (vl/window-half-height (other-window-for-scrolling))))
 
-    (defvar org--title (with-faicon "mars" "Orgy" 1 -0.05))
-    (defvar tab-move--title (with-faicon "bomb" "Tabs" 1 -0.05))
+  (defvar org--title (with-faicon "mars" "Orgy" 1 -0.05))
+  (defvar tab-move--title (with-faicon "bomb" "Tabs" 1 -0.05))
   (defvar mc--title (with-faicon "i-cursor" "Multiple Cursors" 1 -0.05))
   (defvar parens--title (with-faicon "rebel" "Smart Parens" 1 -0.05))
   (defvar python--title (with-faicon "code" "Python Clean Up" 1 -0.05))
   (defvar mail--title (with-faicon "male" "Mail" 1 -0.05))
   (defvar music--title (with-faicon "music" "Music" 1 -0.05))
   (defvar slack--title (with-faicon "slack" "Slack" 1 -0.05))
-    )
+  )
 
 
 #+END_SRC
@@ -3939,11 +3939,7 @@ text-modes with this snippet.
   (:host github :repo "bkaestner/redacted.el" :branch "main" :files ("*.el"))
   :init
   (global-set-key [f2] 'redacted-mode)
-
   )
-
-
-
 #+end_src
 
 #+RESULTS:
