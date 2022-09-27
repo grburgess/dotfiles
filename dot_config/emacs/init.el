@@ -778,6 +778,11 @@ the buffer is buried."
    (
     ("f" blacken-buffer "blacken")
     ("i" py-isort-buffer "isort"))
+   "Shift"
+   (
+    ("<right>" tom/shift-right "right")
+    ("<left>"  tom/shift-left"left")
+    )
    )
 
   )
@@ -819,24 +824,30 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   ("Unread"
    (
     ("w" (mu4e-headers-search "flag:unread AND maildir:/mpe/INBOX") "unread work")
-    ("p" (mu4e-headers-search "flag:unread AND maildir:/gmail/INBOX")   "unread personal"))
-   "Today" (
-            ("t" (mu4e-headers-search "date:today..now AND maildir:/mpe/INBOX")   "today work"))
-   "Compose" (
+    ("p" (mu4e-headers-search "flag:unread AND maildir:/gmail/INBOX")   "unread personal")
 
-              ("c" (mu4e-compose-new)    "compase a message"))
-   "Org" (
-          ("o" (org-mime-edit-mail-in-org-mode)  "edit message in org mode")
-          ("e" (org-mime-htmlize) "export to html")
+    )
+   "Bookmark" (
+               ("t" (mu4e-headers-search "date:today..now AND maildir:/mpe/INBOX")   "today work")
+               ("d" (mu4e-headers-search "Damien AND maildir:/mpe/INBOX") "Damien" )
+               ("j" (mu4e-headers-search "Jochen AND maildir:/mpe/INBOX") "Jochen" )
 
+               )
 
-          )
-   "Utils"(
-           ("u" (mu4e-update-index) "update")
+   "Org"
+   (
+    ("o" (org-mime-edit-mail-in-org-mode)  "edit message in org mode")
+    ("e" (org-mime-htmlize) "export to html")
 
-           )
+    )
 
+   "Utils"
+   (
+    ("c" (mu4e-compose-new)    "compase a message")
+    ("u" (mu4e-update-index) "update")
+    )
    )
+
   )
 
 (pretty-hydra-define jmb/hydra-music (:color red :timeout 4 :title music--title)
@@ -2284,12 +2295,13 @@ folder, otherwise delete a word"
       (move-lines-down 1)
       (tom/hydra-move-lines/body))
 
-    (defhydra tom/hydra-move-lines ()
+     
+    (defhydra tom/hydra-move-lines (:color blue :timeout 1)
       "Move one or multiple lines"
-      ("n" move-lines-down "down")
-      ("p" move-lines-up "up")
-      ("j" py-shift-left "left")
-      ("k" py-shift-right "right")))
+      ("<down>" move-lines-down "down")
+      ("<up>" move-lines-up "up")
+      ("<left>" tom/shift-left "left")
+      ("<right>" tom/shift-right "right")))
 
   :bind (("C-c n" . tom/move-lines-n)
          ("C-c p" . tom/move-lines-p))
@@ -2583,16 +2595,16 @@ folder, otherwise delete a word"
   (python-shell-interpreter-args "-i")
   :config
 
-  (progn
-    (defhydra python-indent (python-mode-map "C-c TAB")
-      "Adjust python indentation."
-      ("k" py-shift-right "right")
-      ("j" py-shift-left "left")
-      ("<right>" py-shift-right "right")
-      ("<left>" py-shift-left "left")
+  ;; (progn
+  ;;   (defhydra python-indent (python-mode-map "C-c TAB")
+  ;;     "Adjust python indentation."
+  ;;     ("k" py-shift-right "right")
+  ;;     ("j" py-shift-left "left")
+  ;;     ("<right>" py-shift-right "right")
+  ;;     ("<left>" py-shift-left "left")
 
-      )
-    )
+  ;;     )
+  ;;   )
 
   (yas-reload-all)
   )

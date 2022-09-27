@@ -5,7 +5,7 @@ export EMACS_PLUGIN_LAUNCHER="${ZDOTDIR}/emacsclient.sh"
 # set EDITOR if not already defined.
 export EDITOR="${EDITOR:-${EMACS_PLUGIN_LAUNCHER}}"
 
-alias emacs="$EMACS_PLUGIN_LAUNCHER --no-wait"
+alias emacs="$EMACS_PLUGIN_LAUNCHER --no-wait -c"
 alias e=emacs
 # open terminal emacsclient
 alias te="$EMACS_PLUGIN_LAUNCHER -nw"
