@@ -346,32 +346,26 @@ the buffer is buried."
 
 (defun jmb/set-font ()
   (add-to-list 'default-frame-alist
-               '(font . "Fira Mono 13"))
+               '(font . "FiraCode Nerd Font Mono 13"))
 
 
-  ;; (add-to-list 'default-frame-alist
-  ;;              '(font . "JetBrains Mono 13"))
 
-  ;; (add-to-list 'default-frame-alist
-  ;;              '(font . "Iosevka Aile 13"))
+  (set-frame-font "FiraCode Nerd Font Mono 13" nil t)
 
-
-  (set-frame-font "Fira Mono 13" nil t)
-
-  (set-face-attribute 'default nil :font "Fira Mono 13"
+  (set-face-attribute 'default nil :font "FiraCode Nerd Font Mono 13"
                       ;;:height 170
                       )
 
   ;; Set the fixed pitch face
   (set-face-attribute 'fixed-pitch nil
-                      :font "JetBrains Mono 13"
+                      :font "FiraCode Nerd Font Mono 13"
                       :weight 'light)
 
 
   ;; Set the variable pitch face
   (set-face-attribute 'variable-pitch nil
                       ;; :font "Cantarell"
-                      :font "Iosevka Aile 13"
+                      :font "BlexMono Nerd Font 13"
                       :weight 'light)
 
   )
@@ -390,28 +384,9 @@ the buffer is buried."
 
   (jmb/set-font)
 
-  ;; (set-frame-font "Fira Mono 13" nil t)
 
 
-  ;; (set-face-attribute 'default nil :font "Fira Mono 13"
-  ;;                     ;;:height 170
-  ;;                     )
-
-  ;; ;; Set the fixed pitch face
-  ;; (set-face-attribute 'fixed-pitch nil
-  ;;                     :font "JetBrains Mono 13"
-  ;;                     :weight 'light)
-
-
-  ;; ;; Set the variable pitch face
-  ;; (set-face-attribute 'variable-pitch nil
-
-  ;;                     :font "Iosevka Aile 13"
-  ;;                     :weight 'light)
-
-
-
-  (set-face-attribute 'org-document-title nil :font "Iosevka Aile" :weight 'bold :height 1.3)
+  (set-face-attribute 'org-document-title nil :font "BlexMono Nerd Font" :weight 'bold :height 1.3)
   (dolist (face '((org-level-1 . 1.5)
                   (org-level-2 . 1.1)
                   (org-level-3 . 1.05)
@@ -420,7 +395,7 @@ the buffer is buried."
                   (org-level-6 . 1.1)
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "Iosevka Aile" :weight 'regular :height (cdr face)))
+    (set-face-attribute (car face) nil :font "BlexMono Nerd Font" :weight 'regular :height (cdr face)))
 
   ;; Make sure org-indent face is available
   ;;    (require 'org-indent)
@@ -1930,53 +1905,6 @@ folder, otherwise delete a word"
 
 
                                         ;(define-key global-map "\C-cc" 'org-capture)
-
-;; (use-package org-journal
-;;   :ensure t
-;;   :defer t
-;;   :init
-;;   ;; Change default prefix key; needs to be set before loading org-journal
-;;   (setq org-journal-prefix-key "C-c j ")
-;;   (setq org-journal-file-format "%Y-%m-%d-%a")
-;;   :config
-
-;;   (defun org-journal-file-header-func (time)
-;;     "Custom function to create journal header."
-;;     (concat
-;;      (pcase org-journal-file-type
-;;        (`daily "#+TITLE: Daily Journal\n#+STARTUP: showeverything")
-;;        (`weekly "#+TITLE: Weekly Journal\n#+STARTUP: folded")
-;;        (`monthly "#+TITLE: Monthly Journal\n#+STARTUP: folded")
-;;        (`yearly "#+TITLE: Yearly Journal\n#+STARTUP: folded"))))
-
-;;   (setq org-journal-file-header 'org-journal-file-header-func)
-
-
-;;   (setq org-journal-dir "~/org/journal/"
-;;         org-journal-date-format "%A, %d/%m/%Y")
-
-;;   (defun org-journal-save-entry-and-exit()
-;;     "Simple convenience function.
-;;   Saves the buffer of the current day's entry and kills the window
-;;   Similar to org-capture like behavior"
-;;     (interactive)
-;;     (save-buffer)
-;;     (kill-buffer-and-window))
-;;   (define-key org-journal-mode-map (kbd "C-x C-s") 'org-journal-save-entry-and-exit)
-
-
-
-
-;;   (defun org-journal-find-location ()
-;;     ;; Open today's journal, but specify a non-nil prefix argument in order to
-;;     ;; inhibit inserting the heading; org-capture will insert the heading.
-;;     (org-journal-new-entry t)
-;;     (unless (eq org-journal-file-type 'daily)
-;;       (org-narrow-to-subtree))
-;;     (goto-char (point-max)))
-
-
-;;   )
 
 ;; (setq org-capture-templates
 ;;       '(("t" "TODO" plain (function org-journal-find-location)

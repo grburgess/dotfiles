@@ -176,9 +176,6 @@ export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
 
 
 
-autoload -Uz compinit promptinit
-promptinit
-compinit
 
 
 
@@ -188,17 +185,13 @@ compinit
 
 
 
-zinit cdreplay -q   # -q is for quiet; actually run all the `compdef's saved before
-                    #`compinit` call (`compinit' declares the `compdef' function, so
-                    # it cannot be used until `compinit' is ran; Zinit solves this
-                    # via intercepting the `compdef'-calls and storing them for later
-                    # use with `zinit cdreplay')
 
 {{ if eq .chezmoi.os "darwin" }}
 
 
 
-FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+FPATH=$(brew --prefix)/share/zsh/site-functions:~/sw/mac-zsh-completions:$FPATH
+
 
 zstyle ':completion:*:git-checkout:*' sort true
 # set descriptions format to enable group support
@@ -222,10 +215,21 @@ bindkey '^I' fzf_completion
 zstyle ':completion:*:*:git:*' fzf-search-display true
 # or for everything
 zstyle ':completion:*' fzf-search-display true
+zstyle ':completion:*' menu select
 
 
 {{ end }}
 
+
+autoload -Uz compinit promptinit
+promptinit
+compinit
+
+zinit cdreplay -q   # -q is for quiet; actually run all the `compdef's saved before
+                    #`compinit` call (`compinit' declares the `compdef' function, so
+                    # it cannot be used until `compinit' is ran; Zinit solves this
+                    # via intercepting the `compdef'-calls and storing them for later
+                    # use with `zinit cdreplay')
 
 
 

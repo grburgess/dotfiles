@@ -1,5 +1,4 @@
 
-
 export EMACS_PLUGIN_LAUNCHER="${ZDOTDIR}/emacsclient.sh"
 
 # set EDITOR if not already defined.
