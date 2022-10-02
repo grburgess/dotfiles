@@ -307,7 +307,7 @@ the buffer is buried."
         modus-themes-scale-headings t
         modus-themes-region '(bg-only)
         modus-themes-headings
-        '((1 . (rainbow overline 1.4))
+        '((1 . (rainbow  1.4))
           (2 . (rainbow  1.3))
           (3 . (rainbow bold 1.2))
           (t . (semilight 1.1))))
@@ -2284,12 +2284,6 @@ folder, otherwise delete a word"
   :hook (prog-mode . highlight-indent-guides-mode)
 
   )
-
-
-
-
-
-
 
 ;; (use-package dash
 ;;   :ensure t
