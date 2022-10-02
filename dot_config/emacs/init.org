@@ -451,12 +451,13 @@ the buffer is buried."
         modus-themes-completions (quote ((matches . (extrabold intense))
                                          (selection . (extrabold intense))
                                          (popup . (extrabold intense))))
+
         modus-themes-org-blocks nil;'tinted-background
         modus-themes-scale-headings t
         modus-themes-region '(bg-only)
         modus-themes-headings
-        '((1 . (rainbow overline background 1.4))
-          (2 . (rainbow background 1.3))
+        '((1 . (rainbow overline 1.4))
+          (2 . (rainbow  1.3))
           (3 . (rainbow bold 1.2))
           (t . (semilight 1.1))))
   ;; Load the theme files before enabling a theme
@@ -2844,7 +2845,7 @@ This is quite an ugly fix for allowing code markup for expressions like
       (move-lines-down 1)
       (tom/hydra-move-lines/body))
 
-     
+
     (defhydra tom/hydra-move-lines (:color blue :timeout 1)
       "Move one or multiple lines"
       ("<down>" move-lines-down "down")
