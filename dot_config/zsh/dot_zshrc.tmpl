@@ -122,12 +122,16 @@ bindkey -e
 {{ if eq .chezmoi.os "darwin" }}
 
 export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/sw/lib
-
+source /Users/jburgess/.config/zsh/.iterm2_shell_integration.zsh
 # End of lines configured by zsh-newuser-install
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 {{ end }}
 # HDF5 Sucks....
 export HDF5_DISABLE_VERSION_CHECK=1
+
+
+
+export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
 
 
 #export HDF5_DIR="$(brew --prefix hdf5)"
