@@ -1634,6 +1634,16 @@ folder, otherwise delete a word"
   (corfu-global-mode))
 #+end_src
 
+#+begin_src emacs-lisp
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  :custom
+  (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+#+end_src
+
 #+RESULTS:
 
 ** Orderless

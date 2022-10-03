@@ -1210,6 +1210,14 @@ folder, otherwise delete a word"
   :config
   (corfu-global-mode))
 
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  :custom
+  (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
 (use-package orderless
   :straight t
   :init
