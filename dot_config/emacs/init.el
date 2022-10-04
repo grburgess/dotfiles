@@ -221,7 +221,7 @@ the buffer is buried."
 
 (use-package tron-legacy-theme
   :ensure t
-  :defer t
+
   :config
   (setq tron-legacy-theme-vivid-cursor t)
   (setq tron-legacy-theme-dark-fg-bright-comments nil)
@@ -231,19 +231,19 @@ the buffer is buried."
 ;; Or if you have use-package installed
 (use-package kaolin-themes
   :ensure t
-  :defer t
+
   :config
   )
 
 (use-package green-is-the-new-black-theme
   :ensure t
-  :defer t
+
   :config
   )
 
 (use-package green-phosphor-theme
   :ensure t
-  :defer t
+
   :config
   )
 
@@ -251,8 +251,14 @@ the buffer is buried."
 
 (use-package rebecca-theme
   :ensure t
-  :defer t
+
   :config
+  )
+
+(use-package vscode-dark-plus-theme
+  :ensure t
+
+
   )
 
 (use-package blueballs-dark-theme
