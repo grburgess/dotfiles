@@ -2,3 +2,7 @@ logging:
   developer: off
   startup_warnings: off
   level: INFO
+plotting:
+  use_threeml_style: false
+# io:
+#   analysis_results_as_hdf: yes

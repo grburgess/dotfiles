@@ -139,7 +139,8 @@ export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
 #export HDF5_DIR="$(brew --prefix hdf5)"
 
 {{ if eq .chezmoi.os "darwin" }}
-export HDF5_DIR="$(brew --prefix hdf5-mpi)"
+# export HDF5_DIR="$(brew --prefix hdf5-mpi)"
+export HDF5_DIR="$(brew --prefix hdf5)"
 {{ end }}
 
 
