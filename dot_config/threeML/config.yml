@@ -4,5 +4,12 @@ logging:
   level: INFO
 plotting:
   use_threeml_style: false
+plugins:
+  ogip:
+    data_plot:
+      background_color: "#00D584"
+      counts_color: "#985CFC"
+
+
 # io:
 #   analysis_results_as_hdf: yes
