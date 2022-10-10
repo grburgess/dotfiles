@@ -29,6 +29,7 @@ axes.labelcolor     : F5F5F5
 
 savefig.bbox        : tight ## 'tight' or 'standard'.
 savefig.transparent : True    ## setting that controls whether figures are saved with a
+text.color: white
 
 axes.facecolor      : 1B202C   ## axes background color
 figure.facecolor    : 1B202C
@@ -44,7 +45,8 @@ axes.grid           : False   ## display grid or not
 #### Legend
 #legend.loc           : best
 legend.frameon       : True     ## if True, draw the legend on a background patch
-
+legend.labelcolor: white
+legend.edgecolor: white
 
 hist.bins : 25
 patch.edgecolor : 909495

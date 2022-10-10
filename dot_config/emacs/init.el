@@ -3363,11 +3363,40 @@ concatenated."
   (cl-assert (executable-find "pytunes") nil "pytunes not installed")
   (process-lines "pytunes" "previous"))
 
-;; (use-package power-mode
-;;   :straight
-;;   (:host github :repo "elizagamedev/power-mode.el" :branch "main" :files ("*.el"))
-;;   :init
-;;   (add-hook 'after-init-hook #'power-mode)
+(use-package erc-hl-nicks
+  :after erc)
+
+(use-package erc-image
+  :after erc)
 
 
-;;   )
+(use-package erc
+  :commands erc
+  :config
+  (setq erc-server "localhost"
+        erc-nick "jburgess"    ; Change this!
+        erc-user-full-name "J Michael Burgess"  ; And this!
+        erc-track-shorten-start 8
+                                        ;      erc-autojoin-channels-alist '((""))
+        erc-kill-buffer-on-part t
+        erc-auto-query 'bury
+                                        ;erc-join-buffer 'bury
+        erc-modules
+        '(autoaway autojoin button completion fill irccontrols keep-place
+                   list match menu move-to-prompt netsplit networks noncommands
+                   readonly ring stamp track hl-nicks))
+
+  (defvar bitlbee-password "slapitup")
+
+  (add-hook 'erc-join-hook 'bitlbee-identify)
+  (defun bitlbee-identify ()
+    "If we're on the bitlbee server, send the identify command to the
+ &bitlbee channel."
+    (when (and (string= "localhost" erc-session-server)
+               (string= "&bitlbee" (buffer-name)))
+      (erc-message "PRIVMSG" (format "%s identify %s"
+                                     (erc-default-target)
+                                     bitlbee-password))))
+
+
+  )
