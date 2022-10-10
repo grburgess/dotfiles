@@ -12,7 +12,7 @@ plugins:
 time_series:
   light_curve_color: "#50F9DF"
   selection_color: "#985CFC"
-  background_color: "#9528FC"
+  background_color: "#FF5E7E"
   background_selection_color: "#00D584"
 
 # io:
