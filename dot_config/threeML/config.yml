@@ -9,7 +9,11 @@ plugins:
     data_plot:
       background_color: "#00D584"
       counts_color: "#985CFC"
-
+time_series:
+  light_curve_color: "#50F9DF"
+  selection_color: "#985CFC"
+  background_color: "#9528FC"
+  background_selection_color: "#00D584"
 
 # io:
 #   analysis_results_as_hdf: yes
