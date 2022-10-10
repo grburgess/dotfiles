@@ -45,8 +45,8 @@ axes.grid           : False   ## display grid or not
 #### Legend
 #legend.loc           : best
 legend.frameon       : True     ## if True, draw the legend on a background patch
-legend.labelcolor: white
-legend.edgecolor: white
+legend.labelcolor: "w"
+legend.edgecolor: "w"
 
 hist.bins : 25
 patch.edgecolor : 909495
