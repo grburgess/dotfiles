@@ -3901,12 +3901,13 @@ text-modes with this snippet.
 
 
 (use-package tracking
-  :defer t
+  :defer nil
   :config
   (setq tracking-faces-priorities '(all-the-icons-pink
                                     all-the-icons-lgreen
                                     all-the-icons-lblue))
-  (setq tracking-frame-behavior nil))
+  ;(setq tracking-frame-behavior nil)
+  )
 
 (use-package visual-fill-column
   :ensure t
@@ -4216,14 +4217,22 @@ concatenated."
         erc-nick "jburgess"    ; Change this!
         erc-user-full-name "J Michael Burgess"  ; And this!
         erc-track-shorten-start 8
-                                        ;      erc-autojoin-channels-alist '((""))
+        erc-track-position-in-mode-line t
+                                        ;        erc-autojoin-channels-alist '((""))
         erc-kill-buffer-on-part t
         erc-auto-query 'bury
+        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
+                                  "324" "329" "332" "333" "353" "477")
                                         ;erc-join-buffer 'bury
         erc-modules
         '(autoaway autojoin button completion fill irccontrols keep-place
                    list match menu move-to-prompt netsplit networks noncommands
                    readonly ring stamp track hl-nicks))
+
+
+
+
+
 
   (defvar bitlbee-password "slapitup")
 
