@@ -23,6 +23,7 @@
   (:text "Tsvi Piran" :value 200 :type s)
   (:text "Asaf Pe'er" :value 200 :type s)
   (:text "Irene Tamborra" :value 100 :type s)
+  (:text "Merlin" :value 100 :type s)
   (:text "Ore Gottlieb" :value 100 :type s)
   (:text "Andrei M. Beloborodov" :value 100 :type s)
   (:text "Thomas Seigert" :value 50 :type s))
