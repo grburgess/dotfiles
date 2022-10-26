@@ -23,7 +23,7 @@ Match canonical host draco*,cobra*,raven*
     ControlPersist yes
     ControlPath ~/.ssh/master-%C
     # OpenSSH >=7.3
-    ProxyJump gatezero
+    ProxyJump login1.mpe.mpg.de
     # OpenSSH <=7.2
     #ProxyCommand ssh -W %h:%p gatezero
 
