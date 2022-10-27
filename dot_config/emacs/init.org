@@ -812,6 +812,22 @@ Some nice visual modes
 #+end_src
 
 #+RESULTS:
+** neotree
+#+begin_src emacs-lisp
+(use-package neotree
+  :ensure t
+  :config
+  (global-set-key [f8] 'neotree-toggle)
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+
+  )
+
+
+
+#+end_src
+
+#+RESULTS:
+: t
 
 * Keyboard
 ** ESC Cancels

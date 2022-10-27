@@ -584,6 +584,14 @@ the buffer is buried."
   :ensure t
   )
 
+(use-package neotree
+  :ensure t
+  :config
+  (global-set-key [f8] 'neotree-toggle)
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+
+  )
+
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 (use-package which-key
