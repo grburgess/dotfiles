@@ -3941,12 +3941,18 @@ text-modes with this snippet.
   :config
   (setq telega-use-docker t)
 
-  (setq telega-user-use-avatars t
+  (setq telega-user-use-avatars nil
         telega-use-tracking-for '(unread)
         telega-chat-use-markdown-formatting t
         telega-emoji-use-images t
         telega-msg-rainbow-title t
-        telega-chat-fill-column 75)
+	telega-use-images t
+        telega-chat-fill-column 75
+
+telega-translate-to-language-by-default t
+	)
+
+  (add-hook 'telega-load-hook 'telega-mode-line-mode)
   :init
   (global-set-key [f1] 'telega)
   (define-key global-map (kbd "C-c c") telega-prefix-map)
@@ -3957,7 +3963,6 @@ text-modes with this snippet.
 #+END_SRC
 
 #+RESULTS:
-: t
 
 ** elfeed
 
