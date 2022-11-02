@@ -3121,7 +3121,7 @@ folder, otherwise delete a word"
   ;; ((:host github :repo "zevlg/telega.el" :branch "master" :files ("*.el")))
   :commands telega
   :config
-  (setq telega-use-docker t)
+  (setq telega-use-docker nil)
 
   (setq telega-user-use-avatars nil
         telega-use-tracking-for '(unread)
