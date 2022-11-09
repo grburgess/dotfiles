@@ -2800,6 +2800,12 @@ folder, otherwise delete a word"
   (add-hook 'clojure-mode-hook #'eldoc-mode)
   (add-hook 'clojure-mode-hook #'idle-highlight-mode))
 
+(use-package clj-refactor
+  :defer t
+  :ensure t
+  :diminish clj-refactor-mode
+  :config (cljr-add-keybindings-with-prefix "C-c C-m"))
+
 (use-package cider
   :ensure t
   :defer t
@@ -2814,6 +2820,19 @@ folder, otherwise delete a word"
         nrepl-hide-special-buffers t
         cider-overlays-use-font-lock t)
   (cider-repl-toggle-pretty-printing))
+
+(use-package go-mode
+:init
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
+;; Start LSP Mode and YASnippet mode
+(add-hook 'go-mode-hook #'lsp-deferred)
+(add-hook 'go-mode-hook #'yas-minor-mode)
+
+  )
 
 ;;use-package
 
