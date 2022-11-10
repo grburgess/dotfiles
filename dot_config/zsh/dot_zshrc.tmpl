@@ -115,7 +115,7 @@ export NUMEXPR_NUM_THREADS=1
 {{ if eq .chezmoi.os "darwin" }}
 export CMDSTAN=/Users/jburgess/.cmdstanpy/cmdstan
 {{ else if eq .chezmoi.os "linux" }}
-export CMDSTAN=/home/jburgess/.cmdstanpy/cmdstan
+export CMDSTAN=/home/jburgess/.cmdstan/cmdstan
 {{ else }}
 {{ end }}
 

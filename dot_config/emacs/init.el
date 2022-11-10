@@ -3169,7 +3169,7 @@ folder, otherwise delete a word"
   :config
   (setq telega-use-docker nil)
 
-  (setq telega-user-use-avatars nil
+  (setq telega-user-use-avatars t
         telega-use-tracking-for '(unread)
         telega-chat-use-markdown-formatting t
         telega-emoji-use-images t
