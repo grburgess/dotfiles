@@ -2055,66 +2055,6 @@ Allows to jump into a a directory within the minibuffer
       (call-interactively 'avy-isearch)))
 
 
-  ;;  (defun my/avy--read-char-2 (char1 char2)
-  ;;   "Read two characters from the minibuffer."
-  ;;   (interactive (list (let ((c1 (read-char "char 1: " t)))
-  ;;                        (if (memq c1 '(? ?\b))
-  ;;                            (keyboard-quit)
-  ;;                          c1))
-  ;;                      (let ((c2 (read-char "char 2: " t)))
-  ;;                        (cond ((eq c2 ?)
-  ;;                               (keyboard-quit))
-  ;;                              ((memq c2 '(8 127))
-  ;;                               (keyboard-escape-quit)
-  ;;                               (call-interactively 'my/avy-next-char-2))
-  ;;                              (t
-  ;;                               c2)))))
-
-  ;;   (when (eq char1 ?) (setq char1 ?\n))
-  ;;   (when (eq char2 ? ) (setq char2 ?\n))
-  ;;   (string char1 char2))
-
-  ;; (defun my/avy-next-char-2 (&optional str2 arg)
-  ;;   "Go to the next occurrence of two characters"
-  ;;   (interactive (list
-  ;;                 (call-interactively 'my/avy--read-char-2)
-  ;;                 current-prefix-arg))
-  ;;   (let* ((ev last-command-event)
-  ;;          (echo-keystrokes nil))
-  ;;     (push-mark (point) t)
-  ;;     (if (search-forward str2 nil t
-  ;;                         (+ (if (looking-at (regexp-quote str2))
-  ;;                                1 0)
-  ;;                            (or arg 1)))
-  ;;         (backward-char 2)
-  ;;       (pop-mark)))
-
-  ;;   (set-transient-map
-  ;;    (let ((map (make-sparse-keymap)))
-  ;;      (define-key map (kbd ";") (lambda (&optional arg) (interactive)
-  ;;                                  (my/avy-next-char-2 str2 arg)))
-  ;;      (define-key map (kbd ",") (lambda (&optional arg) (interactive)
-  ;;                                  (my/avy-previous-char-2 str2 arg)))
-  ;;      map)))
-
-  ;; (defun my/avy-previous-char-2 (&optional str2 arg)
-  ;;   "Go to the next occurrence of two characters"
-  ;;   (interactive (list
-  ;;                 (call-interactively 'my/avy--read-char-2)
-  ;;                 current-prefix-arg))
-  ;;   (let* ((ev last-command-event)
-  ;;          (echo-keystrokes nil))
-  ;;     (push-mark (point) t)
-  ;;     (unless (search-backward str2 nil t (or arg 1))
-  ;;       (pop-mark)))
-
-  ;;   (set-transient-map
-  ;;    (let ((map (make-sparse-keymap)))
-  ;;      (define-key map (kbd ";") (lambda (&optional arg) (interactive)
-  ;;                                  (my/avy-next-char-2 str2 arg)))
-  ;;      (define-key map (kbd ",") (lambda (&optional arg) (interactive)
-  ;;                                  (my/avy-previous-char-2 str2 arg)))
-  ;;      map)))
 
   (defun my/avy-copy-line-no-prompt (arg)
     (interactive "p")
@@ -2493,50 +2433,6 @@ Allows to jump into a a directory within the minibuffer
 *** Capture templates
 
 
-#+begin_src emacs-lisp
-;; (setq org-capture-templates
-;;       '(("t" "TODO" plain (function org-journal-find-location)
-;;          "** TODO %(format-time-string org-journal-time-format)%^{Title}"
-;;          :immediate-finish t)
-
-
-;;         ;; ("t" "Todo" entry (file+headline "~/org/notes.org" "Task List")
-;;         ;;  "* TODO %?\n%U" :empty-lines 1)
-
-;;         ;; ("l" "Logbook entry" entry (file+datetree "logbook-work.org") "** %U - %^{Activity}_ %^G :LOG:")
-
-;;         ("j" "Journal entry" plain (function org-journal-find-location)
-;;          "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?"
-;;          :jump-to-captured t :immediate-finish t)
-
-;;         ("P" "Research project" entry (file "~/org/projects.org")
-;;          "* TODO %^{Project title} :%^G:\n:PROPERTIES:\n:CREATED: %U\n:END:\n%^{Project description}\n** TODO Literature review\n** TODO %?\n** TODO Summary\n** TODO Reports\n** Ideas\n" :clock-in t :clock-resume t)
-
-;;         ("a" "Research Article" entry(file+headline "~/org/publications.org" "Working articles") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-;;         ("r" "Ref. Report" entry(file+headline "~/org/publications.org" "Referee reports") "** WRITING %^{Title}\n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-;;         ("c" "Coding tips" entry(file+headline "~/org/coding.org" "Refile") "** READ %^{description} %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-;;                                         ;    ("C" "Cliplink capture code" entry (file+headline  "~/org/coding.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
-
-;;         ("f" "Fitting" entry(file+headline "~/org/fitting.org" "Refile") "** READ %^{description}  %^g  \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n")
-
-;;         ("x" "arXiv" entry(file+headline "~/org/arxiv.org" "To read") "** READ %^L %t")
-
-
-
-;;         ("i" "idea" entry(file "~/org/ideas.org") "* TODO %? %t" :empty-lines 1)
-
-;;                                         ;       ("F" "Cliplink capture fitting" entry (file+headline  "~/org/fitting.org" "Refile" ) "** READ %^{description} %^g  %(org-cliplink-capture) \n\t-Added: %U\n   :LOGBOOK:\n   :END:\n" :empty-lines 1)
-
-;;         )
-;;       )
-
-
-;;
-#+END_SRC
-
 When editing org-files with source-blocks, we want the source blocks to
 be themed as they would in their native mode.
 
@@ -2731,28 +2627,6 @@ This is quite an ugly fix for allowing code markup for expressions like
   (setq lsp-enable-links nil)
 
 
-  ;; (lsp-register-client
-  ;;  (make-lsp-client
-  ;;   :new-connection (lsp-tramp-connection (lambda ()
-  ;;                                           (cons "pyright-langserver"
-  ;;                                                 lsp-pyright-langserver-command-args)))
-  ;;   :major-modes '(python-mode)
-  ;;   :remote? t
-  ;;   :server-id 'pyright-remote
-  ;;   :multi-root t
-  ;;   :priority 3
-  ;;   :initialization-options (lambda () (ht-merge (lsp-configuration-section "pyright")
-  ;;                                                (lsp-configuration-section "python")))
-  ;;   :initialized-fn (lambda (workspace)
-  ;;                     (with-lsp-workspace workspace
-  ;;                       (lsp--set-configuration
-  ;;                        (ht-merge (lsp-configuration-section "pyright")
-  ;;                                  (lsp-configuration-section "python")))))
-  ;;   :download-server-fn (lambda (_client callback error-callback _update?)
-  ;;                         (lsp-package-ensure 'pyright callback error-callback))
-  ;;   :notification-handlers (lsp-ht ("pyright/beginProgress" 'lsp-pyright--begin-progress-callback)
-  ;;                                  ("pyright/reportProgress" 'lsp-pyright--report-progress-callback)
-  ;;                                  ("pyright/endProgress" 'lsp-pyright--end-progress-callback))))
 
 
   :hook ((python-mode) . lsp-deferred)
@@ -2781,16 +2655,6 @@ This is quite an ugly fix for allowing code markup for expressions like
   :commands lsp-ui-mode
   )
 
-;; (use-package company-lsp
-;;   :ensure t
-;;   :after lsp-mode
-;;   :commands company-lsp
-;;   :init
-;;   (setq company-lsp-async t)
-;;   (setq company-lsp-enable-recompletion t)
-;;   (setq company-lsp-enable-snippet t )
-;;   :config
-;;   (push 'company-lsp company-backends))
 
 #+end_src
 
