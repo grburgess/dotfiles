@@ -2498,35 +2498,6 @@ flyspell-region)
 ;;   ;; No configuration options as of now.
 ;;   )
 
-;; (use-package jupyter
-;;   :ensure t
-;;   :defer t
-;;   :after org
-;;   :init
-;;   (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
-;;                                                        (:session . "py")
-;;                                                        (:kernel . "python3")))
-;;   (add-to-list 'org-structure-template-alist '("j" . "src jupyter-python"))
-
-;;   ;; function to load jupyter package and get kernelspecs from current python env
-;;   (defun my/get-jupyter-aliases ()
-;;     (require 'jupyter)
-;;     (org-babel-jupyter-aliases-from-kernelspecs))
-
-;;   :bind (:map jupyter-org-interaction-mode-map ("C-c h" . nil))
-
-;;   :hook ((pyvenv-workon . my/get-jupyter-aliases)
-;;         (pyvenv-deactivate . my/get/jupyter-aliases)))
-#+RESULTS:
-
-#+begin_src emacs-lisp
-;; (use-package ox-ipynb
-;; ;  :straight (ox-ipynb :type git :host github :repo "jkitchin/ox-ipynb")
-;;   :ensure t
-;;   :defer t
-;;   :after org
-;;   :hook (org-mode . (lambda () (require 'ox-ipynb))))
-
 (use-package julia-mode
   :ensure t
   )

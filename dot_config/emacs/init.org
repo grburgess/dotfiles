@@ -3223,40 +3223,7 @@ flyspell-region)
 #+RESULTS:
 | #[0 \301\300!\210\302\303\304\305F\211\207 [yas-key-syntaxes make-local-variable w_ w_. w_.() ^ ] 4] | stan-snippets-initialize | flycheck-stan-stanc3-setup | flycheck-stan-stanc2-setup | eldoc-stan-setup | company-stan-setup | stan-mode-setup |
 
-*** Jupyter
 
-#+begin_src emacs-lisp
-;; (use-package jupyter
-;;   :ensure t
-;;   :defer t
-;;   :after org
-;;   :init
-;;   (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
-;;                                                        (:session . "py")
-;;                                                        (:kernel . "python3")))
-;;   (add-to-list 'org-structure-template-alist '("j" . "src jupyter-python"))
-
-;;   ;; function to load jupyter package and get kernelspecs from current python env
-;;   (defun my/get-jupyter-aliases ()
-;;     (require 'jupyter)
-;;     (org-babel-jupyter-aliases-from-kernelspecs))
-
-;;   :bind (:map jupyter-org-interaction-mode-map ("C-c h" . nil))
-
-;;   :hook ((pyvenv-workon . my/get-jupyter-aliases)
-;;         (pyvenv-deactivate . my/get/jupyter-aliases)))
-#+RESULTS:
-
-#+begin_src emacs-lisp
-;; (use-package ox-ipynb
-;; ;  :straight (ox-ipynb :type git :host github :repo "jkitchin/ox-ipynb")
-;;   :ensure t
-;;   :defer t
-;;   :after org
-;;   :hook (org-mode . (lambda () (require 'ox-ipynb))))
-#+end_src
-
-#+RESULTS:
 
 *** Julia
 #+begin_src emacs-lisp
