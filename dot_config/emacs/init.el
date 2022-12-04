@@ -2510,8 +2510,7 @@ flyspell-region)
   :ensure t
   :mode ("\\.yml$" . yaml-mode)
   )
-*** LaTeX and org-mode LaTeX export
-#+begin_src emacs-lisp
+
 (use-package auctex
   :defer t
   :ensure t)

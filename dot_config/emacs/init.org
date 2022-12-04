@@ -10,9 +10,6 @@
 ** Initialize
 
 
-#+RESULTS:
-: org
-
 #+begin_src emacs-lisp :tangle no
 ;; We can't tangle without org!
 (require 'org)
@@ -3247,8 +3244,10 @@ flyspell-region)
   :ensure t
   :mode ("\\.yml$" . yaml-mode)
   )
-,*** LaTeX and org-mode LaTeX export
-,#+begin_src emacs-lisp
+
+  #+end_src
+*** LaTeX and org-mode LaTeX export
+#+begin_src emacs-lisp
 (use-package auctex
   :defer t
   :ensure t)
