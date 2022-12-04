@@ -2589,7 +2589,6 @@ This is quite an ugly fix for allowing code markup for expressions like
 
 
 * LSP
-
 #+begin_src emacs-lisp
 (use-package lsp-pyright
   :straight (lsp-pyright :type git :host github :repo "emacs-lsp/lsp-pyright")
@@ -2673,14 +2672,14 @@ This is quite an ugly fix for allowing code markup for expressions like
 * Development
 ** Configuration
 *** Flycheck
-#+BEGIN_SRC emacs-lisp
+ #+BEGIN_SRC emacs-lisp
 
 (use-package flycheck
 :ensure t
 :defer t
 :hook (lsp-mode . flycheck-mode))
 
-
+#+END_SRC
 *** snippets
 
 #+BEGIN_SRC emacs-lisp
@@ -2758,7 +2757,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 :bind (("C-c n" . tom/move-lines-n)
 ("C-c p" . tom/move-lines-p))
 )
-
+#+end_src
 #+RESULTS:
 : tom/move-lines-p
 
@@ -2796,6 +2795,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 :ensure t
 :hook (prog-mode . rainbow-delimiters-mode)
 )
+#+END_SRC
 #+RESULTS:
 | highlight-indent-guides-mode | rainbow-delimiters-mode | smartparens-mode | yas-minor-mode | rainbow-mode | ws-butler-mode |
 
@@ -2868,7 +2868,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 ;;           ("a" origami-toggle-all-nodes)
 ;;           ("F" fill-column)
 ;;           ("x" nil :color blue))))))
-
+#+END_SRC
 
 *** code folding with hide-show
 #+begin_src emacs-lisp
@@ -2931,7 +2931,7 @@ adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
 
 )
 
-
+#+END_SRC
 #+RESULTS:
 : t
 
@@ -2958,6 +2958,8 @@ flyspell-region)
 (setq ispell-dictionary "american")
 (add-hook 'text-mode-hook 'flyspell-mode)
 )
+
+#+END_SRC
 #+RESULTS:
 : t
 
@@ -2976,7 +2978,7 @@ flyspell-region)
 
 
 ;;   )
-
+#+END_SRC
 
 *** MAGIT
 #+BEGIN_SRC emacs-lisp
@@ -3021,7 +3023,7 @@ flyspell-region)
 
 #+END_SRC
 
-#+RESULTS:
+
 
 *** magit todos
 #+begin_src emacs-lisp
@@ -3029,26 +3031,9 @@ flyspell-region)
 :ensure t
 
 :defer t)
-*** git gutter
-#+BEGIN_SRC emacs-lisp
-
-;; (use-package git-gutter
-;;   :ensure t
-;;   :diminish
-;;   :hook ((text-mode . git-gutter-mode)
-;;          (prog-mode . git-gutter-mode))
-;;   :config
-;;   (setq git-gutter:update-interval 2)
-
-
-;;   ;; These characters are used in terminal mode
-;;   (setq git-gutter:modified-sign "≡")
-;;   (setq git-gutter:added-sign "≡")
-;;   (setq git-gutter:deleted-sign "≡")
-;;   (set-face-foreground 'git-gutter:added "LightGreen")
-;;   (set-face-foreground 'git-gutter:modified "LightGoldenrod")
-;;   (set-face-foreground 'git-gutter:deleted "LightCoral"))
 #+END_SRC
+*** git gutter
+
 ** projectile
 #+begin_src emacs-lisp
 ;; (defun dw/switch-project-action ()
@@ -3068,8 +3053,7 @@ flyspell-region)
 (when (file-directory-p "~/coding/projects")
 (setq projectile-project-search-path '("~/coding/projects" "~/articles") ))
 )
-#+RESULTS:
-: t
+#+END_SRC
 
 ** Languages
 *** Python
@@ -3154,7 +3138,7 @@ flyspell-region)
 (defun wcx-restart-python ()
 (pyvenv-restart-python))
 
-
+#+END_SRC
 #+RESULTS:
 : wcx-restart-python
 
@@ -3388,6 +3372,7 @@ flyspell-region)
 (dw/set-markdown-header-font-sizes))
 
 (add-hook 'markdown-mode-hook 'dw/markdown-mode-hook))
+#+END_SRC
 *** Docker
 
 #+begin_src emacs-lisp
@@ -3420,7 +3405,8 @@ flyspell-region)
 :ensure t
 
 )
-#+RESULTS:
+#+END_SRC
+
 
 *** clojure
 #+begin_src emacs-lisp
