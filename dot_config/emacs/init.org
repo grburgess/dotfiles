@@ -2682,8 +2682,6 @@ This is quite an ugly fix for allowing code markup for expressions like
   :hook (lsp-mode . flycheck-mode))
 
 
-#+END_SRC
-
 *** snippets
 
 #+BEGIN_SRC emacs-lisp
@@ -2762,7 +2760,6 @@ This is quite an ugly fix for allowing code markup for expressions like
          ("C-c p" . tom/move-lines-p))
   )
 
-#+END_SRC
 #+RESULTS:
 : tom/move-lines-p
 
@@ -2800,8 +2797,6 @@ This is quite an ugly fix for allowing code markup for expressions like
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode)
   )
-#+END_SRC
-
 #+RESULTS:
 | highlight-indent-guides-mode | rainbow-delimiters-mode | smartparens-mode | yas-minor-mode | rainbow-mode | ws-butler-mode |
 
@@ -2876,7 +2871,6 @@ This is quite an ugly fix for allowing code markup for expressions like
 ;;           ("x" nil :color blue))))))
 
 
-#+end_src
 *** code folding with hide-show
 #+begin_src emacs-lisp
 ;; (use-package hideshow
@@ -2939,8 +2933,6 @@ adding in [[https://github.com/magnars/multiple-cursors.el][multiple cursors]]
   )
 
 
-#+END_SRC
-
 #+RESULTS:
 : t
 
@@ -2967,10 +2959,8 @@ text-modes with this snippet.
   (setq ispell-dictionary "american")
   (add-hook 'text-mode-hook 'flyspell-mode)
   )
-#+END_SRC
-
-#+RESULTS:
-: t
+  #+RESULTS:
+  : t
 
 ** GIT
 *** ghub
@@ -2988,8 +2978,6 @@ text-modes with this snippet.
 
 ;;   )
 
-
-#+END_SRC
 
 *** MAGIT
 #+BEGIN_SRC emacs-lisp
@@ -3042,7 +3030,6 @@ text-modes with this snippet.
   :ensure t
 
   :defer t)
-#+end_src
 *** git gutter
 #+BEGIN_SRC emacs-lisp
 
@@ -3082,8 +3069,6 @@ text-modes with this snippet.
   (when (file-directory-p "~/coding/projects")
     (setq projectile-project-search-path '("~/coding/projects" "~/articles") ))
   )
-#+end_src
-
 #+RESULTS:
 : t
 
@@ -3171,10 +3156,8 @@ text-modes with this snippet.
   (pyvenv-restart-python))
 
 
-#+END_SRC
-
-#+RESULTS:
-: wcx-restart-python
+  #+RESULTS:
+  : wcx-restart-python
 
 *** Stan
 
@@ -3279,8 +3262,6 @@ text-modes with this snippet.
 
 ;;   :hook ((pyvenv-workon . my/get-jupyter-aliases)
 ;;         (pyvenv-deactivate . my/get/jupyter-aliases)))
-#+end_src
-
 #+RESULTS:
 
 #+begin_src emacs-lisp
@@ -3316,7 +3297,6 @@ text-modes with this snippet.
   :ensure t
   :mode ("\\.yml$" . yaml-mode)
   )
-#+END_SRC
 *** LaTeX and org-mode LaTeX export
 #+begin_src emacs-lisp
 (use-package auctex
@@ -3409,7 +3389,6 @@ text-modes with this snippet.
     (dw/set-markdown-header-font-sizes))
 
   (add-hook 'markdown-mode-hook 'dw/markdown-mode-hook))
-#+end_src
 *** Docker
 
 #+begin_src emacs-lisp
@@ -3442,8 +3421,6 @@ text-modes with this snippet.
   :ensure t
 
   )
-#+end_src
-
 #+RESULTS:
 
 *** clojure
@@ -3528,16 +3505,9 @@ text-modes with this snippet.
 
   ;; comment to disable rustfmt on save
   (setq rustic-format-on-save t)
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+  )
 
-(defun rk/rustic-mode-hook ()
-  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
-  ;; save rust buffers that are not file visiting. Once
-  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
-  ;; no longer be necessary.
-  (when buffer-file-name
-    (setq-local buffer-save-without-query t))
-  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
+
 #+end_src
 
 #+RESULTS:
