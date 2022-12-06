@@ -3839,7 +3839,7 @@ flyspell-region)
         telega-msg-rainbow-title t
         telega-use-images t
         telega-chat-fill-column 75
-
+	telega-use-docker t
         telega-translate-to-language-by-default t
         )
 
