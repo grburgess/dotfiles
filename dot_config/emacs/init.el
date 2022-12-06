@@ -2062,9 +2062,9 @@ folder, otherwise delete a word"
   )
 
 (use-package flycheck
-:ensure t
-:defer t
-:hook (lsp-mode . flycheck-mode))
+  :ensure t
+  :defer t
+  :hook (lsp-mode . flycheck-mode))
 
 (use-package yasnippet                  ; Snippets
   :ensure t
@@ -2083,54 +2083,54 @@ folder, otherwise delete a word"
   )
 
 (use-package move-lines
-:straight (move-lines
-:type git
-:host github
-:repo "kinnala/move-lines")
-:after hydra
-:init
-(progn
-(defun tom/shift-left (start end &optional count)
-"Shift region left and activate hydra."
-(interactive
-(if mark-active
-(list (region-beginning) (region-end) current-prefix-arg)
-(list (line-beginning-position) (line-end-position) current-prefix-arg)))
-(python-indent-shift-left start end count)
-(tom/hydra-move-lines/body))
+  :straight (move-lines
+             :type git
+             :host github
+             :repo "kinnala/move-lines")
+  :after hydra
+  :init
+  (progn
+    (defun tom/shift-left (start end &optional count)
+      "Shift region left and activate hydra."
+      (interactive
+       (if mark-active
+           (list (region-beginning) (region-end) current-prefix-arg)
+         (list (line-beginning-position) (line-end-position) current-prefix-arg)))
+      (python-indent-shift-left start end count)
+      (tom/hydra-move-lines/body))
 
-(defun tom/shift-right (start end &optional count)
-"Shift region right and activate hydra."
-(interactive
-(if mark-active
-(list (region-beginning) (region-end) current-prefix-arg)
-(list (line-beginning-position) (line-end-position) current-prefix-arg)))
-(python-indent-shift-right start end count)
-(tom/hydra-move-lines/body))
+    (defun tom/shift-right (start end &optional count)
+      "Shift region right and activate hydra."
+      (interactive
+       (if mark-active
+           (list (region-beginning) (region-end) current-prefix-arg)
+         (list (line-beginning-position) (line-end-position) current-prefix-arg)))
+      (python-indent-shift-right start end count)
+      (tom/hydra-move-lines/body))
 
-(defun tom/move-lines-p ()
-"Move lines up once and activate hydra."
-(interactive)
-(move-lines-up 1)
-(tom/hydra-move-lines/body))
+    (defun tom/move-lines-p ()
+      "Move lines up once and activate hydra."
+      (interactive)
+      (move-lines-up 1)
+      (tom/hydra-move-lines/body))
 
-(defun tom/move-lines-n ()
-"Move lines down once and activate hydra."
-(interactive)
-(move-lines-down 1)
-(tom/hydra-move-lines/body))
+    (defun tom/move-lines-n ()
+      "Move lines down once and activate hydra."
+      (interactive)
+      (move-lines-down 1)
+      (tom/hydra-move-lines/body))
 
 
-(defhydra tom/hydra-move-lines (:color blue :timeout 1)
-"Move one or multiple lines"
-("<down>" move-lines-down "down")
-("<up>" move-lines-up "up")
-("<left>" tom/shift-left "left")
-("<right>" tom/shift-right "right")))
+    (defhydra tom/hydra-move-lines (:color blue :timeout 1)
+      "Move one or multiple lines"
+      ("<down>" move-lines-down "down")
+      ("<up>" move-lines-up "up")
+      ("<left>" tom/shift-left "left")
+      ("<right>" tom/shift-right "right")))
 
-:bind (("C-c n" . tom/move-lines-n)
-("C-c p" . tom/move-lines-p))
-)
+  :bind (("C-c n" . tom/move-lines-n)
+         ("C-c p" . tom/move-lines-p))
+  )
 
 (use-package smartparens
   :ensure t
@@ -2151,9 +2151,9 @@ folder, otherwise delete a word"
   :hook (prog-mode . smartparens-mode))
 
 (use-package rainbow-delimiters
-:ensure t
-:hook (prog-mode . rainbow-delimiters-mode)
-)
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode)
+  )
 
 (defun my-highlighter (level responsive display)
   (if (> 1 level)
@@ -2252,29 +2252,29 @@ folder, otherwise delete a word"
 ;;   )
 
 (use-package multiple-cursors
-;;  :disabled
-:ensure t
-:defer nil
-:config
+  ;;  :disabled
+  :ensure t
+  :defer nil
+  :config
 
-(setq mc/list-file "~/.config/emacs/mc-lists")
+  (setq mc/list-file "~/.config/emacs/mc-lists")
 
-)
+  )
 
 (use-package flyspell
-; nil
-:commands (ispell-change-dictionary
-ispell-word
-flyspell-buffer
-flyspell-mode
-flyspell-region)
-:config
-(setq flyspell-issue-message-flag nil)
-(setq flyspell-issue-welcome-flag nil)
-(setq ispell-program-name "/opt/homebrew/bin/ispell")
-(setq ispell-dictionary "american")
-(add-hook 'text-mode-hook 'flyspell-mode)
-)
+                                        ; nil
+  :commands (ispell-change-dictionary
+             ispell-word
+             flyspell-buffer
+             flyspell-mode
+             flyspell-region)
+  :config
+  (setq flyspell-issue-message-flag nil)
+  (setq flyspell-issue-welcome-flag nil)
+  (setq ispell-program-name "/opt/homebrew/bin/ispell")
+  (setq ispell-dictionary "american")
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  )
 
 ;; (use-package ghub
 ;;   :ensure t
@@ -2327,9 +2327,9 @@ flyspell-region)
   :after magit)
 
 (use-package magit-todos
-:ensure t
+  :ensure t
 
-:defer t)
+  :defer t)
 
 ;; (defun dw/switch-project-action ()
 ;;   "Switch to a workspace with the project name and start `magit-status'."
@@ -2339,92 +2339,92 @@ flyspell-region)
 
 
 (use-package projectile
-:diminish projectile-mode
-:config (projectile-mode)
-:demand t
-;; :bind-keymap
-;; ("C-c p" . projectile-command-map)
-:init
-(when (file-directory-p "~/coding/projects")
-(setq projectile-project-search-path '("~/coding/projects" "~/articles") ))
-)
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :demand t
+  ;; :bind-keymap
+  ;; ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/coding/projects")
+    (setq projectile-project-search-path '("~/coding/projects" "~/articles") ))
+  )
 
 (use-package py-isort
-:ensure t
-:after python
-)
+  :ensure t
+  :after python
+  )
 
 (use-package blacken
-:after python
-:init
-(setq-default blacken-fast-unsafe t)
-(setq-default blacken-line-length 80)
-)
+  :after python
+  :init
+  (setq-default blacken-fast-unsafe t)
+  (setq-default blacken-line-length 80)
+  )
 
-; direnv mode allows automatic loading of direnv variables
+                                        ; direnv mode allows automatic loading of direnv variables
 (use-package direnv
-:ensure t
-:config
-(direnv-mode))
+  :ensure t
+  :config
+  (direnv-mode))
 
 
 
 (use-package pyvenv
-:ensure t
-:config
+  :ensure t
+  :config
 
-(pyvenv-tracking-mode 1)
+  (pyvenv-tracking-mode 1)
 
-(setq pyvenv-mode-line-indicator
-'(pyvenv-virtual-env-name ("<" pyvenv-virtual-env-name "> "  )))
+  (setq pyvenv-mode-line-indicator
+        '(pyvenv-virtual-env-name ("<" pyvenv-virtual-env-name "> "  )))
 
-(pyvenv-mode 1)
+  (pyvenv-mode 1)
 
 
-)
+  )
 
 
 (use-package python-mode
-:ensure nil
-:straight nil
-:hook
-(python-mode . pyvenv-mode)
-(python-mode . company-mode)
-(python-mode . yas-minor-mode)
-:custom
-;; NOTE: Set these if Python 3 is called "python3" on your system!
-(python-shell-interpreter "python3")
-(python-shell-interpreter-args "-i")
-:config
+  :ensure nil
+  :straight nil
+  :hook
+  (python-mode . pyvenv-mode)
+  (python-mode . company-mode)
+  (python-mode . yas-minor-mode)
+  :custom
+  ;; NOTE: Set these if Python 3 is called "python3" on your system!
+  (python-shell-interpreter "python3")
+  (python-shell-interpreter-args "-i")
+  :config
 
-;; (progn
-;;   (defhydra python-indent (python-mode-map "C-c TAB")
-;;     "Adjust python indentation."
-;;     ("k" py-shift-right "right")
-;;     ("j" py-shift-left "left")
-;;     ("<right>" py-shift-right "right")
-;;     ("<left>" py-shift-left "left")
+  ;; (progn
+  ;;   (defhydra python-indent (python-mode-map "C-c TAB")
+  ;;     "Adjust python indentation."
+  ;;     ("k" py-shift-right "right")
+  ;;     ("j" py-shift-left "left")
+  ;;     ("<right>" py-shift-right "right")
+  ;;     ("<left>" py-shift-left "left")
 
-;;     )
-;;   )
+  ;;     )
+  ;;   )
 
-(yas-reload-all)
-)
+  (yas-reload-all)
+  )
 
 (use-package sphinx-doc
-:ensure t
-:hook (python-mode . sphinx-doc-mode)
-:config
-(setq sphinx-doc-include-types t)
+  :ensure t
+  :hook (python-mode . sphinx-doc-mode)
+  :config
+  (setq sphinx-doc-include-types t)
 
-)
+  )
 
 ;; (setq python-shell-interpreter "python3"
 ;;       python-shell-interpreter-args "-i")
 
 
 (defun wcx-restart-python ()
-(pyvenv-restart-python))
+  (pyvenv-restart-python))
 
 ;; Uncomment the line below if not required elsewhere.
 ;; (require 'use-package)
@@ -2577,22 +2577,22 @@ flyspell-region)
   )
 
 (use-package markdown-mode
-:straight t
-:mode "\\.md\\'"
-:config
-(setq markdown-command "marked")
-(defun dw/set-markdown-header-font-sizes ()
-(dolist (face '((markdown-header-face-1 . 1.2)
-(markdown-header-face-2 . 1.1)
-(markdown-header-face-3 . 1.0)
-(markdown-header-face-4 . 1.0)
-(markdown-header-face-5 . 1.0)))
-(set-face-attribute (car face) nil :weight 'normal :height (cdr face))))
+  :straight t
+  :mode "\\.md\\'"
+  :config
+  (setq markdown-command "marked")
+  (defun dw/set-markdown-header-font-sizes ()
+    (dolist (face '((markdown-header-face-1 . 1.2)
+                    (markdown-header-face-2 . 1.1)
+                    (markdown-header-face-3 . 1.0)
+                    (markdown-header-face-4 . 1.0)
+                    (markdown-header-face-5 . 1.0)))
+      (set-face-attribute (car face) nil :weight 'normal :height (cdr face))))
 
-(defun dw/markdown-mode-hook ()
-(dw/set-markdown-header-font-sizes))
+  (defun dw/markdown-mode-hook ()
+    (dw/set-markdown-header-font-sizes))
 
-(add-hook 'markdown-mode-hook 'dw/markdown-mode-hook))
+  (add-hook 'markdown-mode-hook 'dw/markdown-mode-hook))
 
 (use-package dockerfile-mode
   :defer t
@@ -2614,9 +2614,9 @@ flyspell-region)
   )
 
 (use-package json-mode
-:ensure t
+  :ensure t
 
-)
+  )
 
 (use-package clojure-mode
   :ensure t
@@ -3018,7 +3018,7 @@ flyspell-region)
   ;; ((:host github :repo "zevlg/telega.el" :branch "master" :files ("*.el")))
   :commands telega
   :config
-  (setq telega-use-docker nil)
+  
 
   (setq telega-user-use-avatars t
         telega-use-tracking-for '(unread)
@@ -3027,7 +3027,7 @@ flyspell-region)
         telega-msg-rainbow-title t
         telega-use-images t
         telega-chat-fill-column 75
-
+        telega-use-docker t
         telega-translate-to-language-by-default t
         )
 
