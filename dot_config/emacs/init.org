@@ -3856,6 +3856,14 @@ text-modes with this snippet.
 #+RESULTS:
 : t
 
+** CSV
+#+begin_src emacs-lisp
+(use-package csv-mode
+:ensure t
+  )
+#+end_src
+
+#+RESULTS:
 
 ** elfeed
 

@@ -3039,6 +3039,10 @@ folder, otherwise delete a word"
   )
                                         ;  (define-key global-map (kbd "f12") telega-prefix-map)
 
+(use-package csv-mode
+:ensure t
+  )
+
 (use-package elfeed-org
   :ensure t
   :config
