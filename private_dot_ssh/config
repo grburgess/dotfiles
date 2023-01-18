@@ -1,7 +1,7 @@
 # SSH configuration taken from https://docs.mpcdf.mpg.de/faq/
 
 # Correctly resolve short names of gateway machines and HPC nodes
-Match originalhost gate*,draco*,cobra,raven,con01
+Match originalhost gate*,draco*,cobra*,raven*,con01
     CanonicalDomains mpcdf.mpg.de
     CanonicalizeFallbackLocal no
     CanonicalizeHostname yes
