@@ -3018,7 +3018,7 @@ folder, otherwise delete a word"
   ;; ((:host github :repo "zevlg/telega.el" :branch "master" :files ("*.el")))
   :commands telega
   :config
-  
+
 
   (setq telega-user-use-avatars t
         telega-use-tracking-for '(unread)
@@ -3040,7 +3040,7 @@ folder, otherwise delete a word"
                                         ;  (define-key global-map (kbd "f12") telega-prefix-map)
 
 (use-package csv-mode
-:ensure t
+  :ensure t
   )
 
 (use-package elfeed-org
@@ -3278,6 +3278,24 @@ concatenated."
   (interactive)
   (cl-assert (executable-find "pytunes") nil "pytunes not installed")
   (process-lines "pytunes" "previous"))
+
+(use-package chatgpt-shell
+  :ensure t
+  :custom
+
+  (setq chatgpt-shell-openai-key
+        (auth-source-pick-first-password :host "api.openai.com")
+        ))
+
+
+
+
+;; (use-package gptel
+;;   :defer t
+;;   :config
+;;   (setq gptel-api-key "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")
+
+;;   )
 
 (use-package erc-hl-nicks
   :after erc)
