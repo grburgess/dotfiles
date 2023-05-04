@@ -3830,7 +3830,7 @@ text-modes with this snippet.
   ;; ((:host github :repo "zevlg/telega.el" :branch "master" :files ("*.el")))
   :commands telega
   :config
-  
+
 
   (setq telega-user-use-avatars t
         telega-use-tracking-for '(unread)
@@ -3859,7 +3859,7 @@ text-modes with this snippet.
 ** CSV
 #+begin_src emacs-lisp
 (use-package csv-mode
-:ensure t
+  :ensure t
   )
 #+end_src
 
@@ -4126,12 +4126,23 @@ concatenated."
 ** chatGPT
 
 #+begin_src emacs-lisp
-(use-package gptel
-  :defer t
-  :config
-  (setq gptel-api-key "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")
+(use-package chatgpt-shell
+  :ensure t
+  :custom
 
-  )
+  (setq chatgpt-shell-openai-key
+        (auth-source-pick-first-password :host "api.openai.com")
+        ))
+
+
+
+
+;; (use-package gptel
+;;   :defer t
+;;   :config
+;;   (setq gptel-api-key "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")
+
+;;   )
 #+end_src
 
 #+RESULTS:
