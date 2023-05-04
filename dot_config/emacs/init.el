@@ -3284,8 +3284,9 @@ concatenated."
   :custom
 
   (setq chatgpt-shell-openai-key
-        (auth-source-pick-first-password :host "api.openai.com")
-        ))
+        (lambda ()
+          (auth-source-pick-first-password :host "api.openai.com"))) )
+
 
 
 
