@@ -1363,41 +1363,41 @@ folder, otherwise delete a word"
 ;; (use-package ace-jump-mode
 ;;   :ensure t)
 
-(use-package popper
-  :ensure t ; or :straight t
-  :bind (("C-`"   . popper-toggle-latest)
-         ("M-`"   . popper-cycle)
-         ("C-M-`" . popper-toggle-type))
-  :init
-  (setq popper-reference-buffers
+;; (use-package popper
+;;   :ensure t ; or :straight t
+;;   :bind (("C-`"   . popper-toggle-latest)
+;;          ("M-`"   . popper-cycle)
+;;          ("C-M-`" . popper-toggle-type))
+;;   :init
+;;   (setq popper-reference-buffers
 
-        '("\\*Messages\\*"
-          "Output\\*$"
-          "\\*Async Shell Command\\*"
-          help-mode
-          compilation-mode
-          ("^\\*Warnings\\*$" . hide)
-          ("^\\*Compile-Log\\*$" . hide)
-          "^\\*Backtrace\\*"
-          "^\\*Apropos"
-          "^Calc:"
-          "^\\*eldoc\\*"
-          "^\\*TeX errors\\*"
-          "^\\*ielm\\*"
-          "^\\*TeX Help\\*"
-          "\\*Shell Command Output\\*"
-          ("\\*Async Shell Command\\*" . hide)
-          "\\*Completions\\*"
-          ;; "\\*scratch\\*"
-          "[Oo]utput\\*"
+;;         '("\\*Messages\\*"
+;;           "Output\\*$"
+;;           "\\*Async Shell Command\\*"
+;;           help-mode
+;;           compilation-mode
+;;           ("^\\*Warnings\\*$" . hide)
+;;           ("^\\*Compile-Log\\*$" . hide)
+;;           "^\\*Backtrace\\*"
+;;           "^\\*Apropos"
+;;           "^Calc:"
+;;           "^\\*eldoc\\*"
+;;           "^\\*TeX errors\\*"
+;;           "^\\*ielm\\*"
+;;           "^\\*TeX Help\\*"
+;;           "\\*Shell Command Output\\*"
+;;           ("\\*Async Shell Command\\*" . hide)
+;;           "\\*Completions\\*"
+;;           ;; "\\*scratch\\*"
+;;           "[Oo]utput\\*"
 
 
-          )
+;;           )
 
-        )
+;;         )
 
-  (popper-mode +1)
-  (popper-echo-mode +1))
+;;   (popper-mode +1)
+;;   (popper-echo-mode +1))
 
 (use-package avy
   :ensure t
