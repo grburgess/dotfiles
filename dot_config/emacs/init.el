@@ -1723,7 +1723,7 @@ folder, otherwise delete a word"
   (setq dired-mouse-drag-files t)                   ; added in Emacs 29
   (setq mouse-drag-and-drop-region-cross-program t) ; added in Emacs 29
   (setq dired-listing-switches
-        "-l --almost-all --human-readable --time-style=long-iso --group-directories-first --no-group")
+        "-l  --human-readable ")
   :bind
   ;; Bind `dirvish|dirvish-side|dirvish-dwim' as you see fit
   (("C-c f" . dirvish-fd)
