@@ -1638,7 +1638,7 @@ folder, otherwise delete a word"
 
 (use-package all-the-icons-dired)
 
- ;; (use-package dired
+;; (use-package dired
 ;;   :ensure nil
 ;;   :straight nil
 ;;   :defer 1
@@ -1719,6 +1719,9 @@ folder, otherwise delete a word"
   :config
   (setq dired-dwim-target t)
   (setq delete-by-moving-to-trash t)
+  (setq dired-use-ls-dired nil)
+  ( require 'ls-lisp)
+  (setq ls-lisp-use-insert-directory-program nil)
   ;; Enable mouse drag-and-drop files to other applications
   (setq dired-mouse-drag-files t)                   ; added in Emacs 29
   (setq mouse-drag-and-drop-region-cross-program t) ; added in Emacs 29
