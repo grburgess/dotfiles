@@ -219,15 +219,6 @@ the buffer is buried."
 
   )
 
-(use-package tron-legacy-theme
-  :ensure t
-
-  :config
-  (setq tron-legacy-theme-vivid-cursor t)
-  (setq tron-legacy-theme-dark-fg-bright-comments nil)
-  (setq tron-legacy-theme-softer-bg t)
-  )
-
 ;; Or if you have use-package installed
 (use-package kaolin-themes
   :ensure t
@@ -247,13 +238,6 @@ the buffer is buried."
   :config
   )
 
-
-
-(use-package rebecca-theme
-  :ensure t
-
-  :config
-  )
 
 (use-package vscode-dark-plus-theme
   :ensure t
@@ -319,7 +303,7 @@ the buffer is buried."
           (t . (semilight 1.1))))
 
 
-  (load-theme 'modus-vivendi)
+  (load-theme 'modus-vivendi :no-confirm)
   ;; Load the theme files before enabling a theme
                                         ;(modus-themes-load-themes)
                                         ;:config
@@ -330,9 +314,7 @@ the buffer is buried."
 
   )
 
-;;(load-theme 'brilliance-dull t)
 
-;;(load-theme 'modus-vivendi :no-confirm)
 
 (require 'display-line-numbers)
 (defcustom display-line-numbers-exempt-modes '(vterm-mode eshell-mode shell-mode term-mode org-mode ansi-term-mode)
@@ -465,9 +447,11 @@ the buffer is buried."
 ;; installing this package!
 
 (use-package minions
+  :ensure t
   :hook (doom-modeline-mode . minions-mode))
 
 (use-package doom-modeline
+  :ensure t
   ;;:after eshell     ;; Make sure it gets hooked after eshell
   :hook (after-init . doom-modeline-mode)
   :custom-face
@@ -505,57 +489,57 @@ the buffer is buried."
   (doom-modeline-env-python-executable "python3")
   )
 
-(use-package pulsar
-  :ensure t
-  :straight
-  (:host github :repo "protesilaos/pulsar" :branch "main" :files ("*.el"))
-  :config
+;; (use-package pulsar
+;;   :ensure t
+;;   :straight
+;;   (:host github :repo "protesilaos/pulsar" :branch "main" :files ("*.el"))
+;;   :config
 
-  (customize-set-variable
-   'pulsar-pulse-functions ; Read the doc string for why not `setq'
-   '(recenter-top-bottom
-     move-to-window-line-top-bottom
-     reposition-window
-     bookmark-jump
-     other-window
-     delete-window
-     delete-other-windows
-     forward-page
-     backward-page
-     scroll-up-command
-     scroll-down-command
-     windmove-right
-     windmove-left
-     windmove-up
-     windmove-down
-     windmove-swap-states-right
-     windmove-swap-states-left
-     windmove-swap-states-up
-     windmove-swap-states-down
-     tab-new
-     tab-close
-     tab-next
-     org-next-visible-heading
-     org-previous-visible-heading
-     org-forward-heading-same-level
-     org-backward-heading-same-level
-     outline-backward-same-level
-     outline-forward-same-level
-     outline-next-visible-heading
-     outline-previous-visible-heading
-     outline-up-heading))
+;;   (customize-set-variable
+;;    'pulsar-pulse-functions ; Read the doc string for why not `setq'
+;;    '(recenter-top-bottom
+;;      move-to-window-line-top-bottom
+;;      reposition-window
+;;      bookmark-jump
+;;      other-window
+;;      delete-window
+;;      delete-other-windows
+;;      forward-page
+;;      backward-page
+;;      scroll-up-command
+;;      scroll-down-command
+;;      windmove-right
+;;      windmove-left
+;;      windmove-up
+;;      windmove-down
+;;      windmove-swap-states-right
+;;      windmove-swap-states-left
+;;      windmove-swap-states-up
+;;      windmove-swap-states-down
+;;      tab-new
+;;      tab-close
+;;      tab-next
+;;      org-next-visible-heading
+;;      org-previous-visible-heading
+;;      org-forward-heading-same-level
+;;      org-backward-heading-same-level
+;;      outline-backward-same-level
+;;      outline-forward-same-level
+;;      outline-next-visible-heading
+;;      outline-previous-visible-heading
+;;      outline-up-heading))
 
-  (setq pulsar-face 'pulsar-magenta)
-  (setq pulsar-delay 0.055)
+;;   (setq pulsar-face 'pulsar-magenta)
+;;   (setq pulsar-delay 0.055)
 
-  ;; integration with the `consult' package:
-  (add-hook 'consult-after-jump-hook #'pulsar-recenter-top)
-  (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
-
-
+;;   ;; integration with the `consult' package:
+;;   (add-hook 'consult-after-jump-hook #'pulsar-recenter-top)
+;;   (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
 
 
-  )
+
+
+;;   )
 
 (use-package beacon
   :ensure t
@@ -1816,7 +1800,7 @@ folder, otherwise delete a word"
   (variable-pitch-mode 1)
   (auto-fill-mode 1)
   (visual-line-mode 1)
-  (diminish org-indent-mode)
+                                        ;(diminish org-indent-mode)
 
   )
 
@@ -2394,7 +2378,7 @@ folder, otherwise delete a word"
 
 
 (use-package projectile
-  :diminish projectile-mode
+                                        ;:diminish projectile-mode
   :config (projectile-mode)
   :demand t
   ;; :bind-keymap
