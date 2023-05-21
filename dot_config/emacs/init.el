@@ -288,19 +288,20 @@ the buffer is buried."
   )
 
 (use-package modus-themes
-  :ensure
-  :config
+  :ensure t
+  :init
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-mode-line '(accented borderless)
         modus-themes-bold-constructs t
         modus-themes-italic-constructs t
         modus-themes-fringes 'subtle
         modus-themes-tabs-accented t
+        modus-themes-syntax '(faint)
         modus-themes-paren-match '(bold intense)
         modus-themes-prompts '(bold intense)
-        modus-themes-completions (quote ((matches . (extrabold intense))
-                                         (selection . (extrabold intense))
-                                         (popup . (extrabold intense))))
+        modus-themes-completions (quote ((matches . (extrabold intense background))
+                                         (selection . (semibold accented intense))
+                                         (popup . (accented))))
 
         modus-themes-org-blocks nil;'tinted-background
         modus-themes-scale-headings t
@@ -311,7 +312,42 @@ the buffer is buried."
           (3 . (rainbow bold 1.2))
           (t . (semilight 1.1))))
 
-  (load-theme 'modus-vivendi :no-confirm)
+
+  :config
+  (load-theme 'modus-vivendi)
+
+
+  )
+
+
+(use-package ef-themes
+  :ensure t
+  :init
+  ;; Add all your customizations prior to loading the themes
+
+  (setq ef-themes-mode-line '(accented borderless)
+        ef-themes-bold-constructs t
+        ef-themes-italic-constructs t
+        ef-themes-fringes 'subtle
+        ef-themes-tabs-accented t
+        ef-themes-syntax '(faint)
+        ef-themes-paren-match '(bold intense)
+        ef-themes-prompts '(bold intense)
+        ef-themes-completions (quote ((matches . (extrabold intense background))
+                                      (selection . (semibold accented intense))
+                                      (popup . (accented))))
+
+        ef-themes-org-blocks nil;'tinted-background
+        ef-themes-scale-headings t
+        ef-themes-region '(bg-only)
+        ef-themes-headings
+        '((1 . (rainbow  1.4))
+          (2 . (rainbow  1.3))
+          (3 . (rainbow bold 1.2))
+          (t . (semilight 1.1))))
+
+
+
   )
 
 
@@ -1732,7 +1768,7 @@ folder, otherwise delete a word"
               (interactive)
               (dired-omit-mode 1)
               (dired-hide-details-mode 1)
-              
+
               (hl-line-mode 1))))
 
 (use-package dired-rainbow
