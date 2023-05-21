@@ -168,15 +168,6 @@ the buffer is buried."
   (sublimity-mode 1))
                                         ;  (sublimity-map-set-delay 3))
 
-(use-package nerd-icons
-  :ensure t
-  ;; :custom
-  ;; The Nerd Font you want to use in GUI
-  ;; "Symbols Nerd Font Mono" is the default and is recommended
-  ;; but you can use any other Nerd Font if you want
-  ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
-  )
-
 (use-package s)
 (use-package all-the-icons
   :if (display-graphic-p)
@@ -197,6 +188,15 @@ the buffer is buried."
 ;; (use-package all-the-icons-ibuffer
 ;;   :ensure t
 ;;   :init (all-the-icons-ibuffer-mode 1))
+
+(use-package nerd-icons
+  :ensure t
+  ;; :custom
+  ;; The Nerd Font you want to use in GUI
+  ;; "Symbols Nerd Font Mono" is the default and is recommended
+  ;; but you can use any other Nerd Font if you want
+  ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
+  )
 
 ;; (use-package super-save
 ;;   :defer 1
@@ -591,6 +591,10 @@ the buffer is buried."
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 
   )
+
+(use-package treemacs-nerd-icons
+  :config
+  (treemacs-load-theme "nerd-icons"))
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -1357,12 +1361,16 @@ folder, otherwise delete a word"
   (marginalia-mode))
 
 
-(use-package all-the-icons-completion
-  :ensure t
-  :init
-  (all-the-icons-completion-mode)
-  :hook
-  (marginalia-mode-hook . all-the-icons-completion-marginalia-setup))
+;; (use-package all-the-icons-completion
+;;   :ensure t
+;;   :init
+;;   (all-the-icons-completion-mode)
+;;   :hook
+;;   (marginalia-mode-hook . all-the-icons-completion-marginalia-setup)
+
+(use-package nerd-icons-completion
+  :config
+  (nerd-icons-completion-mode))
 
 (use-package embark
   :straight t
@@ -1695,7 +1703,11 @@ folder, otherwise delete a word"
 
   )
 
-(use-package all-the-icons-dired)
+;(use-package all-the-icons-dired)
+
+(use-package nerd-icons-dired
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
 
 (use-package dired
   :ensure nil
@@ -1861,6 +1873,11 @@ folder, otherwise delete a word"
          ("Help" (or (name . "\*Help\*")
                      (name . "\*Apropos\*")
                      (name . "\*info\*"))))))
+
+
+(use-package nerd-icons-ibuffer
+  :ensure t
+  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
 (setq-default fill-column 80)
 ;; Turn on indentation and auto-fill mode for Org files

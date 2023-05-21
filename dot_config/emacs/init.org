@@ -285,20 +285,6 @@ the buffer is buried."
 #+end_src
 
 * Visual
-** nerd icons
-#+begin_src emacs-lisp
-(use-package nerd-icons
-  :ensure t
-  ;; :custom
-  ;; The Nerd Font you want to use in GUI
-  ;; "Symbols Nerd Font Mono" is the default and is recommended
-  ;; but you can use any other Nerd Font if you want
-  ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
-  )
-#+end_src
-
-#+RESULTS:
-
 ** all the icons
 
 
@@ -332,6 +318,20 @@ the buffer is buried."
 
 #+RESULTS:
 : t
+
+** nerd icons
+#+begin_src emacs-lisp
+(use-package nerd-icons
+  :ensure t
+  ;; :custom
+  ;; The Nerd Font you want to use in GUI
+  ;; "Symbols Nerd Font Mono" is the default and is recommended
+  ;; but you can use any other Nerd Font if you want
+  ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
+  )
+#+end_src
+
+#+RESULTS:
 
 ** File saving
 #+begin_src emacs-lisp
@@ -825,7 +825,9 @@ Some nice visual modes
 
   )
 
-
+(use-package treemacs-nerd-icons
+  :config
+  (treemacs-load-theme "nerd-icons"))
 
 #+end_src
 
@@ -1800,19 +1802,21 @@ Allows to jump into a a directory within the minibuffer
   (marginalia-mode))
 
 
-(use-package all-the-icons-completion
-  :ensure t
-  :init
-  (all-the-icons-completion-mode)
-  :hook
-  (marginalia-mode-hook . all-the-icons-completion-marginalia-setup))
+;; (use-package all-the-icons-completion
+;;   :ensure t
+;;   :init
+;;   (all-the-icons-completion-mode)
+;;   :hook
+;;   (marginalia-mode-hook . all-the-icons-completion-marginalia-setup)
 
-
+(use-package nerd-icons-completion
+  :config
+  (nerd-icons-completion-mode))
 
 #+end_src
 
 #+RESULTS:
-| all-the-icons-completion-marginalia-setup |
+: t
 
 ** embark
 #+begin_src emacs-lisp
@@ -2191,7 +2195,11 @@ Allows to jump into a a directory within the minibuffer
 * File browsing
 ** dired
 #+begin_src emacs-lisp
-(use-package all-the-icons-dired)
+                                        ;(use-package all-the-icons-dired)
+
+(use-package nerd-icons-dired
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
 
 (use-package dired
   :ensure nil
@@ -2367,10 +2375,15 @@ Allows to jump into a a directory within the minibuffer
                      (name . "\*Apropos\*")
                      (name . "\*info\*"))))))
 
+
+(use-package nerd-icons-ibuffer
+  :ensure t
+  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
+
 #+end_src
 
 #+RESULTS:
-| home | (Org (or (mode . org-mode) (filename . OrgMode))) | (code (filename . code)) | (Web Dev (or (mode . html-mode) (mode . css-mode))) | (Subversion (name . *svn)) | (Magit (name . *magit)) | (ERC (mode . erc-mode)) | (Help (or (name . *Help*) (name . *Apropos*) (name . *info*))) |
+| nerd-icons-ibuffer-mode | (lambda nil (ibuffer-auto-mode 1) (ibuffer-switch-to-saved-filter-groups home)) |
 
 * Org
 
