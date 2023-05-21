@@ -887,9 +887,273 @@ Some nice visual modes
   (defvar mail--title (with-faicon "male" "Mail" 1 -0.05))
   (defvar music--title (with-faicon "music" "Music" 1 -0.05))
   (defvar slack--title (with-faicon "slack" "Slack" 1 -0.05))
+
+
+  (pretty-hydra-define jmb/org-mode-hydra
+    (:color red :timeout 2 :quit-key "q" :title org--title)
+    ("Actions"
+     (
+      ("t" org-toggle-inline-images "toggle inline images" )
+      ("a" org-agenda "org agenda")
+      ))
+    )
+
+
+
+
+
+
+  (pretty-hydra-define jmb/tab-move
+    (:color red :timeout 2 :quit-key "q" :title tab-move--title)
+    ("Actions"
+     (      ("<left>" centaur-tabs-backward "prev tab")
+            ("<right>" centaur-tabs-forward "next tab")
+            ("<up>" centaur-tabs-backward-group "prev. group")
+            ("<down>" centaur-tabs-forward-group "next group")
+            ("k" centaur-tabs-kill-other-buffers-in-current-group "kill all other thabs in this group")
+            ))
+    )
+
+
+  (defhydra hydra-window (:color blue :hint nil)
+    "
+                                                                       ╭─────────┐
+     Move to      Size    Scroll        Split                    Do    │ Windows │
+  ╭────────────────────────────────────────────────────────────────────┴─────────╯
+        ^^            ^_K_^       ^_p_^    ╭─┬─┐^ ^        ╭─┬─┐^ ^         ↺ [_u_] undo layout
+        ^^↑^^           ^^↑^^       ^^↑^^    │ │ │_v_ertical ├─┼─┤_b_alance   ↻ [_r_] restore layout
+      ←   →     _H_ ←   → _L_   ^^ ^^    ╰─┴─╯^ ^        ╰─┴─╯^ ^         ✗ [_d_] close window
+        ^^↓^^           ^^↓^^       ^^↓^^    ╭───┐^ ^        ╭───┐^ ^         ⇋ [_w_] cycle window
+        ^^            ^_J_^       ^_n_^    ├───┤_s_tack    │   │_z_oom
+        ^^ ^^           ^^ ^^       ^^ ^^    ╰───╯^ ^        ╰───╯^ ^
+  --------------------------------------------------------------------------------
+            "
+    ("<tab>" hydra-master/body "back")
+    ("<ESC>" nil "quit")
+    ("n" vl/scroll-up-half-other-window :color red)
+    ("p" vl/scroll-down-half-other-window :color red)
+    ("b" balance-windows)
+    ("d" delete-window)
+    ("H" shrink-window-horizontally :color red)
+    ("<left>" windmove-left :color red)
+    ("J" shrink-window :color red)
+    ("<down>" windmove-down :color red)
+    ("K" enlarge-window :color red)
+    ("<up>" windmove-up :color red)
+    ("L" enlarge-window-horizontally :color red)
+    ("<right>" windmove-right :color red)
+    ("r" winner-redo :color red)
+    ("s" split-window-vertically :color red)
+    ("u" winner-undo :color red)
+    ("v" split-window-horizontally :color red)
+    ("w" other-window)
+    ("z" delete-other-windows))
+
+
+
+
+
+  (pretty-hydra-define hydra-mc (:color red :title mc--title)
+
+    ("Mark"
+     (
+      ("a" mc/mark-all-like-this "mark all")
+      ("n" mc/mark-next-like-this "mark next")
+      ("N" mc/unmark-next-like-this "unmark next")
+      ("p" mc/mark-previous-like-this "mark previous")
+      ("P" mc/unmark-previous-like-this "unmark previous")
+      )
+     "Skip"
+     (
+      ("sn" mc/skip-to-next-like-this "skip to next")
+      ("sp" mc/skip-to-previous-like-this "skip to prev")
+      )
+     "Edit"
+     (
+      ("e" mc/edit-lines "edit lines" :color blue)
+      )
+     )
+    )
+
+  (defhydra hydra-folding (:color red)
+    "
+  _o_pen node    _n_ext fold       toggle _f_orward  _s_how current only
+  _c_lose node   _p_revious fold   toggle _a_ll
+  "
+    ("o" origami-open-node)
+    ("c" origami-close-node)
+    ("n" origami-next-fold)
+    ("p" origami-previous-fold)
+    ("f" origami-forward-toggle-node)
+    ("a" origami-toggle-all-nodes)
+    ("s" origami-show-only-node))
+
+
+
+
+  (defhydra hydra-rectangle (:color blue)
+    "rectangles"
+    ("s" string-rectange "string")
+    ("i" string-insert-rectangle "string insert"))
+
+
+
+
+
+  (pretty-hydra-define hydra-smartparens (:color red :title parens--title)
+    ("Move"
+     (
+      ("f" sp-forward-sexp "forward")
+      ("d" sp-backward-sexp "back")
+      )
+     "Wrap"
+     (
+      ("(" sp-wrap-round "wrap round")
+      ("{" sp-wrap-curly "wrap brace")
+      ("[" sp-wrap-square "wrap square")
+      ("u" sp-unwrap-sexp "unwrap")
+      )
+     "Kill"
+     (("k" sp-kill-sexp "kill")
+      ("K" sp-backward-kill-sexp "backward kill")
+      )
+     "Slurp Barff"
+     (
+      ("s" sp-forward-slurp-sexp "forward slurp")
+      ("S" sp-backward-slurp-sexp "backward slurp")
+      ("b" sp-forward-barf-sexp "forward barf")
+      ("B" sp-backward-barf-sexp "backward barf"))
+     )
+    )
+
+
+
+
+  (defhydra hydra-lsp (:color blue)
+    "lsp"
+    ("d" lsp-find-definition "find definition")
+    ("i" lsp-find-implementation "find implementation")
+    ("r" lsp-find-references "find references"))
+
+
+
+
+  (pretty-hydra-define hydra-python-format (:color teal :title python--title)
+    ("Format"
+     (
+      ("f" blacken-buffer "blacken")
+      ("i" py-isort-buffer "isort"))
+     "Shift"
+     (
+      ("<right>" tom/shift-right "right")
+      ("<left>"  tom/shift-left"left")
+      )
+     )
+
+    )
+
+
+
+
+
+  (defhydra hydra-smerge (:color pink
+                                 :hint nil
+                                 :pre (smerge-mode 1)
+                                 ;; Disable `smerge-mode' when quitting hydra if
+                                 ;; no merge conflicts remain.
+                                 :post (smerge-auto-leave))
+    "
+^Move^       ^Keep^               ^Diff^                 ^Other^
+^^-----------^^-------------------^^---------------------^^-------
+_n_ext       _b_ase               _<_: upper/base        _C_ombine
+_p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
+^^           _l_ower              _>_: base/lower        _k_ill current
+^^           _a_ll                _R_efine
+^^           _RET_: current       _E_diff
+"
+    ("n" smerge-next)
+    ("p" smerge-prev)
+    ("b" smerge-keep-base)
+    ("u" smerge-keep-upper)
+    ("l" smerge-keep-lower)
+    ("a" smerge-keep-all)
+    ("RET" smerge-keep-current)
+    ("\C-m" smerge-keep-current)
+    ("<" smerge-diff-base-upper)
+    ("=" smerge-diff-upper-lower)
+    (">" smerge-diff-base-lower)
+    ("R" smerge-refine)
+    ("E" smerge-ediff)
+    ("C" smerge-combine-with-next)
+    ("r" smerge-resolve)
+    ("k" smerge-kill-current)
+    ("q" nil "cancel" :color blue))
+
+
+
+  (pretty-hydra-define my-mu4e-quick (:color blue :title mail--title)
+    ("Unread"
+     (
+      ("w" (mu4e-headers-search "flag:unread AND maildir:/mpe/INBOX") "unread work")
+      ("p" (mu4e-headers-search "flag:unread AND maildir:/gmail/INBOX")   "unread personal")
+
+      )
+     "Bookmark" (
+                 ("t" (mu4e-headers-search "date:today..now AND maildir:/mpe/INBOX")   "today work")
+                 ("d" (mu4e-headers-search "Damien AND maildir:/mpe/INBOX") "Damien" )
+                 ("j" (mu4e-headers-search "Jochen AND maildir:/mpe/INBOX") "Jochen" )
+
+                 )
+
+     "Org"
+     (
+      ("o" (org-mime-edit-mail-in-org-mode)  "edit message in org mode")
+      ("e" (org-mime-htmlize) "export to html")
+
+      )
+
+     "Utils"
+     (
+      ("c" (mu4e-compose-new)    "compase a message")
+      ("u" (mu4e-update-index) "update")
+      )
+     )
+
+    )
+
+  (pretty-hydra-define jmb/hydra-music (:color red :timeout 4 :title music--title)
+    ("Skip"
+     (
+      ("n" #'musica-play-next "next")
+      ("p" #'musica-play-previous "previous")
+      ("r" #'musica-play-next-random "next random"))
+     "Search"
+
+     (("s" #'musica-search "search")
+      ("i" #'musica-info "info"))
+     "Play"(
+            ("SPC" #'musica-play-pause "play-pause"))
+
+     ))
+
+
+
+  (pretty-hydra-define jmb/hydra-slack (:color red :timeout 4 :title slack--title)
+    ("Select"
+     (
+      ("i" slack-im-select  "im")
+      ("c" slack-channel-select "channel")
+      ("r" #'musica-play-next-random "next random"))
+     "Insert"
+
+     (("e" slack-insert-emoji "emojii")
+      )
+     "Start"(
+             ("s" slack-start "start"))
+
+     ))
+
   )
-
-
 #+END_SRC
 
 #+RESULTS:
@@ -899,14 +1163,6 @@ Some nice visual modes
 
 
 
-(pretty-hydra-define jmb/org-mode-hydra
-  (:color red :timeout 2 :quit-key "q" :title org--title)
-  ("Actions"
-   (
-    ("t" org-toggle-inline-images "toggle inline images" )
-    ("a" org-agenda "org agenda")
-    ))
-  )
 
 
 #+end_src
@@ -920,16 +1176,6 @@ Some nice visual modes
 
 
 
-(pretty-hydra-define jmb/tab-move
-  (:color red :timeout 2 :quit-key "q" :title tab-move--title)
-  ("Actions"
-   (      ("<left>" centaur-tabs-backward "prev tab")
-          ("<right>" centaur-tabs-forward "next tab")
-          ("<up>" centaur-tabs-backward-group "prev. group")
-          ("<down>" centaur-tabs-forward-group "next group")
-          ("k" centaur-tabs-kill-other-buffers-in-current-group "kill all other thabs in this group")
-          ))
-  )
 
 #+END_SRC
 
@@ -940,68 +1186,12 @@ Some nice visual modes
 #+begin_src emacs-lisp
 
 
-(defhydra hydra-window (:color blue :hint nil)
-  "
-                                                                       ╭─────────┐
-     Move to      Size    Scroll        Split                    Do    │ Windows │
-  ╭────────────────────────────────────────────────────────────────────┴─────────╯
-        ^^            ^_K_^       ^_p_^    ╭─┬─┐^ ^        ╭─┬─┐^ ^         ↺ [_u_] undo layout
-        ^^↑^^           ^^↑^^       ^^↑^^    │ │ │_v_ertical ├─┼─┤_b_alance   ↻ [_r_] restore layout
-      ←   →     _H_ ←   → _L_   ^^ ^^    ╰─┴─╯^ ^        ╰─┴─╯^ ^         ✗ [_d_] close window
-        ^^↓^^           ^^↓^^       ^^↓^^    ╭───┐^ ^        ╭───┐^ ^         ⇋ [_w_] cycle window
-        ^^            ^_J_^       ^_n_^    ├───┤_s_tack    │   │_z_oom
-        ^^ ^^           ^^ ^^       ^^ ^^    ╰───╯^ ^        ╰───╯^ ^
-  --------------------------------------------------------------------------------
-            "
-  ("<tab>" hydra-master/body "back")
-  ("<ESC>" nil "quit")
-  ("n" vl/scroll-up-half-other-window :color red)
-  ("p" vl/scroll-down-half-other-window :color red)
-  ("b" balance-windows)
-  ("d" delete-window)
-  ("H" shrink-window-horizontally :color red)
-  ("<left>" windmove-left :color red)
-  ("J" shrink-window :color red)
-  ("<down>" windmove-down :color red)
-  ("K" enlarge-window :color red)
-  ("<up>" windmove-up :color red)
-  ("L" enlarge-window-horizontally :color red)
-  ("<right>" windmove-right :color red)
-  ("r" winner-redo :color red)
-  ("s" split-window-vertically :color red)
-  ("u" winner-undo :color red)
-  ("v" split-window-horizontally :color red)
-  ("w" other-window)
-  ("z" delete-other-windows))
 
 #+end_src
 
 *** multiple cursor
 #+begin_src emacs-lisp
 
-
-
-(pretty-hydra-define hydra-mc (:color red :title mc--title)
-
-  ("Mark"
-   (
-    ("a" mc/mark-all-like-this "mark all")
-    ("n" mc/mark-next-like-this "mark next")
-    ("N" mc/unmark-next-like-this "unmark next")
-    ("p" mc/mark-previous-like-this "mark previous")
-    ("P" mc/unmark-previous-like-this "unmark previous")
-    )
-   "Skip"
-   (
-    ("sn" mc/skip-to-next-like-this "skip to next")
-    ("sp" mc/skip-to-previous-like-this "skip to prev")
-    )
-   "Edit"
-   (
-    ("e" mc/edit-lines "edit lines" :color blue)
-    )
-   )
-  )
 
 #+end_src
 
@@ -1011,58 +1201,17 @@ Some nice visual modes
 *** folding
 #+begin_src emacs-lisp
 
-(defhydra hydra-folding (:color red)
-  "
-  _o_pen node    _n_ext fold       toggle _f_orward  _s_how current only
-  _c_lose node   _p_revious fold   toggle _a_ll
-  "
-  ("o" origami-open-node)
-  ("c" origami-close-node)
-  ("n" origami-next-fold)
-  ("p" origami-previous-fold)
-  ("f" origami-forward-toggle-node)
-  ("a" origami-toggle-all-nodes)
-  ("s" origami-show-only-node))
+
 #+end_src
 
 *** rectangle
 #+begin_src emacs-lisp
 
 
-(defhydra hydra-rectangle (:color blue)
-  "rectangles"
-  ("s" string-rectange "string")
-  ("i" string-insert-rectangle "string insert"))
 #+end_src
 *** smart parens
 #+begin_src emacs-lisp
 
-
-(pretty-hydra-define hydra-smartparens (:color red :title parens--title)
-  ("Move"
-   (
-    ("f" sp-forward-sexp "forward")
-    ("d" sp-backward-sexp "back")
-    )
-   "Wrap"
-   (
-    ("(" sp-wrap-round "wrap round")
-    ("{" sp-wrap-curly "wrap brace")
-    ("[" sp-wrap-square "wrap square")
-    ("u" sp-unwrap-sexp "unwrap")
-    )
-   "Kill"
-   (("k" sp-kill-sexp "kill")
-    ("K" sp-backward-kill-sexp "backward kill")
-    )
-   "Slurp Barff"
-   (
-    ("s" sp-forward-slurp-sexp "forward slurp")
-    ("S" sp-backward-slurp-sexp "backward slurp")
-    ("b" sp-forward-barf-sexp "forward barf")
-    ("B" sp-backward-barf-sexp "backward barf"))
-   )
-  )
 #+end_src
 
 #+RESULTS:
@@ -1071,32 +1220,10 @@ Some nice visual modes
 *** lsp
 #+begin_src emacs-lisp
 
-
-
-(defhydra hydra-lsp (:color blue)
-  "lsp"
-  ("d" lsp-find-definition "find definition")
-  ("i" lsp-find-implementation "find implementation")
-  ("r" lsp-find-references "find references"))
-
 #+end_src
 *** python format
 #+begin_src emacs-lisp
 
-
-(pretty-hydra-define hydra-python-format (:color teal :title python--title)
-  ("Format"
-   (
-    ("f" blacken-buffer "blacken")
-    ("i" py-isort-buffer "isort"))
-   "Shift"
-   (
-    ("<right>" tom/shift-right "right")
-    ("<left>"  tom/shift-left"left")
-    )
-   )
-
-  )
 
 #+end_src
 
@@ -1108,73 +1235,10 @@ Some nice visual modes
 #+begin_src emacs-lisp
 
 
-
-(defhydra hydra-smerge (:color pink
-                               :hint nil
-                               :pre (smerge-mode 1)
-                               ;; Disable `smerge-mode' when quitting hydra if
-                               ;; no merge conflicts remain.
-                               :post (smerge-auto-leave))
-  "
-^Move^       ^Keep^               ^Diff^                 ^Other^
-^^-----------^^-------------------^^---------------------^^-------
-_n_ext       _b_ase               _<_: upper/base        _C_ombine
-_p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
-^^           _l_ower              _>_: base/lower        _k_ill current
-^^           _a_ll                _R_efine
-^^           _RET_: current       _E_diff
-"
-  ("n" smerge-next)
-  ("p" smerge-prev)
-  ("b" smerge-keep-base)
-  ("u" smerge-keep-upper)
-  ("l" smerge-keep-lower)
-  ("a" smerge-keep-all)
-  ("RET" smerge-keep-current)
-  ("\C-m" smerge-keep-current)
-  ("<" smerge-diff-base-upper)
-  ("=" smerge-diff-upper-lower)
-  (">" smerge-diff-base-lower)
-  ("R" smerge-refine)
-  ("E" smerge-ediff)
-  ("C" smerge-combine-with-next)
-  ("r" smerge-resolve)
-  ("k" smerge-kill-current)
-  ("q" nil "cancel" :color blue))
-
 #+end_src
 *** mail
 #+begin_src emacs-lisp
 
-(pretty-hydra-define my-mu4e-quick (:color blue :title mail--title)
-  ("Unread"
-   (
-    ("w" (mu4e-headers-search "flag:unread AND maildir:/mpe/INBOX") "unread work")
-    ("p" (mu4e-headers-search "flag:unread AND maildir:/gmail/INBOX")   "unread personal")
-
-    )
-   "Bookmark" (
-               ("t" (mu4e-headers-search "date:today..now AND maildir:/mpe/INBOX")   "today work")
-               ("d" (mu4e-headers-search "Damien AND maildir:/mpe/INBOX") "Damien" )
-               ("j" (mu4e-headers-search "Jochen AND maildir:/mpe/INBOX") "Jochen" )
-
-               )
-
-   "Org"
-   (
-    ("o" (org-mime-edit-mail-in-org-mode)  "edit message in org mode")
-    ("e" (org-mime-htmlize) "export to html")
-
-    )
-
-   "Utils"
-   (
-    ("c" (mu4e-compose-new)    "compase a message")
-    ("u" (mu4e-update-index) "update")
-    )
-   )
-
-  )
 
 
 #+end_src
@@ -1185,21 +1249,6 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 #+begin_src emacs-lisp
 
 
-(pretty-hydra-define jmb/hydra-music (:color red :timeout 4 :title music--title)
-  ("Skip"
-   (
-    ("n" #'musica-play-next "next")
-    ("p" #'musica-play-previous "previous")
-    ("r" #'musica-play-next-random "next random"))
-   "Search"
-
-   (("s" #'musica-search "search")
-    ("i" #'musica-info "info"))
-   "Play"(
-          ("SPC" #'musica-play-pause "play-pause"))
-
-   ))
-
 #+end_src
 
 #+RESULTS:
@@ -1207,21 +1256,6 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 *** Slack
 #+begin_src emacs-lisp
 
-
-(pretty-hydra-define jmb/hydra-slack (:color red :timeout 4 :title slack--title)
-  ("Select"
-   (
-    ("i" slack-im-select  "im")
-    ("c" slack-channel-select "channel")
-    ("r" #'musica-play-next-random "next random"))
-   "Insert"
-
-   (("e" slack-insert-emoji "emojii")
-    )
-   "Start"(
-           ("s" slack-start "start"))
-
-   ))
 
 #+end_src
 
