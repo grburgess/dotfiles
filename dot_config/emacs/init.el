@@ -311,16 +311,7 @@ the buffer is buried."
           (3 . (rainbow bold 1.2))
           (t . (semilight 1.1))))
 
-
   (load-theme 'modus-vivendi :no-confirm)
-  ;; Load the theme files before enabling a theme
-                                        ;(modus-themes-load-themes)
-                                        ;:config
-  ;; Load the theme of your choice:
-
-                                        ;(load-theme 'modus-)
-                                        ;  (modus-themes-load-vivendi)
-
   )
 
 
@@ -1369,7 +1360,8 @@ folder, otherwise delete a word"
 ;;   (marginalia-mode-hook . all-the-icons-completion-marginalia-setup)
 
 (use-package nerd-icons-completion
-      :after marginalia
+  :straight (nerd-icons-completion :type git :host github :repo "rainstormstudio/nerd-icons-completion")
+  :after marginalia
   :hook (marginalia-mode . nerd-icons-completion-marginalia-setup)
   :config
   (nerd-icons-completion-mode))
