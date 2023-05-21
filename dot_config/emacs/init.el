@@ -169,6 +169,7 @@ the buffer is buried."
                                         ;  (sublimity-map-set-delay 3))
 
 (use-package nerd-icons
+  :ensure t
   ;; :custom
   ;; The Nerd Font you want to use in GUI
   ;; "Symbols Nerd Font Mono" is the default and is recommended
@@ -461,7 +462,8 @@ the buffer is buried."
 (use-package doom-modeline
   :ensure t
   ;;:after eshell     ;; Make sure it gets hooked after eshell
-  :hook (after-init . doom-modeline-mode)
+  ;;:hook (after-init . doom-modeline-mode)
+  :init (doom-modeline-mode 1)
   :custom-face
   (mode-line ((t (:height 0.85))))
   (mode-line-inactive ((t (:height 0.85))))
