@@ -296,7 +296,7 @@ the buffer is buried."
 
 (use-package modus-themes
   :ensure
-  :init
+  :config
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-mode-line '(accented borderless)
         modus-themes-bold-constructs t
@@ -318,16 +318,18 @@ the buffer is buried."
           (3 . (rainbow bold 1.2))
           (t . (semilight 1.1))))
   ;; Load the theme files before enabling a theme
-  (modus-themes-load-themes)
-  :config
+  ;(modus-themes-load-themes)
+  ;:config
   ;; Load the theme of your choice:
+
+  ;(load-theme 'modus-)
                                         ;  (modus-themes-load-vivendi)
 
   )
 
 ;;(load-theme 'brilliance-dull t)
 
-(load-theme 'modus-vivendi t)
+(load-theme 'modus-vivendi :no-confirm)
 
 (require 'display-line-numbers)
 (defcustom display-line-numbers-exempt-modes '(vterm-mode eshell-mode shell-mode term-mode org-mode ansi-term-mode)
@@ -1694,29 +1696,30 @@ folder, otherwise delete a word"
   (dired-rainbow-define vc "#0074d9" ("git" "gitignore" "gitattributes" "gitmodules"))
   (dired-rainbow-define-chmod executable-unix "#38c172" "-.*x.*"))
 
-(use-package dired-single
-  :defer t)
+;; (use-package dired-single
+;;   :defer t)
 
-(use-package dired-ranger
-  :defer t)
+;; (use-package dired-ranger
+;;   :defer t)
 
-(use-package dired-collapse
-  :defer t)
+;; (use-package dired-collapse
+;;   :defer t)
 
 (use-package dirvish
   :init
   (dirvish-override-dired-mode)
   :custom
   (dirvish-quick-access-entries
-   '(("h" "~/"                          "home")
-     ("e" "~/.config/emacs/"                 "emacs")
-     ("p" "~/coding/projects"                  "projects")
+   '(("h" "~/" "home")
+     ("e" "~/.config/emacs/" "emacs")
+     ("p" "~/coding/projects" "projects")
      ("c" "~/.config/" "config")
+     ("d" "~/Downloads/" "downloads")
      ))
   (dirvish-mode-line-format
    '(:left (sort file-time " " file-size symlink) :right (omit yank index)))
   ;; Don't worry, Dirvish is still performant even you enable all these attributes
-  (dirvish-attributes '(all-the-icons collapse subtree-state vc-state git-msg))
+  (dirvish-attributes '(all-the-icons collapse subtree-state vc-state))
   :config
   (setq dired-dwim-target t)
   (setq delete-by-moving-to-trash t)
