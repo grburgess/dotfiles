@@ -317,19 +317,22 @@ the buffer is buried."
           (2 . (rainbow  1.3))
           (3 . (rainbow bold 1.2))
           (t . (semilight 1.1))))
+
+
+  (load-theme 'modus-vivendi)
   ;; Load the theme files before enabling a theme
-  ;(modus-themes-load-themes)
-  ;:config
+                                        ;(modus-themes-load-themes)
+                                        ;:config
   ;; Load the theme of your choice:
 
-  ;(load-theme 'modus-)
+                                        ;(load-theme 'modus-)
                                         ;  (modus-themes-load-vivendi)
 
   )
 
 ;;(load-theme 'brilliance-dull t)
 
-(load-theme 'modus-vivendi :no-confirm)
+;;(load-theme 'modus-vivendi :no-confirm)
 
 (require 'display-line-numbers)
 (defcustom display-line-numbers-exempt-modes '(vterm-mode eshell-mode shell-mode term-mode org-mode ansi-term-mode)
@@ -436,26 +439,27 @@ the buffer is buried."
 
 (use-package diminish
   :ensure t
+  :config
+  (diminish 'rainbow-mode)
+  (diminish 'auto-fill-mode)
+  (diminish 'abbrev-mode)
+  (diminish 'auto-revert-mode)
+  (diminish 'yas-mode)
+  (diminish 'yas-global-mode)
+
+  ;; (diminish 'sphinx-doc-mode)
+  (diminish 'which-key-mode)
+  (diminish 'global-eldoc-mode)
+  (diminish 'global-font-lock-mode)
+  (diminish 'highlight-indent-guides-mode)
+  (diminish 'elpy-mode)
+  (diminish 'abbrev-mode)
+  (diminish 'flyspell-mode)
+  (diminish 'flycheck-mode)
+  (diminish 'font-lock-mode)
+
+
   )
-
-
-(diminish 'rainbow-mode)
-(diminish 'auto-fill-mode)
-(diminish 'abbrev-mode)
-(diminish 'auto-revert-mode)
-(diminish 'yas-mode)
-(diminish 'yas-global-mode)
-
-;; (diminish 'sphinx-doc-mode)
-(diminish 'which-key-mode)
-(diminish 'global-eldoc-mode)
-(diminish 'global-font-lock-mode)
-(diminish 'highlight-indent-guides-mode)
-(diminish 'elpy-mode)
-(diminish 'abbrev-mode)
-(diminish 'flyspell-mode)
-                                        ;(diminish 'flycheck-mode)
-(diminish 'font-lock-mode)
 
 ;; You must run (all-the-icons-install-fonts) one time after
 ;; installing this package!
