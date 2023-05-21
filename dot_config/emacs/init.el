@@ -1369,6 +1369,8 @@ folder, otherwise delete a word"
 ;;   (marginalia-mode-hook . all-the-icons-completion-marginalia-setup)
 
 (use-package nerd-icons-completion
+      :after marginalia
+  :hook (marginalia-mode . nerd-icons-completion-marginalia-setup)
   :config
   (nerd-icons-completion-mode))
 
@@ -1738,7 +1740,7 @@ folder, otherwise delete a word"
               (interactive)
               (dired-omit-mode 1)
               (dired-hide-details-mode 1)
-              (all-the-icons-dired-mode 1)
+              
               (hl-line-mode 1))))
 
 (use-package dired-rainbow

@@ -1810,6 +1810,8 @@ Allows to jump into a a directory within the minibuffer
 ;;   (marginalia-mode-hook . all-the-icons-completion-marginalia-setup)
 
 (use-package nerd-icons-completion
+      :after marginalia
+  :hook (marginalia-mode . nerd-icons-completion-marginalia-setup)
   :config
   (nerd-icons-completion-mode))
 
@@ -2230,7 +2232,7 @@ Allows to jump into a a directory within the minibuffer
               (interactive)
               (dired-omit-mode 1)
               (dired-hide-details-mode 1)
-              (all-the-icons-dired-mode 1)
+              
               (hl-line-mode 1))))
 
 (use-package dired-rainbow
