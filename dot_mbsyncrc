@@ -28,41 +28,5 @@ SyncState *
 
 # =====================================================================
 
-IMAPAccount mpe
-Host mail.mpe.mpg.de
-Port  993
-User jburgess
-PassCmd "security find-generic-password -s mu4e-mpe -a jburgess -w"
-SSLType IMAPS
-SSLVersions TLSv1.2
-AuthMechs PLAIN
-SystemCertificates no
-CertificateFile ~/.maildir/certificates/root-certificates.pem
-
-IMAPStore mpe-remote
-Account mpe
-
-MaildirStore mpe-local
-SubFolders Verbatim
-Path ~/.maildir/mpe/
-Inbox ~/.maildir/mpe/INBOX
-
-Channel mpe
-Far :mpe-remote:
-Near :mpe-local:
-Patterns *
-Create Near
-Sync All
-Expunge Both
-SyncState *
-
-
-
-
-
-
-
-
-
 
 

@@ -2848,244 +2848,244 @@ folder, otherwise delete a word"
 ;; load mu4e from the installation path.
 ;; yours might differ check with the Emacs installation
 
-(use-package htmlize
-  :ensure t
-  )
+;; (use-package htmlize
+;;   :ensure t
+;;   )
 
-(use-package org-mime
-  :ensure t
-  )
+;; (use-package org-mime
+;;   :ensure t
+;;   )
 
-(use-package mu4e
-  :load-path  " /opt/homebrew/share/emacs/site-lisp/mu/mu4e/"
-  :straight nil
+;; (use-package mu4e
+;;   :load-path  " /opt/homebrew/share/emacs/site-lisp/mu/mu4e/"
+;;   :straight nil
 
-  :config
+;;   :config
 
-  (require 'org-mime)
+;;   (require 'org-mime)
 
-  ;; for sending mails
-  (require 'smtpmail)
-
-
-  ;; we installed this with homebrew
-  (setq mu4e-mu-binary (executable-find "mu"))
-
-  ;; this is the directory we created before:
-  (setq mu4e-maildir "~/.maildir")
-
-  ;; this command is called to sync imap servers:
-  (setq mu4e-get-mail-command (concat (executable-find "mbsync") " -a"))
-  ;; how often to call it in seconds:
-  (setq mu4e-update-interval (* 2 60))
-
-  (setq mu4e-index-update-error-warning nil)
-  ;; save attachment to desktop by default
-  ;; or another choice of yours:
-  (setq mu4e-attachment-dir "~/Downloads")
-
-  ;; rename files when moving - needed for mbsync:
-  (setq mu4e-change-filenames-when-moving t)
-
-  ;; list of your email adresses:
-  (setq mu4e-user-mail-address-list '("jmichaelburgess@gmail.com"
-                                      "jburgess@mpe.mpg.de"
-                                      ))
+;;   ;; for sending mails
+;;   (require 'smtpmail)
 
 
-  ;; check your ~/.maildir to see how the subdirectories are called
-  ;; for the generic imap account:
-  ;; e.g `ls ~/.maildir/example'
-  (setq   mu4e-maildir-shortcuts
-          '(
+;;   ;; we installed this with homebrew
+;;   (setq mu4e-mu-binary (executable-find "mu"))
 
-            ("/gmail/INBOX" . ?g)
-            ("/gmail/[Gmail]/Sent Mail" . ?G)
-            ("/mpe/INBOX" . ?m)
-            ("/mpe/Sent" . ?M)))
+;;   ;; this is the directory we created before:
+;;   (setq mu4e-maildir "~/.maildir")
+
+;;   ;; this command is called to sync imap servers:
+;;   (setq mu4e-get-mail-command (concat (executable-find "mbsync") " -a"))
+;;   ;; how often to call it in seconds:
+;;   (setq mu4e-update-interval (* 2 60))
+
+;;   (setq mu4e-index-update-error-warning nil)
+;;   ;; save attachment to desktop by default
+;;   ;; or another choice of yours:
+;;   (setq mu4e-attachment-dir "~/Downloads")
+
+;;   ;; rename files when moving - needed for mbsync:
+;;   (setq mu4e-change-filenames-when-moving t)
+
+;;   ;; list of your email adresses:
+;;   (setq mu4e-user-mail-address-list '("jmichaelburgess@gmail.com"
+;;                                       "jburgess@mpe.mpg.de"
+;;                                       ))
 
 
+;;   ;; check your ~/.maildir to see how the subdirectories are called
+;;   ;; for the generic imap account:
+;;   ;; e.g `ls ~/.maildir/example'
+;;   (setq   mu4e-maildir-shortcuts
+;;           '(
+
+;;             ("/gmail/INBOX" . ?g)
+;;             ("/gmail/[Gmail]/Sent Mail" . ?G)
+;;             ("/mpe/INBOX" . ?m)
+;;             ("/mpe/Sent" . ?M)))
 
 
 
 
-  (setq mu4e-contexts
-        `(
-          ,(make-mu4e-context
-            :name "gmail"
-            :enter-func
-            (lambda () (mu4e-message "Enter jmichaelburgess@gmail.com context"))
-            :leave-func
-            (lambda () (mu4e-message "Leave jmichaelburgess@gmail.com context"))
-            :match-func
-            (lambda (msg)
-              (when msg
-                (mu4e-message-contact-field-matches msg
-                                                    :to "jmichaelburgess@gmail.com")))
-            :vars '((user-mail-address . "jmichaelburgess@gmail.com")
-                    (user-full-name . "J. Michael Burgess")
-                    (mu4e-drafts-folder . "/gmail/Drafts")
-                    (mu4e-refile-folder . "/gmail/Archive")
-                    (mu4e-sent-folder . "/gmail/Sent")
-                    (mu4e-trash-folder . "/gmail/Trash")
-                    (mu4e-compose-signature  .
-                                             (concat
-                                              "-----\n"
-                                              "/J. Michael\n"
-                                              "sent from emacs without a mouse\n"))
-                    )
-            )
-
-          ,(make-mu4e-context
-            :name "mpe"
-            :enter-func
-            (lambda () (mu4e-message "Enter jburgess@mpe.mpg.de context"))
-            :leave-func
-            (lambda () (mu4e-message "Leave jburgess@mpe.mpg.de context"))
-            :match-func
-            (lambda (msg)
-              (when msg
-                (mu4e-message-contact-field-matches msg
-                                                    :to "jburgess@mpe.mpg.de")))
-            :vars '((user-mail-address . "jburgess@mpe.mpg.de")
-                    (user-full-name . "J. Michael Burgess")
-
-                    (mu4e-compose-signature  .
-                                             (concat
-                                              "-----\n"
-                                              "/J. Michael\n"
-                                              "sent from emacs without a mouse\n"))
-                    (mu4e-drafts-folder . "/mpe/Drafts")
-                    (mu4e-refile-folder . "/mpe/Archive")
-                    (mu4e-sent-folder . "/mpe/Sent")
-                    (mu4e-trash-folder . "/mpe/Trash")))))
-
-  (setq mu4e-context-policy 'pick-first) ;; start with the first (default) context;
-  (setq mu4e-compose-context-policy 'ask) ;; ask for context if no context matches;
 
 
+;;   (setq mu4e-contexts
+;;         `(
+;;           ,(make-mu4e-context
+;;             :name "gmail"
+;;             :enter-func
+;;             (lambda () (mu4e-message "Enter jmichaelburgess@gmail.com context"))
+;;             :leave-func
+;;             (lambda () (mu4e-message "Leave jmichaelburgess@gmail.com context"))
+;;             :match-func
+;;             (lambda (msg)
+;;               (when msg
+;;                 (mu4e-message-contact-field-matches msg
+;;                                                     :to "jmichaelburgess@gmail.com")))
+;;             :vars '((user-mail-address . "jmichaelburgess@gmail.com")
+;;                     (user-full-name . "J. Michael Burgess")
+;;                     (mu4e-drafts-folder . "/gmail/Drafts")
+;;                     (mu4e-refile-folder . "/gmail/Archive")
+;;                     (mu4e-sent-folder . "/gmail/Sent")
+;;                     (mu4e-trash-folder . "/gmail/Trash")
+;;                     (mu4e-compose-signature  .
+;;                                              (concat
+;;                                               "-----\n"
+;;                                               "/J. Michael\n"
+;;                                               "sent from emacs without a mouse\n"))
+;;                     )
+;;             )
 
-  ;; gpg encryptiom & decryption:
-  ;; this can be left alone
-  (require 'epa-file)
-  (epa-file-enable)
-  (setq epa-pinentry-mode 'loopback)
-  (auth-source-forget-all-cached)
+;;           ,(make-mu4e-context
+;;             :name "mpe"
+;;             :enter-func
+;;             (lambda () (mu4e-message "Enter jburgess@mpe.mpg.de context"))
+;;             :leave-func
+;;             (lambda () (mu4e-message "Leave jburgess@mpe.mpg.de context"))
+;;             :match-func
+;;             (lambda (msg)
+;;               (when msg
+;;                 (mu4e-message-contact-field-matches msg
+;;                                                     :to "jburgess@mpe.mpg.de")))
+;;             :vars '((user-mail-address . "jburgess@mpe.mpg.de")
+;;                     (user-full-name . "J. Michael Burgess")
 
-  ;; don't keep message compose buffers around after sending:
-  (setq message-kill-buffer-on-exit t)
+;;                     (mu4e-compose-signature  .
+;;                                              (concat
+;;                                               "-----\n"
+;;                                               "/J. Michael\n"
+;;                                               "sent from emacs without a mouse\n"))
+;;                     (mu4e-drafts-folder . "/mpe/Drafts")
+;;                     (mu4e-refile-folder . "/mpe/Archive")
+;;                     (mu4e-sent-folder . "/mpe/Sent")
+;;                     (mu4e-trash-folder . "/mpe/Trash")))))
 
-  ;; send function:
-  (setq send-mail-function 'sendmail-send-it
-        message-send-mail-function 'sendmail-send-it)
-
-  ;; send program:
-  ;; this is exeranal. remember we installed it before.
-  (setq sendmail-program (executable-find "msmtp"))
-
-  ;; select the right sender email from the context.
-  (setq message-sendmail-envelope-from 'header)
-
-  ;; chose from account before sending
-  ;; this is a custom function that works for me.
-  ;; well I stole it somewhere long ago.
-  ;; I suggest using it to make matters easy
-  ;; of course adjust the email adresses and account descriptions
-  (defun timu/set-msmtp-account ()
-    (if (message-mail-p)
-        (save-excursion
-          (let*
-              ((from (save-restriction
-                       (message-narrow-to-headers)
-                       (message-fetch-field "from")))
-               (account
-                (cond
-
-                 ((string-match "jmichaelburgess@gmail.com" from) "gmail")
-                 ((string-match "jburgess@mpe.mpg.de" from) "example"))))
-            (setq message-sendmail-extra-arguments (list '"-a" account))))))
-
-  (add-hook 'message-send-mail-hook 'timu/set-msmtp-account)
-
-  ;; mu4e cc & bcc
-  ;; this is custom as well
-  (add-hook 'mu4e-compose-mode-hook
-            (defun timu/add-cc-and-bcc ()
-              "My Function to automatically add Cc & Bcc: headers.
-    This is in the mu4e compose mode."
-              (save-excursion (message-add-header "Cc:\n"))
-              (save-excursion (message-add-header "Bcc:\n"))))
-
-  ;; mu4e address completion
-  (add-hook 'mu4e-compose-mode-hook 'company-mode)
-
-
-  ;; store link to message if in header view, not to header query:
-  (setq org-mu4e-link-query-in-headers-mode nil)
-  ;; don't have to confirm when quitting:
-  (setq mu4e-confirm-quit nil)
-  ;; number of visible headers in horizontal split view:
-  (setq mu4e-headers-visible-lines 20)
-  ;; don't show threading by default:
-  (setq mu4e-headers-show-threads t)
-  ;; hide annoying "mu4e Retrieving mail..." msg in mini buffer:
-  (setq mu4e-hide-index-messages t)
-  ;; customize the reply-quote-string:
-  (setq message-citation-line-format "%N @ %Y-%m-%d %H:%M :\n")
-  ;; M-x find-function RET message-citation-line-format for docs:
-  (setq message-citation-line-function 'message-insert-formatted-citation-line)
-  ;; by default do not show related emails:
-  (setq mu4e-headers-include-related nil)
-  ;; by default do not show threads:
-  (setq mu4e-headers-show-threads nil)
-  :init
+;;   (setq mu4e-context-policy 'pick-first) ;; start with the first (default) context;
+;;   (setq mu4e-compose-context-policy 'ask) ;; ask for context if no context matches;
 
 
 
-  (setq org-mu4e-convert-to-html t)
+;;   ;; gpg encryptiom & decryption:
+;;   ;; this can be left alone
+;;   (require 'epa-file)
+;;   (epa-file-enable)
+;;   (setq epa-pinentry-mode 'loopback)
+;;   (auth-source-forget-all-cached)
 
-  (setq org-mime-export-options '(:section-numbers nil
-                                                   :with-author nil
-                                                   :with-toc nil))
+;;   ;; don't keep message compose buffers around after sending:
+;;   (setq message-kill-buffer-on-exit t)
 
-  (add-hook 'org-mime-html-hook
-            (lambda ()
-              (org-mime-change-element-style
-               "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
-                             "#5EFFA5" "#211F20"))))
+;;   ;; send function:
+;;   (setq send-mail-function 'sendmail-send-it
+;;         message-send-mail-function 'sendmail-send-it)
 
-  (global-set-key [f6] 'mu4e)
-  )
+;;   ;; send program:
+;;   ;; this is exeranal. remember we installed it before.
+;;   (setq sendmail-program (executable-find "msmtp"))
 
-(use-package mu4e-column-faces
-  :ensure t
-  :after mu4e
-  :config (mu4e-column-faces-mode 1))
+;;   ;; select the right sender email from the context.
+;;   (setq message-sendmail-envelope-from 'header)
+
+;;   ;; chose from account before sending
+;;   ;; this is a custom function that works for me.
+;;   ;; well I stole it somewhere long ago.
+;;   ;; I suggest using it to make matters easy
+;;   ;; of course adjust the email adresses and account descriptions
+;;   (defun timu/set-msmtp-account ()
+;;     (if (message-mail-p)
+;;         (save-excursion
+;;           (let*
+;;               ((from (save-restriction
+;;                        (message-narrow-to-headers)
+;;                        (message-fetch-field "from")))
+;;                (account
+;;                 (cond
+
+;;                  ((string-match "jmichaelburgess@gmail.com" from) "gmail")
+;;                  ((string-match "jburgess@mpe.mpg.de" from) "example"))))
+;;             (setq message-sendmail-extra-arguments (list '"-a" account))))))
+
+;;   (add-hook 'message-send-mail-hook 'timu/set-msmtp-account)
+
+;;   ;; mu4e cc & bcc
+;;   ;; this is custom as well
+;;   (add-hook 'mu4e-compose-mode-hook
+;;             (defun timu/add-cc-and-bcc ()
+;;               "My Function to automatically add Cc & Bcc: headers.
+;;     This is in the mu4e compose mode."
+;;               (save-excursion (message-add-header "Cc:\n"))
+;;               (save-excursion (message-add-header "Bcc:\n"))))
+
+;;   ;; mu4e address completion
+;;   (add-hook 'mu4e-compose-mode-hook 'company-mode)
 
 
-(use-package mu4e-thread-folding
-  :straight (mu4e-thread-folding :type git :host github :repo "rougier/mu4e-thread-folding")
-  :init
-  (add-to-list 'mu4e-header-info-custom
-               '(:empty . (:name "Empty"
-                                 :shortname ""
-                                 :function (lambda (msg) "  "))))
-  (setq mu4e-headers-fields '((:empty         .    1)
-                              (:human-date    .   12)
-                              (:from          .   22)
-                              (:flags         .    6)
-                              (:mailing-list  .   10)
+;;   ;; store link to message if in header view, not to header query:
+;;   (setq org-mu4e-link-query-in-headers-mode nil)
+;;   ;; don't have to confirm when quitting:
+;;   (setq mu4e-confirm-quit nil)
+;;   ;; number of visible headers in horizontal split view:
+;;   (setq mu4e-headers-visible-lines 20)
+;;   ;; don't show threading by default:
+;;   (setq mu4e-headers-show-threads t)
+;;   ;; hide annoying "mu4e Retrieving mail..." msg in mini buffer:
+;;   (setq mu4e-hide-index-messages t)
+;;   ;; customize the reply-quote-string:
+;;   (setq message-citation-line-format "%N @ %Y-%m-%d %H:%M :\n")
+;;   ;; M-x find-function RET message-citation-line-format for docs:
+;;   (setq message-citation-line-function 'message-insert-formatted-citation-line)
+;;   ;; by default do not show related emails:
+;;   (setq mu4e-headers-include-related nil)
+;;   ;; by default do not show threads:
+;;   (setq mu4e-headers-show-threads nil)
+;;   :init
 
-                              (:subject       .   nil)))
-  :config
 
-  (define-key mu4e-headers-mode-map (kbd "<tab>")     'mu4e-headers-toggle-at-point)
-  (define-key mu4e-headers-mode-map (kbd "<left>")    'mu4e-headers-fold-at-point)
-  (define-key mu4e-headers-mode-map (kbd "<S-left>")  'mu4e-headers-fold-all)
-  (define-key mu4e-headers-mode-map (kbd "<right>")   'mu4e-headers-unfold-at-point)
-  (define-key mu4e-headers-mode-map (kbd "<S-right>") 'mu4e-headers-unfold-all)
 
-  )
+;;   (setq org-mu4e-convert-to-html t)
+
+;;   (setq org-mime-export-options '(:section-numbers nil
+;;                                                    :with-author nil
+;;                                                    :with-toc nil))
+
+;;   (add-hook 'org-mime-html-hook
+;;             (lambda ()
+;;               (org-mime-change-element-style
+;;                "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
+;;                              "#5EFFA5" "#211F20"))))
+
+;;   (global-set-key [f6] 'mu4e)
+;;   )
+
+;; (use-package mu4e-column-faces
+;;   :ensure t
+;;   :after mu4e
+;;   :config (mu4e-column-faces-mode 1))
+
+
+;; (use-package mu4e-thread-folding
+;;   :straight (mu4e-thread-folding :type git :host github :repo "rougier/mu4e-thread-folding")
+;;   :init
+;;   (add-to-list 'mu4e-header-info-custom
+;;                '(:empty . (:name "Empty"
+;;                                  :shortname ""
+;;                                  :function (lambda (msg) "  "))))
+;;   (setq mu4e-headers-fields '((:empty         .    1)
+;;                               (:human-date    .   12)
+;;                               (:from          .   22)
+;;                               (:flags         .    6)
+;;                               (:mailing-list  .   10)
+
+;;                               (:subject       .   nil)))
+;;   :config
+
+;;   (define-key mu4e-headers-mode-map (kbd "<tab>")     'mu4e-headers-toggle-at-point)
+;;   (define-key mu4e-headers-mode-map (kbd "<left>")    'mu4e-headers-fold-at-point)
+;;   (define-key mu4e-headers-mode-map (kbd "<S-left>")  'mu4e-headers-fold-all)
+;;   (define-key mu4e-headers-mode-map (kbd "<right>")   'mu4e-headers-unfold-at-point)
+;;   (define-key mu4e-headers-mode-map (kbd "<S-right>") 'mu4e-headers-unfold-all)
+
+;;   )
 
 ;; (use-package mu4e-marker-icons
 ;;   :ensure t
