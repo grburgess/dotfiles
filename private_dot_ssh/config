@@ -1,4 +1,4 @@
-# SSH configuration taken from https://docs.mpcdf.mpg.de/faq/
+0A# SSH configuration taken from https://docs.mpcdf.mpg.de/faq/
 
 # Correctly resolve short names of gateway machines and HPC nodes
 Match originalhost gate*,draco*,cobra*,raven*,con01
@@ -61,4 +61,4 @@ Host github.com
     User git
 	AddKeysToAgent yes
 	UseKeychain yes
-        IdentityFile /Users/jburgess/.ssh/id_rsa.pub
+        IdentityFile /Users/jburgess/.ssh/id_rsa
