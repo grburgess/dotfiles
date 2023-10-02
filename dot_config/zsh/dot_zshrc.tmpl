@@ -14,8 +14,7 @@
 {{ if eq .chezmoi.os "darwin" }}
 
 export PATH=/opt/homebrew/bin:$PATH
-export GOPATH="$(go env GOPATH)"
-export PATH="${PATH}:${GOPATH}/bin"
+
 export PATH="${PATH}:${HOME}/.cargo/bin"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
@@ -90,7 +89,7 @@ export WORKON_HOME=~/.environs
 export VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
 export VIRTUALENVWRAPPER_VIRTUALENV=/opt/homebrew/bin/virtualenv
 source /opt/homebrew/bin/virtualenvwrapper.sh
-export PATH=$PATH:/Users/jburgess/Library/Python/3.10/bin
+#export PATH=$PATH:/Users/jburgess/Library/Python/3.10/bin
 
 {{ else if eq .chezmoi.os "linux" }}
 
@@ -243,5 +242,13 @@ zinit cdreplay -q   # -q is for quiet; actually run all the `compdef's saved bef
 
 {{ if eq .chezmoi.os "darwin" }}
 eval "$(direnv hook zsh)"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/jburgess/sw/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jburgess/sw/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/jburgess/sw/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jburgess/sw/google-cloud-sdk/completion.zsh.inc'; fi
+
+
 {{ end }}
 
