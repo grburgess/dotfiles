@@ -1,4 +1,4 @@
-0A# SSH configuration taken from https://docs.mpcdf.mpg.de/faq/
+# SSH configuration taken from https://docs.mpcdf.mpg.de/faq/
 
 # Correctly resolve short names of gateway machines and HPC nodes
 Match originalhost gate*,draco*,cobra*,raven*,con01
