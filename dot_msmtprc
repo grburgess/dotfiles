@@ -17,19 +17,8 @@ passwordeval security find-generic-password -s mu4e-gmail -a jmichaelburgess@gma
 tls on
 tls_starttls off
 
-# ======================================================================
 
-account mpe
-auth on
-host mail.mpe.mpg.de
-port 465
-protocol smtp
-from jburgess@mpe.mpg.de
-user jburgess
-passwordeval security find-generic-password -s mu4e-mpe -a jburgess -w
-tls on
-tls_starttls on
 
 # ======================================================================
 
-account default : mpe
+account default : gmail
