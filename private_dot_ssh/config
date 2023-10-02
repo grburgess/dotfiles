@@ -61,4 +61,4 @@ Host github.com
     User git
 	AddKeysToAgent yes
 	UseKeychain yes
-        IdentityFile /Users/jburgess/.ssh/id_rsa
+        IdentityFile /Users/jburgess/.ssh/id_rsa.pub
