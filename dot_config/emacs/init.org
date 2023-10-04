@@ -516,8 +516,13 @@ the buffer is buried."
 *** Load the primary theme
 #+begin_src emacs-lisp
 
+(load-theme 'ef-bio :no-confirm)
 
 #+end_src
+
+#+RESULTS:
+: t
+
 ** Line numbers
 #+begin_src emacs-lisp
 (require 'display-line-numbers)
