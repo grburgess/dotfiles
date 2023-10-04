@@ -1,27 +1,34 @@
 [credential "https://github.com"]
-	helper =
 	{{ if eq .chezmoi.os "darwin" }}
 	helper = !/opt/homebrew/bin/gh auth git-credential
 	{{ else if eq .chezmoi.os "linux" }}
 	helper = !/usr/bin/gh auth git-credential
 	{{ else }}
 	{{ end }}
+
 [credential "https://gist.github.com"]
-	helper =
+	
 	{{ if eq .chezmoi.os "darwin" }}
 	helper = !/opt/homebrew/bin/gh auth git-credential
 	{{ else if eq .chezmoi.os "linux" }}
 	helper = !/usr/bin/gh auth git-credential
 	{{ else }}
 	{{ end }}
+
+	
 [github]
 	user = grburgess
 [user]
 	name = J. Michael Burgess
-	email = jmichaelburgess@gmail.com
+	email = jmichael@hema.to
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC7aCbMDe1/+8JgixhxwxdCZf98keNM4PzAc8izf/BHa
 [init]
 	defaultBranch = master
 
 [commit]
 	gpgsign = true
         template = ~/.gitmessage
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
