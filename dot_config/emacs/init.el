@@ -350,7 +350,7 @@ the buffer is buried."
 
   )
 
-
+(load-theme 'ef-bio t)
 
 (require 'display-line-numbers)
 (defcustom display-line-numbers-exempt-modes '(vterm-mode eshell-mode shell-mode term-mode org-mode ansi-term-mode)
@@ -2215,6 +2215,8 @@ folder, otherwise delete a word"
 
   :commands lsp-ui-mode
   )
+
+(use-package rubocop)
 
 (use-package flycheck
   :ensure t
