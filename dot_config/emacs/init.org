@@ -3881,28 +3881,18 @@ text-modes with this snippet.
   :config
 
   (slack-register-team
-   :name "3ML"
+   :name "hemato"
    :default t
-   :token "xoxc-587428499925-578389449025-3982577003922-3089ae95a2e4b8440a83c58dda078eb67380dbcb23c76caf4ddbf325a4567338"
-   :cookie "xoxd-q6shvamqaBjMoVM6BVtSHGKcIYlfoiAfpAc8robsD2fkhrQe0ZGy0JOq5qNQG9MFNRy8nlx6UpToePKs2zdFL1WnBA%2B20F%2Bweb2j0Fc5%2BAPS%2BNe1uwTuJgdtSBcpPdtsxfsQt2PiLvIKMTSfkhek1yQ1BvvT1gWD%2BnIbDgdsJKIQo%2BWNPa202TCS"
-   :subscribed-channels '(general threeml gammapy)
+    :token (auth-source-pick-first-password
+         :host "hema-to.slack.com"
+         :user "jmichael@hema.to")
+     :cookie (auth-source-pick-first-password
+         :host "hema-to.slack.com"
+         :user "jmichael@hema.to^cookie")
+
+   :subscribed-channels '(general ml_club office tech research off-topic)
    :full-and-display-names t)
 
-  (slack-register-team
-   :name "MPE"
-   :default nil
-   :token "xoxc-244949049927-243999427269-4006507330240-3c17f2420638831da0597dbbc0a5f5c066f44e13a0b2423dd8d7b070a5a2238a"
-   :cookie "xoxd-Q%2FGgbHwEGXv11pGMsCOJFAOKB%2B9nO1eOl6xmcFSHUWCj%2Bf8YEiRNZaIopE54yQJrSzcPmZJT8qaxHL44v1HsVsekzVE3im2mrvPlJ1U5spG6CJhfLuRkGBldJUBxPaCVaFph7ESRcj9EleNZ1nFn2Mm1T%2BcfzbFasa%2FxUCxj9Or4NmSC%2BFg13l%2B7"
-   :subscribed-channels '(general)
-   :full-and-display-names t)
-
-  (slack-register-team
-   :name "runko"
-   :default nil
-   :token "xoxc-693525441700-2321982085987-4006507275072-95c890de19535f0cb134c90a311b8e71acaff1bb1ac7db405c22d728cfbc4aa3"
-   :cookie "xoxd-Q%2FGgbHwEGXv11pGMsCOJFAOKB%2B9nO1eOl6xmcFSHUWCj%2Bf8YEiRNZaIopE54yQJrSzcPmZJT8qaxHL44v1HsVsekzVE3im2mrvPlJ1U5spG6CJhfLuRkGBldJUBxPaCVaFph7ESRcj9EleNZ1nFn2Mm1T%2BcfzbFasa%2FxUCxj9Or4NmSC%2BFg13l%2B7"
-   :subscribed-channels '(general)
-   :full-and-display-names t)
 
   )
 
