@@ -472,7 +472,7 @@ the buffer is buried."
 
 
   :config
-  (load-theme 'modus-vivendi)
+  (load-theme 'modus-vivendi t)
 
 
   )
