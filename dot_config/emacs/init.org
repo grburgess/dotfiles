@@ -856,6 +856,8 @@ Some nice visual modes
 
 #+RESULTS:
 ** neotree
+
+
 #+begin_src emacs-lisp
 (use-package neotree
   :ensure t
@@ -873,6 +875,23 @@ Some nice visual modes
 
 #+RESULTS:
 : t
+** solaire
+
+#+begin_src emacs-lisp
+(use-package solaire-mode
+  :ensure t
+  :config
+
+  (solaire-global-mode +1)
+
+
+)
+#+end_src
+
+#+RESULTS:
+: t
+
+
 
 * Keyboard
 ** ESC Cancels

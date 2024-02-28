@@ -623,6 +623,15 @@ the buffer is buried."
   :config
   (treemacs-load-theme "nerd-icons"))
 
+(use-package solaire-mode
+  :ensure t
+  :config
+
+  (solaire-global-mode +1)
+
+
+)
+
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 (use-package which-key
