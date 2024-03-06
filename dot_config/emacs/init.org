@@ -515,7 +515,7 @@ the buffer is buried."
 
 *** Load the primary theme
 #+begin_src emacs-lisp
-(load-theme 'modus-operandi :no-confirm)
+(load-theme 'modus-vivendi :no-confirm)
 
 
 #+end_src
