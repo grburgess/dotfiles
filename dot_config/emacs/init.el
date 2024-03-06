@@ -350,7 +350,7 @@ the buffer is buried."
 
   )
 
-(load-theme 'ef-bio t)
+(load-theme 'modus-operandi :no-confirm)
 
 (require 'display-line-numbers)
 (defcustom display-line-numbers-exempt-modes '(vterm-mode eshell-mode shell-mode term-mode org-mode ansi-term-mode)
