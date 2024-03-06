@@ -3235,7 +3235,7 @@ text-modes with this snippet.
   ;; ("C-c p" . projectile-command-map)
   :init
   (when (file-directory-p "~/coding/projects")
-    (setq projectile-project-search-path '("~/coding/projects" "~/articles") ))
+    (setq projectile-project-search-path '("~/coding/projects" "~/coding/projects") ))
   )
 #+END_SRC
 

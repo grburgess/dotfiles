@@ -630,7 +630,7 @@ the buffer is buried."
   (solaire-global-mode +1)
 
 
-)
+  )
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -2522,7 +2522,7 @@ folder, otherwise delete a word"
   ;; ("C-c p" . projectile-command-map)
   :init
   (when (file-directory-p "~/coding/projects")
-    (setq projectile-project-search-path '("~/coding/projects" "~/articles") ))
+    (setq projectile-project-search-path '("~/coding/projects" "~/coding/projects") ))
   )
 
 ;; (use-package py-isort
@@ -3122,12 +3122,12 @@ folder, otherwise delete a word"
   (slack-register-team
    :name "hemato"
    :default t
-    :token (auth-source-pick-first-password
-         :host "hema-to.slack.com"
-         :user "jmichael@hema.to")
-     :cookie (auth-source-pick-first-password
-         :host "hema-to.slack.com"
-         :user "jmichael@hema.to^cookie")
+   :token (auth-source-pick-first-password
+           :host "hema-to.slack.com"
+           :user "jmichael@hema.to")
+   :cookie (auth-source-pick-first-password
+            :host "hema-to.slack.com"
+            :user "jmichael@hema.to^cookie")
 
    :subscribed-channels '(general ml_club office tech research off-topic)
    :full-and-display-names t)
