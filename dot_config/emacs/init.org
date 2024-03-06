@@ -885,7 +885,7 @@ Some nice visual modes
   (solaire-global-mode +1)
 
 
-)
+  )
 #+end_src
 
 #+RESULTS:
@@ -2742,7 +2742,7 @@ This is quite an ugly fix for allowing code markup for expressions like
   ;;         if you don't care about startup time, use
   ;;:hook (after-init . org-roam-ui-mode)
   :config
-  (setq org-roam-ui-sync-theme t
+  (setq org-roam-ui-sync-theme nil
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
@@ -2750,7 +2750,6 @@ This is quite an ugly fix for allowing code markup for expressions like
 
 
 #+RESULTS:
-| org-roam-ui-mode | ivy-mode | all-the-icons-ivy-setup | global-company-mode | tramp-register-archive-file-name-handler | magit-maybe-define-global-key-bindings |
 
 * LSP
 #+begin_src emacs-lisp
@@ -2835,7 +2834,28 @@ This is quite an ugly fix for allowing code markup for expressions like
 
 * Development
 ** Configuration
+*** Apheleia
+#+begin_src emacs-lisp
+(use-package apheleia
+  :ensure t
+  :config
+  (apheleia-global-mode +1)
+  (add-to-list 'apheleia-mode-alist '(python-mode . ruff))
+  (add-to-list 'apheleia-mode-alist '(python-ts-mode . ruff))
+
+
+  )
+
+
+
+#+end_src
+
+#+RESULTS:
+: t
+
 *** Flycheck
+
+
 #+BEGIN_SRC emacs-lisp
 
 (use-package flycheck
@@ -3225,17 +3245,17 @@ text-modes with this snippet.
 
 #+BEGIN_SRC emacs-lisp
 
-(use-package py-isort
-  :ensure t
-  :after python
-  )
+;; (use-package py-isort
+;;   :ensure t
+;;   :after python
+;;   )
 
-(use-package blacken
-  :after python
-  :init
-  (setq-default blacken-fast-unsafe t)
-  (setq-default blacken-line-length 80)
-  )
+;; (use-package blacken
+;;   :after python
+;;   :init
+;;   (setq-default blacken-fast-unsafe t)
+;;   (setq-default blacken-line-length 80)
+;;   )
 
                                         ; direnv mode allows automatic loading of direnv variables
 (use-package direnv
@@ -3902,12 +3922,12 @@ text-modes with this snippet.
   (slack-register-team
    :name "hemato"
    :default t
-    :token (auth-source-pick-first-password
-         :host "hema-to.slack.com"
-         :user "jmichael@hema.to")
-     :cookie (auth-source-pick-first-password
-         :host "hema-to.slack.com"
-         :user "jmichael@hema.to^cookie")
+   :token (auth-source-pick-first-password
+           :host "hema-to.slack.com"
+           :user "jmichael@hema.to")
+   :cookie (auth-source-pick-first-password
+            :host "hema-to.slack.com"
+            :user "jmichael@hema.to^cookie")
 
    :subscribed-channels '(general ml_club office tech research off-topic)
    :full-and-display-names t)

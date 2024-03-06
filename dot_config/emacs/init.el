@@ -2147,7 +2147,7 @@ folder, otherwise delete a word"
   ;;         if you don't care about startup time, use
   ;;:hook (after-init . org-roam-ui-mode)
   :config
-  (setq org-roam-ui-sync-theme t
+  (setq org-roam-ui-sync-theme nil
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
@@ -2226,6 +2226,16 @@ folder, otherwise delete a word"
   )
 
 (use-package rubocop)
+
+(use-package apheleia
+  :ensure t
+  :config
+  (apheleia-global-mode +1)
+  (add-to-list 'apheleia-mode-alist '(python-mode . ruff))
+  (add-to-list 'apheleia-mode-alist '(python-ts-mode . ruff))
+
+
+  )
 
 (use-package flycheck
   :ensure t
@@ -2515,17 +2525,17 @@ folder, otherwise delete a word"
     (setq projectile-project-search-path '("~/coding/projects" "~/articles") ))
   )
 
-(use-package py-isort
-  :ensure t
-  :after python
-  )
+;; (use-package py-isort
+;;   :ensure t
+;;   :after python
+;;   )
 
-(use-package blacken
-  :after python
-  :init
-  (setq-default blacken-fast-unsafe t)
-  (setq-default blacken-line-length 80)
-  )
+;; (use-package blacken
+;;   :after python
+;;   :init
+;;   (setq-default blacken-fast-unsafe t)
+;;   (setq-default blacken-line-length 80)
+;;   )
 
                                         ; direnv mode allows automatic loading of direnv variables
 (use-package direnv
