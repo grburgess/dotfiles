@@ -3112,33 +3112,33 @@ folder, otherwise delete a word"
 ;;   :ensure t
 ;;   :init (mu4e-marker-icons-mode 1))
 
-(use-package slack
-  :commands (slack-start)
-  :init
-  (setq slack-buffer-emojify t) ;; if you want to enable emoji, default nil
-  (setq slack-prefer-current-team t)
-  :config
+;; (use-package slack
+;;   :commands (slack-start)
+;;   :init
+;;   (setq slack-buffer-emojify t) ;; if you want to enable emoji, default nil
+;;   (setq slack-prefer-current-team t)
+;;   :config
 
-  (slack-register-team
-   :name "hemato"
-   :default t
-   :token (auth-source-pick-first-password
-           :host "hema-to.slack.com"
-           :user "jmichael@hema.to")
-   :cookie (auth-source-pick-first-password
-            :host "hema-to.slack.com"
-            :user "jmichael@hema.to^cookie")
+;;   (slack-register-team
+;;    :name "hemato"
+;;    :default t
+;;    :token (auth-source-pick-first-password
+;;            :host "hema-to.slack.com"
+;;            :user "jmichael@hema.to")
+;;    :cookie (auth-source-pick-first-password
+;;             :host "hema-to.slack.com"
+;;             :user "jmichael@hema.to^cookie")
 
-   :subscribed-channels '(general ml_club office tech research off-topic)
-   :full-and-display-names t)
+;;    :subscribed-channels '(general ml_club office tech research off-topic)
+;;    :full-and-display-names t)
 
 
-  )
+;;   )
 
-(use-package alert
-  :commands (alert)
-  :init
-  (setq alert-default-style 'osx-notifier))
+;; (use-package alert
+;;   :commands (alert)
+;;   :init
+;;   (setq alert-default-style 'osx-notifier))
 
 (use-package redacted
   :ensure t
@@ -3465,48 +3465,48 @@ concatenated."
 
 ;;   )
 
-(use-package erc-hl-nicks
-  :after erc)
+;; (use-package erc-hl-nicks
+;;   :after erc)
 
-(use-package erc-image
-  :after erc)
-
-
-(use-package erc
-  :commands erc
-  :config
-  (setq erc-server "localhost"
-        erc-nick "jburgess"    ; Change this!
-        erc-user-full-name "J Michael Burgess"  ; And this!
-        erc-track-shorten-start 8
-        erc-track-position-in-mode-line t
-                                        ;        erc-autojoin-channels-alist '((""))
-        erc-kill-buffer-on-part t
-        erc-auto-query 'bury
-        erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
-                                  "324" "329" "332" "333" "353" "477")
-                                        ;erc-join-buffer 'bury
-        erc-modules
-        '(autoaway autojoin button completion fill irccontrols keep-place
-                   list match menu move-to-prompt netsplit networks noncommands
-                   readonly ring stamp track hl-nicks))
+;; (use-package erc-image
+;;   :after erc)
 
 
+;; (use-package erc
+;;   :commands erc
+;;   :config
+;;   (setq erc-server "localhost"
+;;         erc-nick "jburgess"    ; Change this!
+;;         erc-user-full-name "J Michael Burgess"  ; And this!
+;;         erc-track-shorten-start 8
+;;         erc-track-position-in-mode-line t
+;;                                         ;        erc-autojoin-channels-alist '((""))
+;;         erc-kill-buffer-on-part t
+;;         erc-auto-query 'bury
+;;         erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
+;;                                   "324" "329" "332" "333" "353" "477")
+;;                                         ;erc-join-buffer 'bury
+;;         erc-modules
+;;         '(autoaway autojoin button completion fill irccontrols keep-place
+;;                    list match menu move-to-prompt netsplit networks noncommands
+;;                    readonly ring stamp track hl-nicks))
 
 
 
 
-  (defvar bitlbee-password "slapitup")
-
-  (add-hook 'erc-join-hook 'bitlbee-identify)
-  (defun bitlbee-identify ()
-    "If we're on the bitlbee server, send the identify command to the
- &bitlbee channel."
-    (when (and (string= "localhost" erc-session-server)
-               (string= "&bitlbee" (buffer-name)))
-      (erc-message "PRIVMSG" (format "%s identify %s"
-                                     (erc-default-target)
-                                     bitlbee-password))))
 
 
-  )
+;;   (defvar bitlbee-password "slapitup")
+
+;;   (add-hook 'erc-join-hook 'bitlbee-identify)
+;;   (defun bitlbee-identify ()
+;;     "If we're on the bitlbee server, send the identify command to the
+;;  &bitlbee channel."
+;;     (when (and (string= "localhost" erc-session-server)
+;;                (string= "&bitlbee" (buffer-name)))
+;;       (erc-message "PRIVMSG" (format "%s identify %s"
+;;                                      (erc-default-target)
+;;                                      bitlbee-password))))
+
+
+;;   )
