@@ -892,7 +892,6 @@ Some nice visual modes
 : t
 
 
-
 * Keyboard
 ** ESC Cancels
 #+begin_src emacs-lisp
@@ -2840,8 +2839,8 @@ This is quite an ugly fix for allowing code markup for expressions like
   :ensure t
   :config
   (apheleia-global-mode +1)
-  (add-to-list 'apheleia-mode-alist '(python-mode . ruff))
-  (add-to-list 'apheleia-mode-alist '(python-ts-mode . ruff))
+  (add-to-list 'apheleia-mode-alist '(python-mode . (ruff isort)))
+  (add-to-list 'apheleia-mode-alist '(python-ts-mode . ( ruff isort)))
 
 
   )

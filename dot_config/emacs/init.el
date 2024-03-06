@@ -2231,8 +2231,8 @@ folder, otherwise delete a word"
   :ensure t
   :config
   (apheleia-global-mode +1)
-  (add-to-list 'apheleia-mode-alist '(python-mode . ruff))
-  (add-to-list 'apheleia-mode-alist '(python-ts-mode . ruff))
+  (add-to-list 'apheleia-mode-alist '(python-mode . (ruff isort)))
+  (add-to-list 'apheleia-mode-alist '(python-ts-mode . ( ruff isort)))
 
 
   )
