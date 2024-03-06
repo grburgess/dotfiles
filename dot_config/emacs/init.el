@@ -2479,23 +2479,23 @@ folder, otherwise delete a word"
 
   )
 
-(use-package git-commit
-  :ensure t
-  :after magit
-  :config
-  (setq git-commit-summary-max-length 50)
-  (setq git-commit-known-pseudo-headers
-        '("Signed-off-by"
-          "Acked-by"
-          "Modified-by"
-          "Cc"
-          "Suggested-by"
-          "Reported-by"
-          "Tested-by"
-          "Reviewed-by"))
-  (setq git-commit-style-convention-checks
-        '(non-empty-second-line
-          overlong-summary-line)))
+;; (use-package git-commit
+;;   :ensure t
+;;   :after magit
+;;   :config
+;;   (setq git-commit-summary-max-length 50)
+;;   (setq git-commit-known-pseudo-headers
+;;         '("Signed-off-by"
+;;           "Acked-by"
+;;           "Modified-by"
+;;           "Cc"
+;;           "Suggested-by"
+;;           "Reported-by"
+;;           "Tested-by"
+;;           "Reviewed-by"))
+;;   (setq git-commit-style-convention-checks
+;;         '(non-empty-second-line
+;;           overlong-summary-line)))
 
 
 (use-package git-timemachine
