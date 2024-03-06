@@ -1074,7 +1074,8 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 (defun dw/map-line-to-status-char (line)
   (cond ((string-match "^?\\? " line) "?")))
 
-(defun dw/get-git-status-prompt ()
+(defun dw/get-
+    git-status-prompt ()
   (let ((status-lines (cdr (process-lines "git" "status" "--porcelain" "-b"))))
     (seq-uniq (seq-filter 'identity (mapcar 'dw/map-line-to-status-char status-lines)))))
 
@@ -2501,14 +2502,14 @@ folder, otherwise delete a word"
   :ensure t
   :commands git-timemachine)
 
-(use-package forge
-  :ensure t
-  :after magit)
+;; (use-package forge
+;;   :ensure t
+;;   :after magit)
 
-(use-package magit-todos
-  :ensure t
+;; (use-package magit-todos
+;;   :ensure t
 
-  :defer t)
+;;   :defer t)
 
 ;; (defun dw/switch-project-action ()
 ;;   "Switch to a workspace with the project name and start `magit-status'."
