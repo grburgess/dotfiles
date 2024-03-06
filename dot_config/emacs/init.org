@@ -4302,12 +4302,12 @@ concatenated."
 ** chatGPT
 
 #+begin_src emacs-lisp
-(use-package chatgpt-shell
-  :ensure t
-  :config
-  (setq chatgpt-shell-openai-key
-        (auth-source-pick-first-password :host "api.openai.com"))
-  )
+;; (use-package chatgpt-shell
+;;   :ensure t
+;;   :config
+;;   (setq chatgpt-shell-openai-key
+;;         (auth-source-pick-first-password :host "api.openai.com"))
+;;   )
 
 
 

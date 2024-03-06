@@ -3448,12 +3448,12 @@ concatenated."
   (cl-assert (executable-find "pytunes") nil "pytunes not installed")
   (process-lines "pytunes" "previous"))
 
-(use-package chatgpt-shell
-  :ensure t
-  :config
-  (setq chatgpt-shell-openai-key
-        (auth-source-pick-first-password :host "api.openai.com"))
-  )
+;; (use-package chatgpt-shell
+;;   :ensure t
+;;   :config
+;;   (setq chatgpt-shell-openai-key
+;;         (auth-source-pick-first-password :host "api.openai.com"))
+;;   )
 
 
 
