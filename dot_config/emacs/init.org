@@ -4381,7 +4381,14 @@ concatenated."
 : t
 * Load the primary theme
 #+begin_src emacs-lisp
-(load-theme 'modus-vivendi-tinted :no-confirm)
+(add-hook 'after-init-hook (lambda () (add-hook 'after-init-hook (lambda () (load-theme 'solarized-light)))
+))
+
+
+
 
 
 #+end_src
+
+#+RESULTS:
+| (lambda nil (add-hook 'after-init-hook (lambda nil (load-theme 'solarized-light)))) | org-persist-load-all | tramp-register-archive-autoload-file-name-handler | emojify-download-emoji-maybe | magit-maybe-define-global-key-bindings | magit-auto-revert-mode--init-kludge | magit-startup-asserts | magit-version |

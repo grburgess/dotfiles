@@ -3515,4 +3515,5 @@ concatenated."
 
 ;;   )
 
-(load-theme 'modus-vivendi-tinted :no-confirm)
+(add-hook 'after-init-hook (lambda () (add-hook 'after-init-hook (lambda () (load-theme 'solarized-light)))
+))
