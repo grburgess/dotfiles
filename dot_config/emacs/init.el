@@ -353,8 +353,6 @@ the buffer is buried."
 
   )
 
-(load-theme 'modus-vivendi :no-confirm)
-
 (require 'display-line-numbers)
 (defcustom display-line-numbers-exempt-modes '(vterm-mode eshell-mode shell-mode term-mode org-mode ansi-term-mode)
   "Major modes on which to disable the linum mode, exempts them from global requirement"
@@ -1168,7 +1166,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
 (use-package eshell-z
   :hook ((eshell-mode . (lambda () (require 'eshell-z)))
-	 (eshell-z-change-dir .  (lambda () (eshell/pushd (eshell/pwd))))))
+         (eshell-z-change-dir .  (lambda () (eshell/pushd (eshell/pwd))))))
 
 (use-package exec-path-from-shell
   :init
@@ -2529,17 +2527,17 @@ folder, otherwise delete a word"
     (setq projectile-project-search-path '("~/coding/projects" "~/coding/projects") ))
   )
 
-;; (use-package py-isort
-;;   :ensure t
-;;   :after python
-;;   )
+(use-package py-isort
+  :ensure t
+  :after python
+  )
 
-;; (use-package blacken
-;;   :after python
-;;   :init
-;;   (setq-default blacken-fast-unsafe t)
-;;   (setq-default blacken-line-length 80)
-;;   )
+(use-package blacken
+  :after python
+  :init
+  (setq-default blacken-fast-unsafe t)
+  (setq-default blacken-line-length 80)
+  )
 
                                         ; direnv mode allows automatic loading of direnv variables
 (use-package direnv
@@ -3199,7 +3197,7 @@ folder, otherwise delete a word"
         telega-emoji-use-images t
         telega-msg-rainbow-title t
         telega-use-images t
-        telega-chat-fill-column 75
+        telega-chat-fill-column 100
         telega-use-docker t
         telega-translate-to-language-by-default t
         )
@@ -3208,6 +3206,8 @@ folder, otherwise delete a word"
   :init
   (global-set-key [f1] 'telega)
   (define-key global-map (kbd "C-c c") telega-prefix-map)
+
+  (telega-mode-line-mode 1)
 
   )
                                         ;  (define-key global-map (kbd "f12") telega-prefix-map)
@@ -3514,3 +3514,5 @@ concatenated."
 
 
 ;;   )
+
+(load-theme 'modus-vivendi-tinted :no-confirm)
