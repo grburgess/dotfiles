@@ -4304,6 +4304,7 @@ concatenated."
 
 ** chatGPT
 
+
 #+begin_src emacs-lisp
 ;; (use-package chatgpt-shell
 ;;   :ensure t
@@ -4324,7 +4325,13 @@ concatenated."
 #+end_src
 
 #+RESULTS:
+** regex tool
 
+#+begin_src emacs-lisp
+(use-package regex-tool
+  :ensure t
+  )
+#+end_src
 * IRC
 ** ERC
 #+begin_src emacs-lisp

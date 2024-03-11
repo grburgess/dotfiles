@@ -3469,6 +3469,10 @@ concatenated."
 
 ;;   )
 
+(use-package regex-tool
+  :ensure t
+  )
+
 ;; (use-package erc-hl-nicks
 ;;   :after erc)
 
