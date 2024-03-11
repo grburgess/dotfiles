@@ -4330,6 +4330,8 @@ concatenated."
 #+begin_src emacs-lisp
 (use-package regex-tool
   :ensure t
+  :config
+  (setq regex-tool-backend "Perl")
   )
 #+end_src
 * IRC
@@ -4389,7 +4391,7 @@ concatenated."
 * Load the primary theme
 #+begin_src emacs-lisp
 (add-hook 'after-init-hook (lambda () (add-hook 'after-init-hook (lambda () (load-theme 'solarized-light)))
-))
+                             ))
 
 
 

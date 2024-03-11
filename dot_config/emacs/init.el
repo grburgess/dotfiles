@@ -3471,6 +3471,8 @@ concatenated."
 
 (use-package regex-tool
   :ensure t
+  :config
+  (setq regex-tool-backend "Perl")
   )
 
 ;; (use-package erc-hl-nicks
@@ -3520,4 +3522,4 @@ concatenated."
 ;;   )
 
 (add-hook 'after-init-hook (lambda () (add-hook 'after-init-hook (lambda () (load-theme 'solarized-light)))
-))
+                             ))
