@@ -1020,13 +1020,13 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
    )
 
-  (general-define-key
-   :prefix "C-q"
-   "h" 'backward-char    ; Move left
-   "l" 'forward-char     ; Move right
-   "j" 'next-line        ; Move down
-   "k" 'previous-line    ; Move up
-   )
+  ;; (general-define-key
+  ;;  :prefix "C-q"
+  ;;  "h" 'backward-char    ; Move left
+  ;;  "l" 'forward-char     ; Move right
+  ;;  "j" 'next-line        ; Move down
+  ;;  "k" 'previous-line    ; Move up
+  ;;  )
 
 
   ;; Cx
