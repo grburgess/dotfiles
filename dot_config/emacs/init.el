@@ -340,7 +340,7 @@ the buffer is buried."
                                       (selection . (semibold accented intense))
                                       (popup . (accented))))
 
-        ef-themes-org-blocks nil;'tinted-background
+        ;ef-themes-org-blocks nil;'tinted-background
         ef-themes-scale-headings t
         ef-themes-region '(bg-only)
         ef-themes-headings
@@ -690,14 +690,14 @@ the buffer is buried."
   (pretty-hydra-define jmb/vim-move
     (:color red :timeout 5 :quit-key "q")
     ("Actions"
-     (      ("h" 'backward-char "←")
-	    ("M-h" 'backward-word "←")
-            ("j" 'next-line "↓")
-            ("k" 'previous-line "↑")
-            ("l" 'forward-char "→")
-	    ("M-l" 'forward-word "→")
-            ("a" 'beginning-of-line "")
-	    ("e" 'end-of-line  "")
+     (      ("h" backward-char "←")
+	    ("M-h" backward-word "←")
+            ("j" next-line "↓")
+            ("k" previous-line "↑")
+            ("l" forward-char "→")
+	    ("M-l" forward-word "→")
+            ("a" crux-move-beginning-of-line "")
+	    ("e" end-of-line  "")
             ))
     )
 
@@ -1009,9 +1009,11 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
    "M-j" (lambda () (interactive)
            (join-line -1))
    "C-z" 'avy-goto-char-timer
+
+   "C-h" 'jmb/vim-move/body
    )
 
-  "C-h" 'jmb/vim-move/body
+
 
 
   ;; Cc
@@ -2036,8 +2038,8 @@ folder, otherwise delete a word"
 
 
 ;; Get rid of the background on column views
-(set-face-attribute 'org-column nil :background nil)
-(set-face-attribute 'org-column-title nil :background nil)
+;; (set-face-attribute 'org-column nil :background 'unspecified')
+;; (set-face-attribute 'org-column-title nil :background unspecified)
 
 (require 'org-tempo)
 
