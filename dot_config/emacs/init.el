@@ -527,81 +527,81 @@ the buffer is buried."
   (doom-modeline-env-python-executable "python3")
   )
 
-;; (use-package pulsar
-;;   :ensure t
-;;   :straight
-;;   (:host github :repo "protesilaos/pulsar" :branch "main" :files ("*.el"))
-;;   :config
-
-;;   (customize-set-variable
-;;    'pulsar-pulse-functions ; Read the doc string for why not `setq'
-;;    '(recenter-top-bottom
-;;      move-to-window-line-top-bottom
-;;      reposition-window
-;;      bookmark-jump
-;;      other-window
-;;      delete-window
-;;      delete-other-windows
-;;      forward-page
-;;      backward-page
-;;      scroll-up-command
-;;      scroll-down-command
-;;      windmove-right
-;;      windmove-left
-;;      windmove-up
-;;      windmove-down
-;;      windmove-swap-states-right
-;;      windmove-swap-states-left
-;;      windmove-swap-states-up
-;;      windmove-swap-states-down
-;;      tab-new
-;;      tab-close
-;;      tab-next
-;;      org-next-visible-heading
-;;      org-previous-visible-heading
-;;      org-forward-heading-same-level
-;;      org-backward-heading-same-level
-;;      outline-backward-same-level
-;;      outline-forward-same-level
-;;      outline-next-visible-heading
-;;      outline-previous-visible-heading
-;;      outline-up-heading))
-
-;;   (setq pulsar-face 'pulsar-magenta)
-;;   (setq pulsar-delay 0.055)
-
-;;   ;; integration with the `consult' package:
-;;   (add-hook 'consult-after-jump-hook #'pulsar-recenter-top)
-;;   (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
-
-
-
-
-;;   )
-
-(use-package beacon
+(use-package pulsar
   :ensure t
+  :straight
+  (:host github :repo "protesilaos/pulsar" :branch "main" :files ("*.el"))
   :config
 
-  (progn
+  (customize-set-variable
+   'pulsar-pulse-functions ; Read the doc string for why not `setq'
+   '(recenter-top-bottom
+     move-to-window-line-top-bottom
+     reposition-window
+     bookmark-jump
+     other-window
+     delete-window
+     delete-other-windows
+     forward-page
+     backward-page
+     scroll-up-command
+     scroll-down-command
+     windmove-right
+     windmove-left
+     windmove-up
+     windmove-down
+     windmove-swap-states-right
+     windmove-swap-states-left
+     windmove-swap-states-up
+     windmove-swap-states-down
+     tab-new
+     tab-close
+     tab-next
+     org-next-visible-heading
+     org-previous-visible-heading
+     org-forward-heading-same-level
+     org-backward-heading-same-level
+     outline-backward-same-level
+     outline-forward-same-level
+     outline-next-visible-heading
+     outline-previous-visible-heading
+     outline-up-heading))
 
-    (setq beacon-color "#00FCB7")
-    (setq beacon-push-mark 60)
+  (setq pulsar-face 'pulsar-magenta)
+  (setq pulsar-delay 0.055)
 
-    (setq beacon-blink-when-point-moves-vertically nil) ; default nil
-    (setq beacon-blink-when-point-moves-horizontally nil) ; default nil
-    (setq beacon-blink-when-buffer-changes t) ; default t
-    (setq beacon-blink-when-window-scrolls t) ; default t
-    (setq beacon-blink-when-window-changes t) ; default t
-    (setq beacon-blink-when-focused t) ; default nil
+  ;; integration with the `consult' package:
+  (add-hook 'consult-after-jump-hook #'pulsar-recenter-top)
+  (add-hook 'consult-after-jump-hook #'pulsar-reveal-entry)
 
-    (setq beacon-blink-duration 0.7) ; default 0.3
-    (setq beacon-blink-delay 0.1) ; default 0.3
-    (setq beacon-size 40) ; default 40
 
-    (add-to-list 'beacon-dont-blink-major-modes 'term-mode)
 
-    (beacon-mode 1)))
+
+  )
+
+;; (use-package beacon
+;;   :ensure t
+;;   :config
+
+;;   (progn
+
+;;     (setq beacon-color "#00FCB7")
+;;     (setq beacon-push-mark 60)
+
+;;     (setq beacon-blink-when-point-moves-vertically nil) ; default nil
+;;     (setq beacon-blink-when-point-moves-horizontally nil) ; default nil
+;;     (setq beacon-blink-when-buffer-changes t) ; default t
+;;     (setq beacon-blink-when-window-scrolls t) ; default t
+;;     (setq beacon-blink-when-window-changes t) ; default t
+;;     (setq beacon-blink-when-focused t) ; default nil
+
+;;     (setq beacon-blink-duration 0.7) ; default 0.3
+;;     (setq beacon-blink-delay 0.1) ; default 0.3
+;;     (setq beacon-size 40) ; default 40
+
+;;     (add-to-list 'beacon-dont-blink-major-modes 'term-mode)
+
+;;     (beacon-mode 1)))
 
 (use-package rainbow-mode
   :ensure t
