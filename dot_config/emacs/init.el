@@ -687,6 +687,19 @@ the buffer is buried."
       ))
     )
 
+  (pretty-hydra-define jmb/vim-move
+    (:color red :timeout 5 :quit-key "q")
+    ("Actions"
+     (      ("h" 'backward-char "←")
+	    ("M-h" 'backward-word "←")
+            ("j" 'next-line "↓")
+            ("k" 'previous-line "↑")
+            ("l" 'forward-char "→")
+	    ("M-l" 'forward-word "→")
+            ("a" 'beginning-of-line "")
+	    ("e" 'end-of-line  "")
+            ))
+    )
 
 
 
@@ -997,6 +1010,9 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
            (join-line -1))
    "C-z" 'avy-goto-char-timer
    )
+
+  "C-h" 'jmb/vim-move/body
+
 
   ;; Cc
   (general-define-key
