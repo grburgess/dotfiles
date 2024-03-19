@@ -340,7 +340,7 @@ the buffer is buried."
                                       (selection . (semibold accented intense))
                                       (popup . (accented))))
 
-        ;ef-themes-org-blocks nil;'tinted-background
+                                        ;ef-themes-org-blocks nil;'tinted-background
         ef-themes-scale-headings t
         ef-themes-region '(bg-only)
         ef-themes-headings
@@ -691,13 +691,13 @@ the buffer is buried."
     (:color red :timeout 5 :quit-key "q")
     ("Actions"
      (      ("h" backward-char "←")
-	    ("M-h" backward-word "←")
+            ("M-h" backward-word "←")
             ("j" next-line "↓")
             ("k" previous-line "↑")
             ("l" forward-char "→")
-	    ("M-l" forward-word "→")
+            ("M-l" forward-word "→")
             ("a" crux-move-beginning-of-line "")
-	    ("e" end-of-line  "")
+            ("e" end-of-line  "")
             ))
     )
 
@@ -957,31 +957,44 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
   )
 
+(use-package auto-highlight-symbol
+  :ensure t
+  )
+
+(use-package symbol-navigation-hydra
+  :ensure t
+  :config
+
+
+  ;; You'll want a keystroke for bringing up the hydra.
+  ;;(global-set-key (kbd "something") 'symbol-navigation-hydra-engage-hydra)
+
+  ;; The hydra is intended for navigation only in the current window.
+  (setq-default ahs-highlight-all-windows nil)
+
+  ;; Highlight only while the hydra is active; not upon other circumstances.
+  (setq-default ahs-highlight-upon-window-switch nil)
+  (setq-default ahs-idle-interval 999999999.0)
+
+  ;; Be case-sensitive, since you are probably using this for code.
+  (setq-default ahs-case-fold-search nil)
+
+  ;; Personal preference -- set the default "range" of operation to be the entire buffer.
+  (setq-default ahs-default-range 'ahs-range-whole-buffer)
+
+  ;; Same defaults for multiple cursor behavior
+  ;;(setq-default mc/always-repeat-command t)
+  ;;(setq-default mc/always-run-for-all t)
+
+  ;; You might want this so SN Hydra mutliple cursors can update
+  ;; print-statements / doc-strings
+  (setq-default ahs-inhibit-face-list (delete 'font-lock-string-face ahs-inhibit-face-list))
+  (setq-default ahs-inhibit-face-list (delete 'font-lock-doc-face ahs-inhibit-face-list))
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  )
 
 (use-package crux
   :ensure ;TODO: v
@@ -998,12 +1011,12 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
    "M-y" 'consult-yank-pop
    "M-g M-g" 'consult-goto-line
    "M-s" 'isearch-forward
-   "C-," 'hydra-mc/body
+   ;;"C-," 'hydra-mc/body
    "C-<backspace>" 'crux-kill-line-backwards
    [remap move-beginning-of-line] 'crux-move-beginning-of-line
    [remap kill-whole-line] 'crux-kill-whole-line
    [(shift return)] 'crux-smart-open-line
-
+   "C-,"
    "C-<tab>" 'jmb/tab-move/body
                                         ;"C-M-v" 'hydra-window/body
    "M-j" (lambda () (interactive)

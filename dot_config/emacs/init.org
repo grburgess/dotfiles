@@ -1236,30 +1236,30 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   :config
 
 
-   ;; You'll want a keystroke for bringing up the hydra.
-   ;;(global-set-key (kbd "something") 'symbol-navigation-hydra-engage-hydra)
+  ;; You'll want a keystroke for bringing up the hydra.
+  ;;(global-set-key (kbd "something") 'symbol-navigation-hydra-engage-hydra)
 
-   ;; The hydra is intended for navigation only in the current window.
-   (setq-default ahs-highlight-all-windows nil)
+  ;; The hydra is intended for navigation only in the current window.
+  (setq-default ahs-highlight-all-windows nil)
 
-   ;; Highlight only while the hydra is active; not upon other circumstances.
-   (setq-default ahs-highlight-upon-window-switch nil)
-   (setq-default ahs-idle-interval 999999999.0)
+  ;; Highlight only while the hydra is active; not upon other circumstances.
+  (setq-default ahs-highlight-upon-window-switch nil)
+  (setq-default ahs-idle-interval 999999999.0)
 
-   ;; Be case-sensitive, since you are probably using this for code.
-   (setq-default ahs-case-fold-search nil)
+  ;; Be case-sensitive, since you are probably using this for code.
+  (setq-default ahs-case-fold-search nil)
 
-   ;; Personal preference -- set the default "range" of operation to be the entire buffer.
-   (setq-default ahs-default-range 'ahs-range-whole-buffer)
+  ;; Personal preference -- set the default "range" of operation to be the entire buffer.
+  (setq-default ahs-default-range 'ahs-range-whole-buffer)
 
-   ;; Same defaults for multiple cursor behavior
-   ;;(setq-default mc/always-repeat-command t)
-   ;;(setq-default mc/always-run-for-all t)
+  ;; Same defaults for multiple cursor behavior
+  ;;(setq-default mc/always-repeat-command t)
+  ;;(setq-default mc/always-run-for-all t)
 
-   ;; You might want this so SN Hydra mutliple cursors can update
-   ;; print-statements / doc-strings
-   (setq-default ahs-inhibit-face-list (delete 'font-lock-string-face ahs-inhibit-face-list))
-   (setq-default ahs-inhibit-face-list (delete 'font-lock-doc-face ahs-inhibit-face-list))
+  ;; You might want this so SN Hydra mutliple cursors can update
+  ;; print-statements / doc-strings
+  (setq-default ahs-inhibit-face-list (delete 'font-lock-string-face ahs-inhibit-face-list))
+  (setq-default ahs-inhibit-face-list (delete 'font-lock-doc-face ahs-inhibit-face-list))
 
 
 
