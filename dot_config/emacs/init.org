@@ -1491,7 +1491,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 ;;         eshell-prefer-lisp-functions nil))
 
 (use-package eshell
-  :hook (eshell-first-time-mode . dw/eshell-configure)
+  ;;:hook (eshell-first-time-mode . dw/eshell-configure)
   :init
   ;; (setq eshell-directory-name "~/.dotfiles/.emacs.d/eshell/")
   ;; eshell-aliases-file (expand-file-name "~/.dotfiles/.emacs.d/eshell/alias")
