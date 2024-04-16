@@ -64,6 +64,24 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 TERM=xterm-24bits
 
+####
+
+
+# Define a function to SSH into a server and start a tmux session
+shmux() {
+    # Check if an argument is provided
+    if [ $# -eq 0 ]; then
+        echo "Usage: shmux <username@hostname>"
+        return 1
+    fi
+    
+    # Extract the username and hostname from the argument
+    local server=$1
+
+    # SSH into the server and start tmux
+    ssh -t "$server" 'tmux -CC new -A -s main'
+}
+
 
 ###### EMACS
 
