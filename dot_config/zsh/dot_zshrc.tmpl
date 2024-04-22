@@ -213,6 +213,23 @@ export ZSHZ_CASE=smart
 
 
 
+periodic_remote_rsync() {
+    local remote_host="$1"
+    local remote_source_file="$2"
+    local local_destination="$3"
+    local interval="$4"
+
+    if [[ -z "$remote_host" || -z "$remote_source_file" || -z "$local_destination" || -z "$interval" ]]; then
+        echo "Usage: periodic_remote_rsync <remote_host> <remote_source_file> <local_destination> <interval_in_seconds>"
+        return 1
+    fi
+
+    while true; do
+        rsync -av "$remote_host:$remote_source_file" "$local_destination"
+        sleep "$interval"
+    done
+}
+
 {{ if eq .chezmoi.os "darwin" }}
 
 
