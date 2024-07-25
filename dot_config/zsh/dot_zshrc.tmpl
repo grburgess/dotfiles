@@ -200,9 +200,9 @@ export FZF_DEFAULT_OPTS="
 "
 
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /dev/null || exa --tree --color=always {}) 2> /dev/null | head -200'"
+export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /dev/null || lsd --tree --color=always {}) 2> /dev/null | head -200'"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
-export FZF_ALT_C_OPTS="--preview 'exa --tree --color=always {} | head -200'"
+export FZF_ALT_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
 
 
 
@@ -242,8 +242,8 @@ zstyle ':completion:*:git-checkout:*' sort true
 zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# preview directory's content with exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview "exa -1 --color=always $realpath"
+# preview directory's content with lsd when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview "lsd -1 --color=always $realpath"
 #switch group using `,` and `.`
 #zstyle ':fzf-tab:*' switch-group ',' '.'
 zstyle ':completion:*' menu select
