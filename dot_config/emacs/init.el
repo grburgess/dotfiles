@@ -1016,7 +1016,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
    [remap move-beginning-of-line] 'crux-move-beginning-of-line
    [remap kill-whole-line] 'crux-kill-whole-line
    [(shift return)] 'crux-smart-open-line
-   "C-,"  'hydra-mc
+   "C-,"  'hydra-mc/body
    "C-<tab>" 'jmb/tab-move/body
                                         ;"C-M-v" 'hydra-window/body
    "M-j" (lambda () (interactive)
