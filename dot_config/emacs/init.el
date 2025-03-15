@@ -1232,54 +1232,111 @@ folder, otherwise delete a word"
         org-roam-ui-open-on-start t))
 
 (use-package flycheck
-:ensure t
-:defer t
-:diminish flycheck-mode
-:hook ((prog-mode . flycheck-mode)
-       (lsp-mode . flycheck-mode))
-:custom
-(flycheck-display-errors-delay 0.3)
-(flycheck-check-syntax-automatically '(save mode-enabled idle-change))
-(flycheck-idle-change-delay 0.5)
-:config
-;; Define missing variable for ruff
-(defvar flycheck-python-ruff-args nil
-  "Arguments to pass to ruff when checking Python files.")
+  :ensure t
+  :defer t
+  :diminish flycheck-mode
+  :hook ((prog-mode . flycheck-mode)
+         (lsp-mode . flycheck-mode))
+  :custom
+  (flycheck-display-errors-delay 0.3)
+  (flycheck-check-syntax-automatically '(save mode-enabled idle-change))
+  (flycheck-idle-change-delay 0.5)
+  :config
+  ;; Define missing variable for ruff
+  (defvar flycheck-python-ruff-args nil
+    "Arguments to pass to ruff when checking Python files.")
 
-;; Fix for ruff output format if using newer ruff versions
-(flycheck-define-checker python-ruff
-  "A Python syntax and style checker using the ruff utility."
-  :command ("ruff"
-            "--format=json"  ;; Updated format option for newer ruff versions
-            (eval flycheck-python-ruff-args)
-            source-inplace)
-  :error-parser flycheck-parse-ruff
-  :modes python-mode
-  :predicate flycheck-buffer-saved-p)
+  ;; Define the missing parser function for ruff
+  (defun flycheck-parse-ruff (output checker buffer)
+    "Parse ruff JSON OUTPUT from CHECKER in BUFFER.
+Returns a list of parsed errors."
+    (when (not (string-empty-p output))
+      (let ((json-array-type 'list))
+        (condition-case nil
+            (let* ((data (json-read-from-string output))
+                   (errors (mapcar
+                           (lambda (err)
+                             (let-alist err
+                               (flycheck-error-new
+                                :line (or .location.row 1)
+                                :column (1+ (or .location.column 0))
+                                :message (or .message "Unknown error")
+                                :level (pcase .type
+                                         ("error" 'error)
+                                         ("warning" 'warning)
+                                         (_ 'info))
+                                :filename (buffer-file-name buffer)
+                                :checker checker
+                                :buffer buffer)))
+                           data)))
+              errors)
+          (error
+           (condition-case nil
+               ;; Try simpler parsing if JSON parse fails
+               (let ((errors nil))
+                 (dolist (line (split-string output "\n" t))
+                   (when (string-match "^\\([^:]+\\):\\([0-9]+\\):\\([0-9]+\\): \\([^:]+\\): \\(.*\\)$" line)
+                     (let ((file (match-string 1 line))
+                           (line (string-to-number (match-string 2 line)))
+                           (column (string-to-number (match-string 3 line)))
+                           (type (match-string 4 line))
+                           (msg (match-string 5 line)))
+                       (push
+                        (flycheck-error-new
+                         :line line
+                         :column column
+                         :message msg
+                         :level (pcase type
+                                  ("E" 'error)
+                                  ("W" 'warning)
+                                  (_ 'info))
+                         :filename (buffer-file-name buffer)
+                         :checker checker
+                         :buffer buffer)
+                        errors))))
+                 (nreverse errors))
+             (error
+              (flycheck-error-new-at
+               1 1 'error
+               (format "Could not parse ruff output: %s" output)
+               :checker checker
+               :buffer buffer))))))))
 
-;; Make sure python-ruff is included in the checkers
-(add-to-list 'flycheck-checkers 'python-ruff)
+  ;; Define the ruff checker with updated format
+  (flycheck-define-checker python-ruff
+    "A Python syntax and style checker using the ruff utility."
+    :command ("ruff"
+              "check"
+              "--format=json"  ;; Updated format option for newer ruff versions
+              (eval flycheck-python-ruff-args)
+              source-inplace)
+    :error-parser flycheck-parse-ruff
+    :modes python-mode
+    :predicate flycheck-buffer-saved-p)
 
-;; Set up Python checkers priority
-(flycheck-add-next-checker 'python-flake8 'python-pylint)
-(flycheck-add-next-checker 'python-pylint 'python-ruff)
+  ;; Make sure python-ruff is included in the checkers
+  (add-to-list 'flycheck-checkers 'python-ruff)
 
-;; Set up Python checkers to ignore certain errors
-(setq flycheck-flake8-maximum-line-length 100)
-(setq flycheck-python-pylint-executable "pylint")
-(setq flycheck-python-flake8-executable "flake8")
+  ;; Set up Python checkers priority
+  (flycheck-add-next-checker 'python-flake8 'python-pylint)
+  (flycheck-add-next-checker 'python-pylint 'python-ruff)
 
-;; Customize error display
-(setq flycheck-indication-mode 'right-fringe)
-(when (fboundp 'define-fringe-bitmap)
-  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-    [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0]))
+  ;; Set up Python checkers to ignore certain errors
+  (setq flycheck-flake8-maximum-line-length 100)
+  (setq flycheck-python-pylint-executable "pylint")
+  (setq flycheck-python-flake8-executable "flake8")
 
-;; Add a slight delay before checking
-(setq flycheck-highlighting-mode 'symbols)
-(setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
-(setq flycheck-idle-change-delay 0.8)
-(setq flycheck-idle-buffer-switch-delay 0.5))
+  ;; Customize error display
+  (setq flycheck-indication-mode 'right-fringe)
+  (when (fboundp 'define-fringe-bitmap)
+    (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+      [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0]))
+
+  ;; Add a slight delay before checking
+  (setq flycheck-highlighting-mode 'symbols)
+  (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
+  (setq flycheck-idle-change-delay 0.8)
+  (setq flycheck-idle-buffer-switch-delay 0.5))
 
 (use-package yasnippet
   :ensure t
