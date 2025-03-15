@@ -1635,26 +1635,27 @@ Allows to jump into a a directory within the minibuffer
 
 *** move lines
 #+begin_src emacs-lisp
-(use-package move-lines
-  :ensure t
-  :bind (("C-c n" . move-lines-down)
-         ("C-c p" . move-lines-up))
-  :config
-  (defun tom/shift-left (start end &optional count)
-    "Shift region left and activate hydra."
-    (interactive
-     (if mark-active
-         (list (region-beginning) (region-end) current-prefix-arg)
-       (list (line-beginning-position) (line-end-position) current-prefix-arg)))
-    (python-indent-shift-left start end count))
+  (use-package move-lines
+    :straight (move-lines :type git :host github :repo "targzeta/move-lines")
+    :ensure t
+    :bind (("C-c n" . move-lines-down)
+           ("C-c p" . move-lines-up))
+    :config
+    (defun tom/shift-left (start end &optional count)
+      "Shift region left and activate hydra."
+      (interactive
+       (if mark-active
+           (list (region-beginning) (region-end) current-prefix-arg)
+         (list (line-beginning-position) (line-end-position) current-prefix-arg)))
+      (python-indent-shift-left start end count))
 
-  (defun tom/shift-right (start end &optional count)
-    "Shift region right and activate hydra."
-    (interactive
-     (if mark-active
-         (list (region-beginning) (region-end) current-prefix-arg)
-       (list (line-beginning-position) (line-end-position) current-prefix-arg)))
-    (python-indent-shift-right start end count)))
+    (defun tom/shift-right (start end &optional count)
+      "Shift region right and activate hydra."
+      (interactive
+       (if mark-active
+           (list (region-beginning) (region-end) current-prefix-arg)
+         (list (line-beginning-position) (line-end-position) current-prefix-arg)))
+      (python-indent-shift-right start end count)))
 #+end_src
 
 *** smart parens

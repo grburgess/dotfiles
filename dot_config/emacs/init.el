@@ -1258,6 +1258,7 @@ folder, otherwise delete a word"
   (yasnippet-snippets-initialize))
 
 (use-package move-lines
+  :straight (move-lines :type git :host github :repo "targzeta/move-lines")
   :ensure t
   :bind (("C-c n" . move-lines-down)
          ("C-c p" . move-lines-up))
