@@ -1232,16 +1232,31 @@ folder, otherwise delete a word"
         org-roam-ui-open-on-start t))
 
 ;; Modern syntax checking
-(use-package flycheck
-  :ensure t
-  :defer t
-  :diminish flycheck-mode
-  :hook ((prog-mode . flycheck-mode)
-         (lsp-mode . flycheck-mode))
-  :custom
-  (flycheck-display-errors-delay 0.3)
-  (flycheck-check-syntax-automatically '(save mode-enabled idle-change))
-  (flycheck-idle-change-delay 0.5))
+  (use-package flycheck
+    :ensure t
+    :defer t
+    :diminish flycheck-mode
+    :hook ((prog-mode . flycheck-mode)
+           (lsp-mode . flycheck-mode))
+ :config
+  ;; Fix for ruff output format
+  (flycheck-define-checker python-ruff
+    "A Python syntax and style checker using the ruff utility.
+See URL `http://pypi.python.org/pypi/ruff'."
+    :command ("ruff"
+              "--format=json"  ;; Changed from "--output-format=text" to "--format=json"
+              (eval flycheck-python-ruff-args)
+              source-inplace)
+    :error-parser flycheck-parse-ruff
+    :modes python-mode
+    :predicate flycheck-buffer-saved-p)
+
+  ;; Ensure this checker is registered
+  (add-to-list 'flycheck-checkers 'python-ruff)
+    :custom
+    (flycheck-display-errors-delay 0.3)
+    (flycheck-check-syntax-automatically '(save mode-enabled idle-change))
+    (flycheck-idle-change-delay 0.5))
 
 (use-package yasnippet
   :ensure t
