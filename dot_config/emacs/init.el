@@ -5,30 +5,33 @@
 
 (setq jmb/is-macos-system (eq system-type 'darwin))
 
-;; Temporarily set a very high GC threshold for startup
-(setq gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 0.6)
+;; Disable package.el in favor of straight.el
+(setq package-enable-at-startup nil)
 
-;; Reset GC threshold to reasonable values after startup
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (setq gc-cons-threshold (* 16 1000 1000) ; 16MB
-                  gc-cons-percentage 0.1)))
+  ;; Temporarily set a very high GC threshold for startup
+    (setq gc-cons-threshold most-positive-fixnum
+          gc-cons-percentage 0.6)
 
-;; Profile emacs startup
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "*** Emacs loaded in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract after-init-time before-init-time)))
-                     gcs-done)))
+    ;; Reset GC threshold to reasonable values after startup
+    (add-hook 'emacs-startup-hook
+              (lambda ()
+                (setq gc-cons-threshold (* 16 1000 1000) ; 16MB
+                      gc-cons-percentage 0.1)))
 
-;; Increase amount of data which Emacs reads from processes in a single chunk
-(setq read-process-output-max (* 1024 1024)) ;; 1mb
+    ;; Profile emacs startup
+    (add-hook 'emacs-startup-hook
+              (lambda ()
+                (message "*** Emacs loaded in %s with %d garbage collections."
+                         (format "%.2f seconds"
+                                 (float-time
+                                  (time-subtract after-init-time before-init-time)))
+                         gcs-done)))
 
-;; Speed up font rendering (particularly important for daemon mode)
-(setq inhibit-compacting-font-caches t)
+    ;; Increase amount of data which Emacs reads from processes in a single chunk
+    (setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+    ;; Speed up font rendering (particularly important for daemon mode)
+    (setq inhibit-compacting-font-caches t)
 
 ;; Silence compiler warnings as they can be pretty disruptive
 (setq comp-async-report-warnings-errors nil)
@@ -312,15 +315,18 @@ the buffer is buried."
   (doom-themes-neotree-config))
 
 ;; Install a selection of excellent themes
-(use-package kaolin-themes :ensure t :defer t)
-(use-package ef-themes :ensure t :defer t)
-(use-package modus-themes :ensure t :defer t)
-(use-package catppuccin-theme :ensure t :defer t)
-(use-package nord-theme :ensure t :defer t)
+      (use-package kaolin-themes :ensure t :defer t)
+      (use-package ef-themes :ensure t :defer t)
+      (use-package modus-themes :ensure t :defer t)
+      (use-package catppuccin-theme :ensure t :defer t)
+      (use-package nord-theme :ensure t :defer t)
 
+
+      ;; Install GitHub themes
 ;; Install GitHub themes
-(use-package git-themes
-  :quelpa (git-themes :fetcher github :repo "catppuccin/emacs"))
+(use-package catppuccin-theme
+  :ensure t
+  :defer t)
 
 (use-package modus-themes
   :ensure t
@@ -1147,72 +1153,74 @@ folder, otherwise delete a word"
   (require 'org-download))
 
 (use-package org-roam
-  :ensure t
-  :defer 2
-  :init
-  (setq org-roam-v2-ack t)
-  (setq org-roam-dailies-directory "~/Documents/roam/journal/")
-  :custom
-  (org-roam-directory "~/Documents/roam")
-  (org-roam-completion-everywhere t)
-  (org-roam-capture-templates
-   '(("d" "default" plain "%?"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
-      :unnarrowed t)
-     ("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: project")
-      :unnarrowed t)
-     ("b" "brainstorm" plain "%?"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: brainstorm")
-      :unnarrowed t)
-     ("m" "meeting" plain "* Topic\n\n%?\n\n* Attending\n\n* Notes\n\n ** Conclusion\n\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: project")
-      :unnarrowed t)
-     ("a" "article" plain "*[[${link}][${description}]]\n\n* Notes\n\n"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: article")
-      :unnarrowed t)))
+    :ensure t
+    :defer 2
+    :init
+    (setq org-roam-v2-ack t)
+    (setq org-roam-dailies-directory "~/Documents/roam/journal/")
+    :custom
+    (org-roam-directory "~/Documents/roam")
+    (org-roam-completion-everywhere t)
+    (org-roam-capture-templates
+     '(("d" "default" plain "%?"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n")
+        :unnarrowed t)
+       ("p" "project" plain "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n* Dates\n\n"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: project")
+        :unnarrowed t)
+       ("b" "brainstorm" plain "%?"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: brainstorm")
+        :unnarrowed t)
+       ("m" "meeting" plain "* Topic\n\n%?\n\n* Attending\n\n* Notes\n\n ** Conclusion\n\n"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: project")
+        :unnarrowed t)
+       ("a" "article" plain "*[[${link}][${description}]]\n\n* Notes\n\n"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+date: %U\n#+filetags: article")
+        :unnarrowed t)))
 
-  (org-roam-dailies-capture-templates
-   '(("d" "default" entry "* %<%I:%M %p>: %?"
-      :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+    (org-roam-dailies-capture-templates
+     '(("d" "default" entry "* %<%I:%M %p>: %?"
+        :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
 
-  :bind (("C-c o l" . org-roam-buffer-toggle)
-         ("C-c o f" . org-roam-node-find)
-         ("C-c o i" . org-roam-node-insert)
-         :map org-mode-map
-         ("C-M-i"    . completion-at-point)
-         :map org-roam-dailies-map
-         ("Y" . org-roam-dailies-capture-yesterday)
-         ("T" . org-roam-dailies-capture-tomorrow))
-  :bind-keymap
-  ("C-c o d" . org-roam-dailies-map)
-  :config
-  (require 'org-roam-dailies) ;; Ensure the keymap is available
-  (org-roam-db-autosync-mode))
+    :bind (("C-c o l" . org-roam-buffer-toggle)
+           ("C-c o f" . org-roam-node-find)
+           ("C-c o i" . org-roam-node-insert)
+           :map org-mode-map
+           ("C-M-i"    . completion-at-point)
+           :map org-roam-dailies-map
+           ("Y" . org-roam-dailies-capture-yesterday)
+           ("T" . org-roam-dailies-capture-tomorrow))
+    :bind-keymap
+    ("C-c o d" . org-roam-dailies-map)
+    :config
+    (require 'org-roam-dailies) ;; Ensure the keymap is available
+    (org-roam-db-autosync-mode))
 
-(defun my/org-roam-copy-todo-to-today ()
-  (interactive)
-  (let ((org-refile-keep t) ;; Set this to nil to delete the original!
-        (org-roam-dailies-capture-templates
-         '(("t" "tasks" entry "%?"
-            :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
-        (org-after-refile-insert-hook #'save-buffer)
-        today-file
-        pos)
-    (save-window-excursion
-      (org-roam-dailies--capture (current-time) t)
-      (setq today-file (buffer-file-name))
-      (setq pos (point)))
+  (defun my/org-roam-copy-todo-to-today ()
+    (interactive)
+    (let ((org-refile-keep t) ;; Set this to nil to delete the original!
+          (org-roam-dailies-capture-templates
+           '(("t" "tasks" entry "%?"
+              :if-new (file+head+olp "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n" ("Tasks")))))
+          (org-after-refile-insert-hook #'save-buffer)
+          today-file
+          pos)
+      (save-window-excursion
+        (org-roam-dailies--capture (current-time) t)
+        (setq today-file (buffer-file-name))
+        (setq pos (point)))
 
-    ;; Only refile if the target file is different than the current file
-    (unless (equal (file-truename today-file)
-                   (file-truename (buffer-file-name)))
-      (org-refile nil nil (list "Tasks" today-file nil pos)))))
+      ;; Only refile if the target file is different than the current file
+      (unless (equal (file-truename today-file)
+                     (file-truename (buffer-file-name)))
+        (org-refile nil nil (list "Tasks" today-file nil pos)))))
 
-(add-to-list 'org-after-todo-state-change-hook
-             (lambda ()
-               (when (equal org-state "DONE")
-                 (my/org-roam-copy-todo-to-today))))
+
+(with-eval-after-load 'org
+  (add-hook 'org-after-todo-state-change-hook
+            (lambda ()
+              (when (equal org-state "DONE")
+                (my/org-roam-copy-todo-to-today)))))
 
 (use-package org-roam-ui
   :ensure t
