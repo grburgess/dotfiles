@@ -1603,32 +1603,55 @@ Allows to jump into a a directory within the minibuffer
 
 *** Flycheck
 #+BEGIN_SRC emacs-lisp
-  ;; Modern syntax checking
   (use-package flycheck
-    :ensure t
-    :defer t
-    :diminish flycheck-mode
-    :hook ((prog-mode . flycheck-mode)
-           (lsp-mode . flycheck-mode))
- :config
-  ;; Fix for ruff output format
+  :ensure t
+  :defer t
+  :diminish flycheck-mode
+  :hook ((prog-mode . flycheck-mode)
+         (lsp-mode . flycheck-mode))
+  :custom
+  (flycheck-display-errors-delay 0.3)
+  (flycheck-check-syntax-automatically '(save mode-enabled idle-change))
+  (flycheck-idle-change-delay 0.5)
+  :config
+  ;; Define missing variable for ruff
+  (defvar flycheck-python-ruff-args nil
+    "Arguments to pass to ruff when checking Python files.")
+
+  ;; Fix for ruff output format if using newer ruff versions
   (flycheck-define-checker python-ruff
-    "A Python syntax and style checker using the ruff utility.
-See URL `http://pypi.python.org/pypi/ruff'."
+    "A Python syntax and style checker using the ruff utility."
     :command ("ruff"
-              "--format=json"  ;; Changed from "--output-format=text" to "--format=json"
+              "--format=json"  ;; Updated format option for newer ruff versions
               (eval flycheck-python-ruff-args)
               source-inplace)
     :error-parser flycheck-parse-ruff
     :modes python-mode
     :predicate flycheck-buffer-saved-p)
 
-  ;; Ensure this checker is registered
+  ;; Make sure python-ruff is included in the checkers
   (add-to-list 'flycheck-checkers 'python-ruff)
-    :custom
-    (flycheck-display-errors-delay 0.3)
-    (flycheck-check-syntax-automatically '(save mode-enabled idle-change))
-    (flycheck-idle-change-delay 0.5))
+
+  ;; Set up Python checkers priority
+  (flycheck-add-next-checker 'python-flake8 'python-pylint)
+  (flycheck-add-next-checker 'python-pylint 'python-ruff)
+
+  ;; Set up Python checkers to ignore certain errors
+  (setq flycheck-flake8-maximum-line-length 100)
+  (setq flycheck-python-pylint-executable "pylint")
+  (setq flycheck-python-flake8-executable "flake8")
+
+  ;; Customize error display
+  (setq flycheck-indication-mode 'right-fringe)
+  (when (fboundp 'define-fringe-bitmap)
+    (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+      [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0]))
+
+  ;; Add a slight delay before checking
+  (setq flycheck-highlighting-mode 'symbols)
+  (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled))
+  (setq flycheck-idle-change-delay 0.8)
+  (setq flycheck-idle-buffer-switch-delay 0.5))
 #+END_SRC
 
 #+RESULTS:
