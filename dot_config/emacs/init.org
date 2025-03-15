@@ -1679,7 +1679,7 @@ Returns a list of parsed errors."
     "A Python syntax and style checker using the ruff utility."
     :command ("ruff"
               "check"
-              "-- --format=json"  ;; Updated format option for newer ruff versions
+              "format=json"  ;; Updated format option for newer ruff versions
               (eval flycheck-python-ruff-args)
               source-inplace)
     :error-parser flycheck-parse-ruff
