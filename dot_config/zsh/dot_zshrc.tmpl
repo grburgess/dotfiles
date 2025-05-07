@@ -104,9 +104,9 @@ fi
 # VENV PYTHPN
 export WORKON_HOME=~/.environs
 {{ if eq .chezmoi.os "darwin" }}
-export VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
-export VIRTUALENVWRAPPER_VIRTUALENV=/opt/homebrew/bin/virtualenv
-source /opt/homebrew/bin/virtualenvwrapper.sh
+#export VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
+#export VIRTUALENVWRAPPER_VIRTUALENV=/opt/homebrew/bin/virtualenv
+#source /opt/homebrew/bin/virtualenvwrapper.sh
 #export PATH=$PATH:/Users/jburgess/Library/Python/3.10/bin
 
 {{ else if eq .chezmoi.os "linux" }}

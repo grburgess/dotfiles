@@ -1,6 +1,6 @@
 [edit]
-command="emacs"
-args=["-nw"]
+command="code"
+args=["--wait"]
 [git]
 autoCommit = true
 autoPush = true
