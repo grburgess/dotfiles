@@ -221,11 +221,7 @@ figure out what kind of system I am using
 
 #+end_src
 *** whitespace
-#+begin_src emacs-lisp
-(use-package ws-butler
-  :hook ((text-mode . ws-butler-mode)
-         (prog-mode . ws-butler-mode)))
-#+end_src
+
 ** kill buffers
 #+begin_src emacs-lisp
 (defun kill-this-buffer-unless-scratch ()

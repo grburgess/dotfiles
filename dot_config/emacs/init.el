@@ -120,9 +120,6 @@
     (whitespace-cleanup)
     (untabify beg (if (< end (point-max)) end (point-max)))))
 
-(use-package ws-butler
-  :hook ((text-mode . ws-butler-mode)
-         (prog-mode . ws-butler-mode)))
 
 (defun kill-this-buffer-unless-scratch ()
   "Works like `kill-this-buffer' unless the current buffer is the
