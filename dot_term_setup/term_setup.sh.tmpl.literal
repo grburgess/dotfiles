@@ -1,0 +1,4 @@
+tic -x -o ~/.terminfo terminfo-24bit.src
+
+
+tools/import-scheme.sh -v schemes/*
