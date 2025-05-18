@@ -1,4 +1,7 @@
 tic -x -o ~/.terminfo terminfo-24bit.src
 
+{{ if eq .chezmoi.os "darwin" }}
 
 tools/import-scheme.sh -v schemes/*
+
+{{ end }}
