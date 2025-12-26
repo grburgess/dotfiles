@@ -7,64 +7,41 @@
 
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 
-# export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
-# export PATH="/usr/local/lib/ruby/gems/bin:/usr/local/lib/ruby/gems/2.6.0/bin:/Library/TeX/texbin:/opt/X11/bin:${PATH}"
-
-
+# ============================================================================
+# PATH Configuration
+# ============================================================================
 {{ if eq .chezmoi.os "darwin" }}
-
-export PATH=/opt/homebrew/bin:$PATH
-
-export PATH="${PATH}:${HOME}/.cargo/bin"
+export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-
+export PATH="${PATH}:${HOME}/.cargo/bin"
+export PATH="${PATH}:/Users/jburgess/.local/bin"
 {{ else if eq .chezmoi.os "linux" }}
-
 export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
-
 {{ if eq .chezmoi.osRelease.id "raspbian" }}
-
 export PATH="${PATH}:~/.local/bin"
-
+{{ else }}
+export PATH="${PATH}:/home/jburgess/.local/bin"
 {{ end }}
-
-
-{{ else  }}
-
-
 {{ end }}
-
-#export PATH=/usr/local/share/python:$PATH
 source ~/.config/zsh/prompt.zsh
 
 
 ZSH_DISABLE_COMPFIX='true'
-
-
-#Uncomment the following line to use case-sensitive completion.
 CASE_SENSITIVE="false"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
 HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
 DISABLE_AUTO_UPDATE="false"
 
 
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=10000
-SAVEHIST=10000
+HISTSIZE=100000
+SAVEHIST=100000
 
-setopt appendhistory autocd extendedglob
+setopt appendhistory autocd extendedglob sharehistory
+setopt hist_ignore_all_dups hist_ignore_space hist_reduce_blanks hist_verify
 unsetopt notify
 
 DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-#TERM=xterm-24bits
-
-####
 
 
 # Define a function to SSH into a server and start a tmux session
@@ -82,46 +59,18 @@ shmux() {
     ssh -t "$server" 'tmux -CC new -A -s main'
 }
 
-
-###### EMACS
-
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-    export EDITOR='emacs'
-else
-    export EDITOR='emacs'
-fi
+export EDITOR='emacs'
 
-
-
-#
-# ME
-#
-
-# Compilation flags
-#export ARCHFLAGS="-arch x86_64"
-
-# VENV PYTHPN
+# VENV Python
 export WORKON_HOME=~/.environs
-{{ if eq .chezmoi.os "darwin" }}
-#export VIRTUALENVWRAPPER_PYTHON=/opt/homebrew/bin/python3
-#export VIRTUALENVWRAPPER_VIRTUALENV=/opt/homebrew/bin/virtualenv
-#source /opt/homebrew/bin/virtualenvwrapper.sh
-#export PATH=$PATH:/Users/jburgess/Library/Python/3.10/bin
 
-{{ else if eq .chezmoi.os "linux" }}
-
-
+{{ if eq .chezmoi.os "linux" }}
 {{ if ne .chezmoi.osRelease.id "raspbian" }}
-export PATH=${PATH}:/home/jburgess/.local/bin
 VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 export WORKON_HOME=~/.environs
 source ~/.local/bin/virtualenvwrapper.sh
-
-{{ end  }}
-
-{{ else }}
-
+{{ end }}
 {{ end }}
 
 # local
@@ -129,7 +78,6 @@ export ATOMDB=~/.threeml/atomdb
 export OMP_NUM_THREADS=1
 export MKL_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
-#export MPLBACKEND='Agg'
 
 {{ if eq .chezmoi.os "darwin" }}
 export CMDSTAN=/Users/jburgess/.cmdstanpy/cmdstan
@@ -149,49 +97,27 @@ export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/sw/lib
 # End of lines configured by zsh-newuser-install
 
 {{ end }}
-# HDF5 Sucks....
+# HDF5 version check
 export HDF5_DISABLE_VERSION_CHECK=1
-
-
-
-export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES 
-
-
-#export HDF5_DIR="$(brew --prefix hdf5)"
+export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
 
 {{ if eq .chezmoi.os "darwin" }}
-# export HDF5_DIR="$(brew --prefix hdf5-mpi)"
 export HDF5_DIR="$(brew --prefix hdf5)"
 {{ end }}
 
-
 source ~/.config/zsh/plugins.zsh
-
 source ~/.config/zsh/emacs.zsh
-
 source ~/.config/zsh/alias.zsh
-
 source ~/.config/zsh/github_token.zsh
-
 source ~/.config/zsh/wandb.zsh
 
 export LS_COLORS="*.rsp=32:*.rsp2=32:*.h5=34:*.pha=33:*.fits=33;01:*.py=32;01:*.ipynb=36"
 
-# # Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-# export PATH="$PATH:$HOME/.rvm/bin"
-
 {{ if eq .chezmoi.os "linux" }}
-
 export FZF_DEFAULT_COMMAND='fdfind -HI -L --exclude .git --color=always'
-
-
 {{ else }}
-
 export FZF_DEFAULT_COMMAND='fd -HI -L --exclude .git --color=always'
-
 {{ end }}
-
-
 
 export FZF_DEFAULT_OPTS="
   --ansi
@@ -206,14 +132,8 @@ export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 export FZF_ALT_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
 
-
-
-
 export FZ_HISTORY_CD_CMD=zshz
-
 export ZSHZ_CASE=smart
-
-
 
 periodic_remote_rsync() {
     local remote_host="$1"
@@ -233,43 +153,33 @@ periodic_remote_rsync() {
 }
 
 {{ if eq .chezmoi.os "darwin" }}
-
-
-
 FPATH=$(brew --prefix)/share/zsh/site-functions:~/sw/mac-zsh-completions:$FPATH
 
-
 zstyle ':completion:*:git-checkout:*' sort true
-# set descriptions format to enable group support
 zstyle ':completion:*:descriptions' format '[%d]'
-# set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# preview directory's content with lsd when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview "lsd -1 --color=always $realpath"
-#switch group using `,` and `.`
-#zstyle ':fzf-tab:*' switch-group ',' '.'
 zstyle ':completion:*' menu select
-
 {{ else}}
-
-
 source ~/sw/fzf-tab-completion/zsh/fzf-zsh-completion.sh
 bindkey '^I' fzf_completion
 
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# only for git
 zstyle ':completion:*:*:git:*' fzf-search-display true
-# or for everything
 zstyle ':completion:*' fzf-search-display true
 zstyle ':completion:*' menu select
-
-
 {{ end }}
 
 
 autoload -Uz compinit promptinit
 promptinit
-compinit
+
+# Cache compinit for faster startup (once per day)
+if [[ ! -f ${ZDOTDIR}/.zcompdump || -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
 zinit cdreplay -q   # -q is for quiet; actually run all the `compdef's saved before
                     #`compinit` call (`compinit' declares the `compdef' function, so
@@ -296,23 +206,20 @@ if [ -f '/Users/jburgess/sw/google-cloud-sdk/completion.zsh.inc' ]; then . '/Use
 
 {{ end }}
 
-### CONDA AND MAMBA
-
+{{ if eq .chezmoi.os "darwin" }}
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/homebrew/Caskroom/mambaforge/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/opt/homebrew/Caskroom/miniconda/base/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/opt/homebrew/Caskroom/mambaforge/base/etc/profile.d/conda.sh" ]; then
-        . "/opt/homebrew/Caskroom/mambaforge/base/etc/profile.d/conda.sh"
+    if [ -f "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh" ]; then
+        . "/opt/homebrew/Caskroom/miniconda/base/etc/profile.d/conda.sh"
     else
-        export PATH="/opt/homebrew/Caskroom/mambaforge/base/bin:$PATH"
+        export PATH="/opt/homebrew/Caskroom/miniconda/base/bin:$PATH"
     fi
 fi
 unset __conda_setup
-
-if [ -f "/opt/homebrew/Caskroom/mambaforge/base/etc/profile.d/mamba.sh" ]; then
-    . "/opt/homebrew/Caskroom/mambaforge/base/etc/profile.d/mamba.sh"
-fi
 # <<< conda initialize <<<
+
+{{ end }}

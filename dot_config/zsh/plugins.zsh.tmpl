@@ -36,12 +36,6 @@ zinit load zdharma-continuum/fast-syntax-highlighting
 source ~/.config/zsh/highlight.zsh
 
 # Binaries
-
-
-
-
-zinit from"gh-r" as"program" mv"exa-* -> exa" for ogham/exa
-#zinit from"gh-r" as"program" mv"jq-* -> jq" for stedolan/jq
 zinit from"gh-r" as"program" pick"*/rg" for BurntSushi/ripgrep
 zinit from"gh-r" as"program" pick"*/bat" for @sharkdp/bat
 
@@ -53,46 +47,24 @@ zinit is-snippet for OMZ::lib/key-bindings.zsh
 zinit is-snippet for OMZ::lib/history.zsh
 zinit is-snippet for OMZ::lib/git.zsh
 
-
-#zinit is-snippet for OMZ::
-
-
-zinit is-snippet for OMZ::plugins/git/git.plugin.zsh
-zinit is-snippet for OMZ::plugins/pip/pip.plugin.zsh
+zinit wait lucid is-snippet for OMZ::plugins/git/git.plugin.zsh
+zinit wait lucid is-snippet for OMZ::plugins/pip/pip.plugin.zsh
 
 {{ if eq .chezmoi.os "darwin" }}
-zinit is-snippet for OMZ::plugins/iterm2/iterm2.plugin.zsh
-
+zinit wait lucid is-snippet for OMZ::plugins/iterm2/iterm2.plugin.zsh
 {{ end }}
 
-
-
-#zinit is-snippet for OMZ::plugins/common-aliases/common-aliases.plugin.zsh
-
-
-#zinit is-snippet for OMZ::plugins/emacs/emacs.plugin.zsh
-zinit is-snippet for OMZ::plugins/thefuck/thefuck.plugin.zsh
-zinit is-snippet for OMZ::plugins/history/history.plugin.zsh
-zinit is-snippet for OMZ::plugins/extract/extract.plugin.zsh
+zinit wait lucid is-snippet for OMZ::plugins/thefuck/thefuck.plugin.zsh
+zinit wait lucid is-snippet for OMZ::plugins/history/history.plugin.zsh
+zinit wait lucid is-snippet for OMZ::plugins/extract/extract.plugin.zsh
 # zinit atload"zpcompinit" lucid as"completion" for OMZ::plugins/docker/_docker
 
 # Plugins
-#zinit for rupa/z
-zinit for changyuheng/fz
-zinit for changyuheng/zsh-interactive-cd
-zinit load agkozak/zsh-z
+zinit wait lucid for changyuheng/fz
+zinit wait lucid for changyuheng/zsh-interactive-cd
+zinit wait lucid for agkozak/zsh-z
 
-
-zinit wait lucid for zdharma-continuum/fast-syntax-highlighting
-
-#zinit pick"shell/completion.zsh" src"shell/key-bindings.zsh" for junegunn/fzf
-
-# it also works with turbo mode:
-zinit ice wait lucid
-
-#zinit load redxtech/zsh-fzf-utils
-
-zinit load wfxr/forgit
+zinit wait lucid for wfxr/forgit
 
 
 zinit ice pick"async.zsh" src"pure.zsh"
