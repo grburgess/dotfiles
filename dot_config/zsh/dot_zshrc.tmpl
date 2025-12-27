@@ -132,8 +132,7 @@ export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 export FZF_ALT_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
 
-export FZ_HISTORY_CD_CMD=zshz
-export ZSHZ_CASE=smart
+export FZ_HISTORY_CD_CMD=z
 
 periodic_remote_rsync() {
     local remote_host="$1"
@@ -155,11 +154,31 @@ periodic_remote_rsync() {
 {{ if eq .chezmoi.os "darwin" }}
 FPATH=$(brew --prefix)/share/zsh/site-functions:~/sw/mac-zsh-completions:$FPATH
 
+# Add Docker completions if Docker.app is installed
+if [ -d "/Applications/Docker.app/Contents/Resources/etc" ]; then
+  FPATH=/Applications/Docker.app/Contents/Resources/etc:$FPATH
+fi
+
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' menu select
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*:*:*:*:*' group-name ''
+zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion:*:git-checkout:*' sort true
 zstyle ':completion:*:descriptions' format '[%d]'
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# File completion settings
+zstyle ':completion:*' file-sort modification
+zstyle ':completion:*' list-dirs-first true
+
+# fzf-tab settings
 zstyle ':fzf-tab:complete:cd:*' fzf-preview "lsd -1 --color=always $realpath"
-zstyle ':completion:*' menu select
+zstyle ':fzf-tab:*' fzf-preview 'bat --color=always ${realpath} 2>/dev/null || lsd -1 --color=always ${realpath}'
+zstyle ':fzf-tab:*' accept-line enter
+zstyle ':fzf-tab:*' continuous-trigger '/'
 {{ else}}
 source ~/sw/fzf-tab-completion/zsh/fzf-zsh-completion.sh
 bindkey '^I' fzf_completion
@@ -187,10 +206,25 @@ zinit cdreplay -q   # -q is for quiet; actually run all the `compdef's saved bef
                     # via intercepting the `compdef'-calls and storing them for later
                     # use with `zinit cdreplay')
 
+{{ if eq .chezmoi.os "darwin" }}
+# Load fzf-tab after compinit (required for proper completion)
+zinit light Aloxaf/fzf-tab
+{{ end }}
 
 export PURE_PROMPT_SYMBOL=⚥
 
 {{ if eq .chezmoi.os "darwin" }}
+# Modern development tools
+eval "$(mise activate zsh)"
+eval "$(zoxide init zsh)"
+
+# History substring search keybindings
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+# Also bind vim mode keys
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
 eval "$(direnv hook zsh)"
 
 source $(brew --prefix)/opt/fzf/shell/key-bindings.zsh
@@ -221,5 +255,23 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'micromamba shell init' !!
+export MAMBA_EXE='/Users/jburgess/.local/bin/micromamba';
+export MAMBA_ROOT_PREFIX='/Users/jburgess/micromamba';
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup" 2>/dev/null
+else
+    alias micromamba="$MAMBA_EXE"  # Fallback on help from micromamba activate
+fi
+unset __mamba_setup
+# <<< mamba initialize <<<
+
+# M1 Max Optimizations for Numba/OpenBLAS
+export NUMBA_NUM_THREADS=8          # Use all P-cores
+export OPENBLAS_NUM_THREADS=8        # OpenBLAS threads
+export NUMBA_THREADING_LAYER=omp     # Threading backend
 
 {{ end }}

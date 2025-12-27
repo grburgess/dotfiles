@@ -27,11 +27,16 @@ zinit ice svn
 
 
 
-zinit ice blockf
 zinit light zsh-users/zsh-completions
 
-zinit load zsh-users/zsh-autosuggestions
-zinit load zdharma-continuum/fast-syntax-highlighting
+# Lazy-load for better performance
+zinit wait lucid for \
+    atinit"zicompinit; zicdreplay" \
+    zsh-users/zsh-autosuggestions \
+    zdharma-continuum/fast-syntax-highlighting
+
+# History substring search
+zinit load zsh-users/zsh-history-substring-search
 
 source ~/.config/zsh/highlight.zsh
 
@@ -57,12 +62,14 @@ zinit wait lucid is-snippet for OMZ::plugins/iterm2/iterm2.plugin.zsh
 zinit wait lucid is-snippet for OMZ::plugins/thefuck/thefuck.plugin.zsh
 zinit wait lucid is-snippet for OMZ::plugins/history/history.plugin.zsh
 zinit wait lucid is-snippet for OMZ::plugins/extract/extract.plugin.zsh
-# zinit atload"zpcompinit" lucid as"completion" for OMZ::plugins/docker/_docker
+
+# Modern tool completions - Docker completion comes from brew if docker is installed
 
 # Plugins
 zinit wait lucid for changyuheng/fz
 zinit wait lucid for changyuheng/zsh-interactive-cd
-zinit wait lucid for agkozak/zsh-z
+
+# Note: Using zoxide instead of zsh-z (initialized in .zshrc)
 
 zinit wait lucid for wfxr/forgit
 
@@ -75,12 +82,3 @@ zstyle :prompt:pure:virtualenv color '#AB6CFF'
 
 zinit wait lucid for \
       is-snippet "${ZDOTDIR}/alias.zsh"
-
-zinit load ellie/atuin
-
-
-{{ if eq .chezmoi.os "darwin" }}
-
-zinit light Aloxaf/fzf-tab
-
-{{ end }}

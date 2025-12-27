@@ -2,12 +2,21 @@ alias lab="jupyter lab"
 
 alias ..="cd .."
 alias ...="cd ../.."
-alias l="lsd -lbF --git"
-alias ls="lsd"
-alias ll="lsd --long --header --git"
+
+# Modern ls replacement with eza
+alias ls="eza --icons"
+alias l="eza -lbF --git --icons"
+alias ll="eza --long --header --git --icons"
+alias la="eza --long --all --header --git --icons"
+alias lt="eza --tree --level=2 --icons"
+alias lg="eza --long --git --git-ignore --icons"
+
 alias wo="workon"
 #alias et='te'
 alias rm="rm -vi"
+
+# Zoxide shortcuts (z is automatically created by zoxide)
+alias zi="zi"  # Interactive zoxide
 
 
 alias ma="mamba activate"
