@@ -241,10 +241,16 @@ if [ -f '/Users/jburgess/sw/google-cloud-sdk/completion.zsh.inc' ]; then . '/Use
 {{ end }}
 
 {{ if eq .chezmoi.os "darwin" }}
+# M1 Max Optimizations for Numba/OpenBLAS
+export NUMBA_NUM_THREADS=8          # Use all P-cores
+export OPENBLAS_NUM_THREADS=8        # OpenBLAS threads
+export NUMBA_THREADING_LAYER=omp     # Threading backend
+{{ end }}
+
 # >>> mamba initialize >>>
 # !! Contents within this block are managed by 'micromamba shell init' !!
-export MAMBA_EXE='/Users/jburgess/.local/bin/micromamba';
-export MAMBA_ROOT_PREFIX='/Users/jburgess/micromamba';
+export MAMBA_EXE='{{ .chezmoi.homeDir }}/.local/bin/micromamba';
+export MAMBA_ROOT_PREFIX='{{ .chezmoi.homeDir }}/micromamba';
 __mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__mamba_setup" 2>/dev/null
@@ -253,10 +259,3 @@ else
 fi
 unset __mamba_setup
 # <<< mamba initialize <<<
-
-# M1 Max Optimizations for Numba/OpenBLAS
-export NUMBA_NUM_THREADS=8          # Use all P-cores
-export OPENBLAS_NUM_THREADS=8        # OpenBLAS threads
-export NUMBA_THREADING_LAYER=omp     # Threading backend
-
-{{ end }}
