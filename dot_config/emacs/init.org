@@ -478,12 +478,14 @@ the buffer is buried."
 *** solarized
 #+begin_src emacs-lisp
 (use-package solarized-theme
-  :ensure t
-  ;; Don't defer - needed for startup theme loading
+  :straight t
+  :demand t  ;; Load immediately, don't defer
   :config
   (setq solarized-distinct-fringe-background t
         solarized-use-variable-pitch nil
-        solarized-high-contrast-mode-line t))
+        solarized-high-contrast-mode-line t)
+  ;; Load the theme immediately
+  (load-theme 'solarized-light t))
 #+end_src
 
 *** modus
@@ -4429,10 +4431,8 @@ concatenated."
 : t
 * Load the primary theme
 #+begin_src emacs-lisp
-;; Load default theme after initialization
-(add-hook 'after-init-hook
-          (lambda ()
-            (load-theme 'solarized-light t)))
+;; Theme is loaded directly in the solarized-theme use-package declaration above
+;; No additional hook needed
 
 
 
