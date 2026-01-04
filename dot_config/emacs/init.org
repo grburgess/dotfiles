@@ -489,10 +489,10 @@ the buffer is buried."
 *** modus
 #+begin_src emacs-lisp
 (use-package modus-themes
-  :straight t
-  :demand t  ;; Load immediately - this is our default theme
-  :init
-  ;; Add all your customizations prior to loading the themes
+  :ensure nil  ;; Built-in to Emacs 29+
+  :demand t    ;; Load immediately - this is our default theme
+  :config
+  ;; Configure theme settings BEFORE loading
   (setq modus-themes-mode-line '(accented borderless)
         modus-themes-bold-constructs t
         modus-themes-italic-constructs t
@@ -504,7 +504,6 @@ the buffer is buried."
         modus-themes-completions (quote ((matches . (extrabold intense background))
                                          (selection . (semibold accented intense))
                                          (popup . (accented))))
-
         modus-themes-org-blocks nil;'tinted-background
         modus-themes-scale-headings t
         modus-themes-region '(bg-only)
@@ -514,8 +513,7 @@ the buffer is buried."
           (3 . (rainbow bold 1.2))
           (t . (semilight 1.1))))
 
-
-  :config
+  ;; Load the theme
   (load-theme 'modus-vivendi t)
 
 
