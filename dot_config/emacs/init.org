@@ -4341,11 +4341,14 @@ concatenated."
 
 
 
+;; GPTel configuration (API-based AI - optional, Ellama is the default)
 ;; (use-package gptel
 ;;   :defer t
 ;;   :config
-;;   (setq gptel-api-key "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")
-
+;;   ;; SECURITY: Store API key in ~/.authinfo.gpg with this line:
+;;   ;; machine api.openai.com login apikey password YOUR-API-KEY-HERE
+;;   (setq gptel-api-key
+;;         (auth-source-pick-first-password :host "api.openai.com" :user "apikey"))
 ;;   )
 #+end_src
 
