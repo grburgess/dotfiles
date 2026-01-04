@@ -479,20 +479,18 @@ the buffer is buried."
 #+begin_src emacs-lisp
 (use-package solarized-theme
   :straight t
-  :demand t  ;; Load immediately, don't defer
+  :defer t  ;; Available for switching, but not default
   :config
   (setq solarized-distinct-fringe-background t
         solarized-use-variable-pitch nil
-        solarized-high-contrast-mode-line t)
-  ;; Load the theme immediately
-  (load-theme 'solarized-light t))
+        solarized-high-contrast-mode-line t))
 #+end_src
 
 *** modus
 #+begin_src emacs-lisp
 (use-package modus-themes
-  :ensure t
-  :defer t
+  :straight t
+  :demand t  ;; Load immediately - this is our default theme
   :init
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-mode-line '(accented borderless)
