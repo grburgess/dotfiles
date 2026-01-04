@@ -61,6 +61,10 @@
 
 (setq straight-use-package-by-default t)
 
+;; Prevent straight from managing built-in packages
+(setq straight-built-in-pseudo-packages
+      '(emacs python nxml jsonrpc eglot project xref eldoc flymake))
+
 ;; Load the helper package for commands like `straight-x-clean-unused-repos'
 (require 'straight-x)
 
