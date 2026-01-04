@@ -2300,7 +2300,7 @@ folder, otherwise delete a word"
 
 ;; Integrate eglot with flycheck for better linting
 (use-package flycheck-eglot
-  :ensure t
+  :straight t
   :after (eglot flycheck)
   :config
   (global-flycheck-eglot-mode 1))
@@ -2308,10 +2308,12 @@ folder, otherwise delete a word"
 (use-package rubocop)
 
 ;; Ellama - Local AI coding assistant using Ollama
+;; Install manually if needed: M-x straight-use-package RET ellama RET
 (use-package ellama
-  :ensure t
+  :straight t
   :defer t
-  :init
+  :commands (ellama-chat ellama-ask-about ellama-code-review)
+  :config
   ;; Configure Ollama backend
   (require 'llm-ollama)
   (setopt ellama-provider
@@ -2319,7 +2321,6 @@ folder, otherwise delete a word"
            :chat-model "codellama"        ; Use codellama for code tasks
            :embedding-model "codellama"))
 
-  :config
   ;; Use llama3.2 for non-code tasks
   (setopt ellama-naming-provider
           (make-llm-ollama :chat-model "llama3.2"))
