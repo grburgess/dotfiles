@@ -2847,40 +2847,33 @@ This is quite an ugly fix for allowing code markup for expressions like
 * AI Coding Assistant
 #+begin_src emacs-lisp
 ;; Ellama - Local AI coding assistant using Ollama
-;; Install manually if needed: M-x straight-use-package RET ellama RET
-(use-package ellama
-  :straight t
-  :defer t
-  :commands (ellama-chat ellama-ask-about ellama-code-review)
-  :config
-  ;; Configure Ollama backend
-  (require 'llm-ollama)
-  (setopt ellama-provider
-          (make-llm-ollama
-           :chat-model "codellama"        ; Use codellama for code tasks
-           :embedding-model "codellama"))
+;; NOTE: Ellama package not available in standard repos yet
+;; Commented out to prevent startup errors
+;; Alternative: Use gptel with Ollama or wait for ellama MELPA inclusion
 
-  ;; Use llama3.2 for non-code tasks
-  (setopt ellama-naming-provider
-          (make-llm-ollama :chat-model "llama3.2"))
-
-  ;; Configuration
-  (setopt ellama-keymap-prefix "C-c a")   ; Prefix for all ellama commands
-  (setopt ellama-language "English")      ; Language for responses
-  (setopt ellama-sessions-directory "~/.emacs.d/ellama-sessions")  ; Session storage
-
-  ;; Enable ellama session naming (auto-generate meaningful names)
-  (setopt ellama-naming-scheme 'ellama-generate-name-by-llm)
-
-  ;; Key bindings (available under C-c a)
-  ;; C-c a c c - Chat with ellama
-  ;; C-c a c a - Ask about code
-  ;; C-c a c i - Insert code
-  ;; C-c a c r - Review code
-  ;; C-c a c d - Generate docstring
-  ;; C-c a c e - Improve code
-  ;; C-c a c f - Fix code
-  )
+;; (use-package ellama
+;;   :straight t
+;;   :defer t
+;;   :commands (ellama-chat ellama-ask-about ellama-code-review)
+;;   :config
+;;   ;; Configure Ollama backend
+;;   (require 'llm-ollama)
+;;   (setopt ellama-provider
+;;           (make-llm-ollama
+;;            :chat-model "codellama"        ; Use codellama for code tasks
+;;            :embedding-model "codellama"))
+;;
+;;   ;; Use llama3.2 for non-code tasks
+;;   (setopt ellama-naming-provider
+;;           (make-llm-ollama :chat-model "llama3.2"))
+;;
+;;   ;; Configuration
+;;   (setopt ellama-keymap-prefix "C-c a")   ; Prefix for all ellama commands
+;;   (setopt ellama-language "English")      ; Language for responses
+;;   (setopt ellama-sessions-directory "~/.emacs.d/ellama-sessions")  ; Session storage
+;;
+;;   ;; Enable ellama session naming (auto-generate meaningful names)
+;;   (setopt ellama-naming-scheme 'ellama-generate-name-by-llm))
 
 #+end_src
 
