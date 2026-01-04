@@ -2258,7 +2258,8 @@ folder, otherwise delete a word"
 
 ;; Eglot is built-in to Emacs 29+ - lighter and faster than lsp-mode
 (use-package eglot
-  :ensure nil  ; Built-in
+  :ensure nil    ; Built-in to Emacs 29+
+  :straight nil  ; Don't override with straight.el
   :demand t
   :custom
   ;; Performance optimizations
