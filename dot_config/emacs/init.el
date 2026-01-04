@@ -13,8 +13,16 @@
 
 (setq jmb/is-macos-system (eq system-type 'darwin))
 
-;; The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 50 1000 1000))
+;; GCMH - Garbage Collector Magic Hack for adaptive GC
+;; Keeps GC pauses low during editing, runs full GC during idle time
+(use-package gcmh
+  :ensure t
+  :demand t
+  :config
+  (setq gcmh-idle-delay 'auto  ; Auto-adjust based on activity
+        gcmh-auto-idle-delay-factor 10
+        gcmh-high-cons-threshold (* 128 1024 1024))  ; 128MB during editing
+  (gcmh-mode 1))
 
 ;; Profile emacs startup
 (add-hook 'emacs-startup-hook
@@ -28,6 +36,10 @@
 ;; Silence compiler warnings as they can be pretty disruptive
 (setq comp-async-report-warnings-errors nil)
 (setq native-comp-async-report-warnings-errors nil)
+
+;; Optimize native compilation for smooth editing
+(setq native-comp-speed 2)  ; Balance between speed and safety (0-3)
+(setq native-comp-deferred-compilation t)  ; Compile packages in background
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -51,6 +63,14 @@
 
 ;; Load the helper package for commands like `straight-x-clean-unused-repos'
 (require 'straight-x)
+
+;; treesit-auto automatically installs and uses tree-sitter grammars
+(use-package treesit-auto
+  :ensure t
+  :demand t
+  :config
+  (setq treesit-auto-install 'prompt)  ; Prompt before installing grammars
+  (global-treesit-auto-mode))
 
 (use-package chezmoi
   :ensure t
@@ -80,6 +100,13 @@
            tooltip-mode
            ))
   (funcall mode -1))
+
+;; Modern Emacs 29+ features
+(when (fboundp 'pixel-scroll-precision-mode)
+  (pixel-scroll-precision-mode 1))  ; Smooth pixel-level scrolling
+
+(when (fboundp 'breadcrumb-mode)
+  (breadcrumb-mode 1))  ; Show breadcrumb navigation in header line
 
 (set-frame-parameter (selected-frame) 'alpha '(85 . 70))
 (add-to-list 'default-frame-alist '(alpha . (85 . 70)))
@@ -119,7 +146,6 @@
     (indent-region beg end)
     (whitespace-cleanup)
     (untabify beg (if (< end (point-max)) end (point-max)))))
-
 
 (defun kill-this-buffer-unless-scratch ()
   "Works like `kill-this-buffer' unless the current buffer is the
@@ -287,10 +313,19 @@ the buffer is buried."
   (:host github :repo "monkeyjunglejuice/matrix-emacs-theme" :branch "main" :files ("*.el"))
   )
 
+(use-package solarized-theme
+  :straight t
+  :defer t  ;; Available for switching, but not default
+  :config
+  (setq solarized-distinct-fringe-background t
+        solarized-use-variable-pitch nil
+        solarized-high-contrast-mode-line t))
+
 (use-package modus-themes
-  :ensure t
-  :init
-  ;; Add all your customizations prior to loading the themes
+  :ensure nil  ;; Built-in to Emacs 29+
+  :demand t    ;; Load immediately - this is our default theme
+  :config
+  ;; Configure theme settings BEFORE loading
   (setq modus-themes-mode-line '(accented borderless)
         modus-themes-bold-constructs t
         modus-themes-italic-constructs t
@@ -302,7 +337,6 @@ the buffer is buried."
         modus-themes-completions (quote ((matches . (extrabold intense background))
                                          (selection . (semibold accented intense))
                                          (popup . (accented))))
-
         modus-themes-org-blocks nil;'tinted-background
         modus-themes-scale-headings t
         modus-themes-region '(bg-only)
@@ -312,8 +346,7 @@ the buffer is buried."
           (3 . (rainbow bold 1.2))
           (t . (semilight 1.1))))
 
-
-  :config
+  ;; Load the theme
   (load-theme 'modus-vivendi t)
 
 
@@ -322,6 +355,7 @@ the buffer is buried."
 
 (use-package ef-themes
   :ensure t
+  :defer t
   :init
   ;; Add all your customizations prior to loading the themes
 
@@ -1371,6 +1405,19 @@ folder, otherwise delete a word"
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
+;; Cape - Completion At Point Extensions for better completion sources
+(use-package cape
+  :ensure t
+  :after corfu
+  :init
+  ;; Add completion sources to completion-at-point-functions
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)  ; Dynamic abbreviations
+  (add-to-list 'completion-at-point-functions #'cape-file)     ; File paths
+  (add-to-list 'completion-at-point-functions #'cape-keyword)  ; Language keywords
+  :bind (("C-c p d" . cape-dabbrev)
+         ("C-c p f" . cape-file)
+         ("C-c p k" . cape-keyword)))
+
 (use-package orderless
   :straight t
   :init
@@ -2103,6 +2150,7 @@ folder, otherwise delete a word"
 
 (use-package org-roam
   :ensure t
+  :defer t
   :init
   (setq org-roam-v2-ack t)
   (setq org-roam-dailies-directory "~/Documents/roam/journal/")
@@ -2192,80 +2240,107 @@ folder, otherwise delete a word"
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
-(use-package lsp-pyright
-  :straight (lsp-pyright :type git :host github :repo "emacs-lsp/lsp-pyright")
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp-deferred)))
-
-  :custom
-  (lsp-pyright-use-library-code-for-types t)
-  (lsp-pyright-multi-root nil)
-
-  )
-
-
-(use-package lsp-mode
+;; Consult-org-roam - Enhanced navigation for org-roam via consult
+(use-package consult-org-roam
   :ensure t
-  :commands (lsp lsp-deferred)
-
-
+  :after org-roam
+  :init
+  (require 'consult-org-roam)
+  ;; Enable automatic previews
+  (consult-org-roam-mode 1)
   :custom
-  (lsp-auto-guess-root nil)
-  (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
-  (lsp-disabled-clients '((python-mode . pyls)))
+  ;; Use consult-ripgrep for search
+  (consult-org-roam-grep-func #'consult-ripgrep)
+  :bind
+  (("C-c o s" . consult-org-roam-search)           ; Search notes
+   ("C-c o b" . consult-org-roam-backlinks)        ; Show backlinks
+   ("C-c o r" . consult-org-roam-forward-links)))  ; Show forward links
 
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
-
-  ;; enable / disable the hints as you prefer:
-  (lsp-rust-analyzer-server-display-inlay-hints t)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-  (lsp-rust-analyzer-display-chaining-hints t)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
-  (lsp-rust-analyzer-display-closure-return-type-hints t)
-  (lsp-rust-analyzer-display-parameter-hints nil)
-  (lsp-rust-analyzer-display-reborrow-hints nil)
+;; Eglot is built-in to Emacs 29+ - lighter and faster than lsp-mode
+(use-package eglot
+  :ensure nil  ; Built-in
+  :demand t
+  :custom
+  ;; Performance optimizations
+  (eglot-events-buffer-size 0)  ; Disable event logging for better performance
+  (eglot-sync-connect nil)      ; Async connection
+  (eglot-autoshutdown t)        ; Shutdown server when last buffer is closed
+  (eglot-send-changes-idle-time 0.5)  ; Debounce change notifications
 
   :config
-  (setq lsp-print-performance nil)
-  (setq lsp-idle-delay 0.55)
-  (setq lsp-enable-symbol-highlighting t)
-  (setq lsp-enable-snippet t)
-  (setq lsp-restart 'auto-restart)
-  (setq lsp-enable-completion-at-point t)
-  (setq lsp-log-io t)
-  (setq lsp-enable-links nil)
+  ;; Configure language servers
+  (add-to-list 'eglot-server-programs
+               '((python-mode python-ts-mode) . ("pyright-langserver" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '((rust-mode rust-ts-mode) . ("rust-analyzer")))
+  (add-to-list 'eglot-server-programs
+               '(julia-mode . ("julia" "--startup-file=no" "--history-file=no"
+                              "-e" "using LanguageServer; runserver()")))
+  (add-to-list 'eglot-server-programs
+               '((go-mode go-ts-mode) . ("gopls")))
 
+  ;; Rust analyzer configuration via eglot
+  (setq-default eglot-workspace-configuration
+                '(:rust-analyzer
+                  (:cargo (:buildScripts (:enable t))
+                   :procMacro (:enable t)
+                   :checkOnSave (:command "clippy")
+                   :inlayHints (:bindingModeHints (:enable t)
+                               :chainingHints (:enable t)
+                               :closureReturnTypeHints (:enable "always")
+                               :lifetimeElisionHints (:enable "skip_trivial")))))
 
-
-
-  :hook ((python-mode) . lsp-deferred)
-  (yaml-mode . lsp)
-  (LaTeX-mode . lsp)
-  (latex-mode . lsp)
-  (fortran-mode . lsp)
+  ;; Language mode hooks - enable eglot automatically
+  :hook
+  ((python-mode python-ts-mode) . eglot-ensure)
+  ((rust-mode rust-ts-mode) . eglot-ensure)
+  (go-mode . eglot-ensure)
+  (julia-mode . eglot-ensure)
   )
 
-
-
-(use-package lsp-ui
+;; Integrate eglot with flycheck for better linting
+(use-package flycheck-eglot
   :ensure t
-  :config (setq lsp-ui-sideline-show-hover t
-                lsp-ui-doc-frame-mode t
-                lsp-ui-sideline-delay 3
-                lsp-ui-doc-delay 3
-                lsp-ui-sideline-ignore-duplicates t
-                lsp-headerline-breadcrumb-icons-enable t
-                lsp-ui-doc-position 'bottom
-                lsp-ui-doc-alignment 'frame
-                lsp-ui-doc-header nil
-                lsp-ui-doc-include-signature t
-                lsp-ui-doc-use-childframe t)
-
-  :commands lsp-ui-mode
-  )
+  :after (eglot flycheck)
+  :config
+  (global-flycheck-eglot-mode 1))
 
 (use-package rubocop)
+
+;; Ellama - Local AI coding assistant using Ollama
+(use-package ellama
+  :ensure t
+  :defer t
+  :init
+  ;; Configure Ollama backend
+  (require 'llm-ollama)
+  (setopt ellama-provider
+          (make-llm-ollama
+           :chat-model "codellama"        ; Use codellama for code tasks
+           :embedding-model "codellama"))
+
+  :config
+  ;; Use llama3.2 for non-code tasks
+  (setopt ellama-naming-provider
+          (make-llm-ollama :chat-model "llama3.2"))
+
+  ;; Configuration
+  (setopt ellama-keymap-prefix "C-c a")   ; Prefix for all ellama commands
+  (setopt ellama-language "English")      ; Language for responses
+  (setopt ellama-sessions-directory "~/.emacs.d/ellama-sessions")  ; Session storage
+
+  ;; Enable ellama session naming (auto-generate meaningful names)
+  (setopt ellama-naming-scheme 'ellama-generate-name-by-llm)
+
+  ;; Key bindings (available under C-c a)
+  ;; C-c a c c - Chat with ellama
+  ;; C-c a c a - Ask about code
+  ;; C-c a c i - Insert code
+  ;; C-c a c r - Review code
+  ;; C-c a c d - Generate docstring
+  ;; C-c a c e - Improve code
+  ;; C-c a c f - Fix code
+  )
 
 (use-package apheleia
   :ensure t
@@ -2600,36 +2675,24 @@ folder, otherwise delete a word"
   )
 
 
+;; Python configuration - supports both python-mode and python-ts-mode
 (use-package python-mode
   :ensure nil
   :straight nil
   :hook
-  (python-mode . pyvenv-mode)
-  (python-mode . company-mode)
-  (python-mode . yas-minor-mode)
+  ((python-mode python-ts-mode) . pyvenv-mode)
+  ((python-mode python-ts-mode) . yas-minor-mode)
   :custom
   ;; NOTE: Set these if Python 3 is called "python3" on your system!
   (python-shell-interpreter "python3")
   (python-shell-interpreter-args "-i")
   :config
-
-  ;; (progn
-  ;;   (defhydra python-indent (python-mode-map "C-c TAB")
-  ;;     "Adjust python indentation."
-  ;;     ("k" py-shift-right "right")
-  ;;     ("j" py-shift-left "left")
-  ;;     ("<right>" py-shift-right "right")
-  ;;     ("<left>" py-shift-left "left")
-
-  ;;     )
-  ;;   )
-
   (yas-reload-all)
   )
 
 (use-package sphinx-doc
   :ensure t
-  :hook (python-mode . sphinx-doc-mode)
+  :hook ((python-mode python-ts-mode) . sphinx-doc-mode)
   :config
   (setq sphinx-doc-include-types t)
 
@@ -2716,11 +2779,8 @@ folder, otherwise delete a word"
 
 (use-package julia-mode
   :ensure t
+  ;; Eglot configuration for Julia is in the Eglot section
   )
-
-(use-package lsp-julia
-  :config
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.7"))
 
 (use-package yaml-mode
   :ensure t
@@ -2872,35 +2932,28 @@ folder, otherwise delete a word"
 
 (use-package go-mode
   :init
-  (defun lsp-go-install-save-hooks ()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
-    (add-hook 'before-save-hook #'lsp-organize-imports t t))
-  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-
-  ;; Start LSP Mode and YASnippet mode
-  (add-hook 'go-mode-hook #'lsp-deferred)
+  ;; Format and organize imports on save with eglot
+  (defun eglot-go-save-hooks ()
+    (add-hook 'before-save-hook #'eglot-format-buffer t t)
+    (add-hook 'before-save-hook
+              (lambda () (call-interactively 'eglot-code-action-organize-imports)) t t))
+  (add-hook 'go-mode-hook #'eglot-go-save-hooks)
   (add-hook 'go-mode-hook #'yas-minor-mode)
-
   )
 
 (use-package rustic
   :ensure
   :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
+              ("M-j" . imenu)
+              ("M-?" . xref-find-references)
               ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c q" . lsp-workspace-restart)
-              ("C-c C-c Q" . lsp-workspace-Ctshutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status))
+              ("C-c C-c a" . eglot-code-actions)
+              ("C-c C-c r" . eglot-rename)
+              ("C-c C-c q" . eglot-reconnect))
   :config
-  ;; uncomment for less flashiness
-  ;; (setq lsp-eldoc-hook nil)
-  ;; (setq lsp-enable-symbol-highlighting nil)
-  ;; (setq lsp-signature-auto-activate nil)
-
-  ;; comment to disable rustfmt on save
+  ;; Use eglot instead of lsp-mode
+  (setq rustic-lsp-client 'eglot)
+  ;; Format on save
   (setq rustic-format-on-save t)
   )
 
@@ -3256,6 +3309,7 @@ folder, otherwise delete a word"
 
 (use-package elfeed-org
   :ensure t
+  :defer t
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/org/rss.org"))
@@ -3331,6 +3385,7 @@ concatenated."
 
 (use-package elfeed
   :ensure t
+  :defer t
   :config
   ;;  (global-set-key (kbd "C-x w") 'elfeed)
 
@@ -3342,6 +3397,8 @@ concatenated."
 
 (use-package elfeed-score
   :ensure t
+  :defer t
+  :after elfeed
   :config
 
 
@@ -3562,5 +3619,5 @@ concatenated."
 
 ;;   )
 
-(add-hook 'after-init-hook (lambda () (add-hook 'after-init-hook (lambda () (load-theme 'solarized-light)))
-                             ))
+;; Theme is loaded directly in the solarized-theme use-package declaration above
+;; No additional hook needed
