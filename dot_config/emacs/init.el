@@ -13,21 +13,14 @@
 
 (setq jmb/is-macos-system (eq system-type 'darwin))
 
-;; The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 50 1000 1000))
-
-;; Profile emacs startup
+;; Restore GC to sane value after init.
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (message "*** Emacs loaded in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract after-init-time before-init-time)))
+            (setq gc-cons-threshold (* 50 1000 1000)
+                  gc-cons-percentage 0.1)
+            (message "*** Emacs loaded in %.2fs with %d garbage collections."
+                     (float-time (time-subtract after-init-time before-init-time))
                      gcs-done)))
-
-;; Silence compiler warnings as they can be pretty disruptive
-(setq comp-async-report-warnings-errors nil)
-(setq native-comp-async-report-warnings-errors nil)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -66,27 +59,12 @@
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;;(setq inhibit-splash-screen t)
-(setq inhibit-startup-message t)
-
 
 (setq visible-bell t)
 
 (set-fringe-mode 5)
 
-(dolist (mode
-         '(tool-bar-mode                ; No toolbars, more room fo
-           scroll-bar-mode              ; No scroll bars either
-           menu-bar-mode
-           tooltip-mode
-           ))
-  (funcall mode -1))
-
-(set-frame-parameter (selected-frame) 'alpha '(85 . 70))
-(add-to-list 'default-frame-alist '(alpha . (85 . 70)))
-
-;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
-(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
-      url-history-file (expand-file-name "url/history" user-emacs-directory))
+(tooltip-mode -1)
 
 ;; Use no-littering to automatically set common paths to the new user-emacs-directory
 (use-package no-littering)
@@ -119,7 +97,6 @@
     (indent-region beg end)
     (whitespace-cleanup)
     (untabify beg (if (< end (point-max)) end (point-max)))))
-
 
 (defun kill-this-buffer-unless-scratch ()
   "Works like `kill-this-buffer' unless the current buffer is the

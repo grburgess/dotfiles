@@ -7,6 +7,45 @@
 #+PROPERTY: header-args :tangle ~/.local/share/chezmoi/dot_config/emacs/init.el
 
 * Start up
+** Early init
+This block tangles to =early-init.el=, which runs before package init and frame creation.
+
+#+begin_src emacs-lisp :tangle ~/.local/share/chezmoi/dot_config/emacs/early-init.el
+;;; early-init.el --- Pre-init configuration -*- lexical-binding: t -*-
+
+;; Disable package.el — straight.el is the package manager.
+(setq package-enable-at-startup nil)
+
+;; GC tuning during startup (restored to a sane value after init in init.el).
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.6)
+
+;; Native compilation quiet.
+(setq native-comp-async-report-warnings-errors 'silent
+      native-comp-deferred-compilation t)
+(setq comp-async-report-warnings-errors nil)
+
+;; Relocate user-emacs-directory off the source dir before anything reads it.
+;; no-littering will pick it up later in init.el.
+(setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
+
+;; Frame chrome: never create the bars, faster than disabling later.
+(push '(menu-bar-lines . 0) default-frame-alist)
+(push '(tool-bar-lines . 0) default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+(push '(internal-border-width . 0) default-frame-alist)
+(push '(alpha . (85 . 70)) default-frame-alist)
+
+;; Reduce visual noise on startup.
+(setq inhibit-startup-screen t
+      inhibit-startup-message t
+      inhibit-startup-echo-area-message user-login-name
+      initial-scratch-message nil)
+
+(provide 'early-init)
+;;; early-init.el ends here
+#+end_src
+
 ** Initialize
 
 
@@ -64,28 +103,16 @@ figure out what kind of system I am using
 ** Performance
 
 #+begin_src emacs-lisp
-;; The default is 800 kilobytes.  Measured in bytes.
-(setq gc-cons-threshold (* 50 1000 1000))
-
-;; Profile emacs startup
+;; Restore GC to sane value after init.
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (message "*** Emacs loaded in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract after-init-time before-init-time)))
+            (setq gc-cons-threshold (* 50 1000 1000)
+                  gc-cons-percentage 0.1)
+            (message "*** Emacs loaded in %.2fs with %d garbage collections."
+                     (float-time (time-subtract after-init-time before-init-time))
                      gcs-done)))
 
 #+end_src
-**  Native comp
-#+begin_src emacs-lisp
-;; Silence compiler warnings as they can be pretty disruptive
-(setq comp-async-report-warnings-errors nil)
-(setq native-comp-async-report-warnings-errors nil)
-#+end_src
-
-#+RESULTS:
-
 * Package management
 ** Straight
 #+begin_src emacs-lisp
@@ -147,39 +174,20 @@ figure out what kind of system I am using
 (fset 'yes-or-no-p 'y-or-n-p)
 
 ;;(setq inhibit-splash-screen t)
-(setq inhibit-startup-message t)
-
 
 (setq visible-bell t)
 
 (set-fringe-mode 5)
 
-(dolist (mode
-         '(tool-bar-mode                ; No toolbars, more room fo
-           scroll-bar-mode              ; No scroll bars either
-           menu-bar-mode
-           tooltip-mode
-           ))
-  (funcall mode -1))
+(tooltip-mode -1)
 #+end_src
 
 ** Transparent
-#+begin_src emacs-lisp
-
-(set-frame-parameter (selected-frame) 'alpha '(85 . 70))
-(add-to-list 'default-frame-alist '(alpha . (85 . 70)))
-#+end_src
-
-#+RESULTS:
-: ((alpha 85 . 85) (alpha 95 . 95) (font . Fira Mono 13) (alpha 90 . 90) (left-fringe . 5) (right-fringe . 5) (vertical-scroll-bars))
+Frame alpha now set in early-init.el; see =Early init= section above.
 
 ** Cleanliness is Godliness
 *** no littering
 #+begin_src emacs-lisp
-;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
-(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
-      url-history-file (expand-file-name "url/history" user-emacs-directory))
-
 ;; Use no-littering to automatically set common paths to the new user-emacs-directory
 (use-package no-littering)
 
