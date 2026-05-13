@@ -1765,7 +1765,7 @@ folder, otherwise delete a word"
 (use-package stan-mode
   :straight
   (:host github :repo "stan-dev/stan-mode" :branch "master" :files ("stan-mode/stan-mode.el" "stan-mode/stan-keywords.el"))
-  ;;  :mode (("\\.stan\\'" . stan-mode)
+  :mode (("\\.stan\\'" . stan-mode)
          ("\\.stanfunctions\\'" . stan-mode))
   :hook (stan-mode . stan-mode-setup)
 
