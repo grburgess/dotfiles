@@ -12,11 +12,14 @@ command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
 # direnv — per-directory env.
 command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
-# History substring search keybinds (provided by zsh-history-substring-search plugin).
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
+# History substring search keybinds — only if the plugin loaded the widget,
+# otherwise bindkey creates a phantom widget that fast-syntax-highlighting then warns about.
+if zle -la history-substring-search-up >/dev/null 2>&1; then
+    bindkey '^[[A' history-substring-search-up
+    bindkey '^[[B' history-substring-search-down
+    bindkey -M vicmd 'k' history-substring-search-up
+    bindkey -M vicmd 'j' history-substring-search-down
+fi
 
 {{ if eq .chezmoi.os "darwin" }}
 # Google Cloud SDK (installed via Homebrew Cask).
