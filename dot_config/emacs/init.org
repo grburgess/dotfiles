@@ -339,8 +339,7 @@ the buffer is buried."
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)
-  (doom-themes-neotree-config))
+  (doom-themes-org-config))
 
 #+end_src
 
@@ -718,25 +717,14 @@ Some nice visual modes
 #+end_src
 
 #+RESULTS:
-** neotree
-
+** Sidebar (dirvish-side)
+Replaces neotree+treemacs. Same =[f8]= binding preserved.
 
 #+begin_src emacs-lisp
-(use-package neotree
-  :config
-  (global-set-key [f8] 'neotree-toggle)
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-
-  )
-
-(use-package treemacs-nerd-icons
-  :config
-  (treemacs-load-theme "nerd-icons"))
-
+(global-set-key [f8] #'dirvish-side)
 #+end_src
 
 #+RESULTS:
-: t
 ** solaire
 
 #+begin_src emacs-lisp

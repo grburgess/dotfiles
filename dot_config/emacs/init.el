@@ -166,8 +166,7 @@ the buffer is buried."
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)
-  (doom-themes-neotree-config))
+  (doom-themes-org-config))
 
 (use-package modus-themes
   :init
@@ -457,16 +456,7 @@ the buffer is buried."
 (use-package svg-lib
   )
 
-(use-package neotree
-  :config
-  (global-set-key [f8] 'neotree-toggle)
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-
-  )
-
-(use-package treemacs-nerd-icons
-  :config
-  (treemacs-load-theme "nerd-icons"))
+(global-set-key [f8] #'dirvish-side)
 
 (use-package solaire-mode
   :config
