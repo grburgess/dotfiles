@@ -21,9 +21,9 @@ This block tangles to =early-init.el=, which runs before package init and frame 
       gc-cons-percentage 0.6)
 
 ;; Native compilation quiet.
-(setq native-comp-async-report-warnings-errors 'silent
-      native-comp-deferred-compilation t)
-(setq comp-async-report-warnings-errors nil)
+(setq native-comp-async-report-warnings-errors 'silent)
+(when (boundp 'native-comp-jit-compilation)
+  (setq native-comp-jit-compilation t))
 
 ;; Relocate user-emacs-directory off the source dir before anything reads it.
 ;; no-littering will pick it up later in init.el.
@@ -1049,16 +1049,6 @@ folder, otherwise delete a word"
   (add-to-list 'completion-at-point-functions #'cape-elisp-symbol))
 #+end_src
 
-#+begin_src emacs-lisp
-(use-package kind-icon
-  :after corfu
-  :custom
-  (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
-  :config
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-#+end_src
-
-#+RESULTS:
 
 ** Orderless
 #+begin_src emacs-lisp

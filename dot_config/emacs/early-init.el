@@ -8,9 +8,9 @@
       gc-cons-percentage 0.6)
 
 ;; Native compilation quiet.
-(setq native-comp-async-report-warnings-errors 'silent
-      native-comp-deferred-compilation t)
-(setq comp-async-report-warnings-errors nil)
+(setq native-comp-async-report-warnings-errors 'silent)
+(when (boundp 'native-comp-jit-compilation)
+  (setq native-comp-jit-compilation t))
 
 ;; Relocate user-emacs-directory off the source dir before anything reads it.
 ;; no-littering will pick it up later in init.el.
