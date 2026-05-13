@@ -327,7 +327,6 @@ the buffer is buried."
   (diminish 'which-key-mode)
   (diminish 'global-eldoc-mode)
   (diminish 'global-font-lock-mode)
-  (diminish 'highlight-indent-guides-mode)
   (diminish 'elpy-mode)
   (diminish 'abbrev-mode)
   (diminish 'flyspell-mode)
@@ -1585,30 +1584,19 @@ folder, otherwise delete a word"
   :hook (prog-mode . rainbow-delimiters-mode)
   )
 
-(defun my-highlighter (level responsive display)
-  (if (> 1 level)
-      nil
-    (highlight-indent-guides--highlighter-default level responsive display)))
-
-
-
-(use-package highlight-indent-guides
-  :init
-  (setq highlight-indent-guides-auto-enabled nil)
-  (setq highlight-indent-guides-method 'character)
-
-  (setq highlight-indent-guides-responsive 'stack)
-  :config
-
-
-  (set-face-foreground 'highlight-indent-guides-character-face "#D103CE" )
-  (set-face-foreground 'highlight-indent-guides-top-character-face "#5BFFB2")
-  (set-face-foreground 'highlight-indent-guides-stack-character-face "#785390")
-  (setq highlight-indent-guides-highlighter-function 'my-highlighter)
-
-  :hook (prog-mode . highlight-indent-guides-mode)
-
-  )
+(use-package indent-bars
+  :straight (indent-bars :host github :repo "jdtsmith/indent-bars")
+  :hook ((python-mode python-ts-mode
+          yaml-mode yaml-ts-mode
+          json-mode json-ts-mode) . indent-bars-mode)
+  :custom
+  (indent-bars-treesit-support t)
+  (indent-bars-no-descend-string t)
+  (indent-bars-treesit-ignore-blank-lines-types '("module"))
+  (indent-bars-color '(highlight :face-bg t :blend 0.2))
+  (indent-bars-pattern ".")
+  (indent-bars-width-frac 0.15)
+  (indent-bars-pad-frac 0.1))
 
 
 
