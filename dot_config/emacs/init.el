@@ -68,11 +68,6 @@
 (use-package no-littering)
 
 ;; Keep customization settings in a temporary file (thanks Ambrevar!)
-(setq custom-file
-      (if (boundp 'server-socket-dir)
-          (expand-file-name "custom.el" server-socket-dir)
-        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
-(load custom-file t)
 
 (defvar user-temporary-file-directory
   "~/.emacs-autosaves/")
@@ -480,462 +475,6 @@ the buffer is buried."
 
 
   )
-
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 0.7))
-
-(use-package hydra
-  )
-
-(use-package major-mode-hydra
-  :after all-the-icons
-  :demand t
-  :config
-  (require 'all-the-icons)
-
-  (defun with-faicon (icon str &optional height v-adjust)
-    (s-concat (all-the-icons-faicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
-
-  (defun vl/window-half-height (&optional window)
-    (max 1 (/ (1- (window-height window)) 2)))
-
-  (defun vl/scroll-down-half-other-window ()
-    (interactive)
-    (scroll-other-window
-     (vl/window-half-height (other-window-for-scrolling))))
-  (defun vl/scroll-up-half-other-window ()
-    (interactive)
-    (scroll-other-window-down
-     (vl/window-half-height (other-window-for-scrolling))))
-
-  (defvar org--title (with-faicon "mars" "Orgy" 1 -0.05))
-  (defvar tab-move--title (with-faicon "bomb" "Tabs" 1 -0.05))
-  (defvar mc--title (with-faicon "i-cursor" "Multiple Cursors" 1 -0.05))
-  (defvar parens--title (with-faicon "rebel" "Smart Parens" 1 -0.05))
-  (defvar python--title (with-faicon "code" "Python Clean Up" 1 -0.05))
-  (defvar mail--title (with-faicon "male" "Mail" 1 -0.05))
-  (defvar music--title (with-faicon "music" "Music" 1 -0.05))
-  (defvar slack--title (with-faicon "slack" "Slack" 1 -0.05))
-
-
-  (pretty-hydra-define jmb/org-mode-hydra
-    (:color red :timeout 2 :quit-key "q" :title org--title)
-    ("Actions"
-     (
-      ("t" org-toggle-inline-images "toggle inline images" )
-      ("a" org-agenda "org agenda")
-      ))
-    )
-
-  (pretty-hydra-define jmb/vim-move
-    (:color red :timeout 5 :quit-key "q")
-    ("Actions"
-     (      ("h" backward-char "←")
-            ("M-h" backward-word "←")
-            ("j" next-line "↓")
-            ("k" previous-line "↑")
-            ("l" forward-char "→")
-            ("M-l" forward-word "→")
-            ("a" crux-move-beginning-of-line "")
-            ("e" end-of-line  "")
-            ))
-    )
-
-
-
-
-
-  (pretty-hydra-define jmb/tab-move
-    (:color red :timeout 2 :quit-key "q" :title tab-move--title)
-    ("Actions"
-     (      ("<left>" centaur-tabs-backward "prev tab")
-            ("<right>" centaur-tabs-forward "next tab")
-            ("<up>" centaur-tabs-backward-group "prev. group")
-            ("<down>" centaur-tabs-forward-group "next group")
-            ("k" centaur-tabs-kill-other-buffers-in-current-group "kill all other thabs in this group")
-            ))
-    )
-
-
-  (defhydra hydra-window (:color blue :hint nil)
-    "
-                                                                       ╭─────────┐
-     Move to      Size    Scroll        Split                    Do    │ Windows │
-  ╭────────────────────────────────────────────────────────────────────┴─────────╯
-        ^^            ^_K_^       ^_p_^    ╭─┬─┐^ ^        ╭─┬─┐^ ^         ↺ [_u_] undo layout
-        ^^↑^^           ^^↑^^       ^^↑^^    │ │ │_v_ertical ├─┼─┤_b_alance   ↻ [_r_] restore layout
-      ←   →     _H_ ←   → _L_   ^^ ^^    ╰─┴─╯^ ^        ╰─┴─╯^ ^         ✗ [_d_] close window
-        ^^↓^^           ^^↓^^       ^^↓^^    ╭───┐^ ^        ╭───┐^ ^         ⇋ [_w_] cycle window
-        ^^            ^_J_^       ^_n_^    ├───┤_s_tack    │   │_z_oom
-        ^^ ^^           ^^ ^^       ^^ ^^    ╰───╯^ ^        ╰───╯^ ^
-  --------------------------------------------------------------------------------
-            "
-    ("<tab>" hydra-master/body "back")
-    ("<ESC>" nil "quit")
-    ("n" vl/scroll-up-half-other-window :color red)
-    ("p" vl/scroll-down-half-other-window :color red)
-    ("b" balance-windows)
-    ("d" delete-window)
-    ("H" shrink-window-horizontally :color red)
-    ("<left>" windmove-left :color red)
-    ("J" shrink-window :color red)
-    ("<down>" windmove-down :color red)
-    ("K" enlarge-window :color red)
-    ("<up>" windmove-up :color red)
-    ("L" enlarge-window-horizontally :color red)
-    ("<right>" windmove-right :color red)
-    ("r" winner-redo :color red)
-    ("s" split-window-vertically :color red)
-    ("u" winner-undo :color red)
-    ("v" split-window-horizontally :color red)
-    ("w" other-window)
-    ("z" delete-other-windows))
-
-
-
-
-
-  (pretty-hydra-define hydra-mc (:color red :title mc--title)
-
-    ("Mark"
-     (
-      ("a" mc/mark-all-like-this "mark all")
-      ("n" mc/mark-next-like-this "mark next")
-      ("N" mc/unmark-next-like-this "unmark next")
-      ("p" mc/mark-previous-like-this "mark previous")
-      ("P" mc/unmark-previous-like-this "unmark previous")
-      )
-     "Skip"
-     (
-      ("sn" mc/skip-to-next-like-this "skip to next")
-      ("sp" mc/skip-to-previous-like-this "skip to prev")
-      )
-     "Edit"
-     (
-      ("e" mc/edit-lines "edit lines" :color blue)
-      )
-     )
-    )
-
-  (defhydra hydra-folding (:color red)
-    "
-  _o_pen node    _n_ext fold       toggle _f_orward  _s_how current only
-  _c_lose node   _p_revious fold   toggle _a_ll
-  "
-    ("o" origami-open-node)
-    ("c" origami-close-node)
-    ("n" origami-next-fold)
-    ("p" origami-previous-fold)
-    ("f" origami-forward-toggle-node)
-    ("a" origami-toggle-all-nodes)
-    ("s" origami-show-only-node))
-
-
-
-
-  (defhydra hydra-rectangle (:color blue)
-    "rectangles"
-    ("s" string-rectange "string")
-    ("i" string-insert-rectangle "string insert"))
-
-
-
-
-
-  (pretty-hydra-define hydra-smartparens (:color red :title parens--title)
-    ("Move"
-     (
-      ("f" sp-forward-sexp "forward")
-      ("d" sp-backward-sexp "back")
-      )
-     "Wrap"
-     (
-      ("(" sp-wrap-round "wrap round")
-      ("{" sp-wrap-curly "wrap brace")
-      ("[" sp-wrap-square "wrap square")
-      ("u" sp-unwrap-sexp "unwrap")
-      )
-     "Kill"
-     (("k" sp-kill-sexp "kill")
-      ("K" sp-backward-kill-sexp "backward kill")
-      )
-     "Slurp Barff"
-     (
-      ("s" sp-forward-slurp-sexp "forward slurp")
-      ("S" sp-backward-slurp-sexp "backward slurp")
-      ("b" sp-forward-barf-sexp "forward barf")
-      ("B" sp-backward-barf-sexp "backward barf"))
-     )
-    )
-
-
-
-
-  (defhydra hydra-lsp (:color blue)
-    "lsp"
-    ("d" lsp-find-definition "find definition")
-    ("i" lsp-find-implementation "find implementation")
-    ("r" lsp-find-references "find references"))
-
-
-
-
-  (pretty-hydra-define hydra-python-format (:color teal :title python--title)
-    ("Format"
-     (
-      ("f" blacken-buffer "blacken")
-      ("i" py-isort-buffer "isort"))
-     "Shift"
-     (
-      ("<right>" tom/shift-right "right")
-      ("<left>"  tom/shift-left"left")
-      )
-     )
-
-    )
-
-
-
-
-
-  (defhydra hydra-smerge (:color pink
-                                 :hint nil
-                                 :pre (smerge-mode 1)
-                                 ;; Disable `smerge-mode' when quitting hydra if
-                                 ;; no merge conflicts remain.
-                                 :post (smerge-auto-leave))
-    "
-^Move^       ^Keep^               ^Diff^                 ^Other^
-^^-----------^^-------------------^^---------------------^^-------
-_n_ext       _b_ase               _<_: upper/base        _C_ombine
-_p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
-^^           _l_ower              _>_: base/lower        _k_ill current
-^^           _a_ll                _R_efine
-^^           _RET_: current       _E_diff
-"
-    ("n" smerge-next)
-    ("p" smerge-prev)
-    ("b" smerge-keep-base)
-    ("u" smerge-keep-upper)
-    ("l" smerge-keep-lower)
-    ("a" smerge-keep-all)
-    ("RET" smerge-keep-current)
-    ("\C-m" smerge-keep-current)
-    ("<" smerge-diff-base-upper)
-    ("=" smerge-diff-upper-lower)
-    (">" smerge-diff-base-lower)
-    ("R" smerge-refine)
-    ("E" smerge-ediff)
-    ("C" smerge-combine-with-next)
-    ("r" smerge-resolve)
-    ("k" smerge-kill-current)
-    ("q" nil "cancel" :color blue))
-
-
-
-  (pretty-hydra-define my-mu4e-quick (:color blue :title mail--title)
-    ("Unread"
-     (
-      ("w" (mu4e-headers-search "flag:unread AND maildir:/mpe/INBOX") "unread work")
-      ("p" (mu4e-headers-search "flag:unread AND maildir:/gmail/INBOX")   "unread personal")
-
-      )
-     "Bookmark" (
-                 ("t" (mu4e-headers-search "date:today..now AND maildir:/mpe/INBOX")   "today work")
-                 ("d" (mu4e-headers-search "Damien AND maildir:/mpe/INBOX") "Damien" )
-                 ("j" (mu4e-headers-search "Jochen AND maildir:/mpe/INBOX") "Jochen" )
-
-                 )
-
-     "Org"
-     (
-      ("o" (org-mime-edit-mail-in-org-mode)  "edit message in org mode")
-      ("e" (org-mime-htmlize) "export to html")
-
-      )
-
-     "Utils"
-     (
-      ("c" (mu4e-compose-new)    "compase a message")
-      ("u" (mu4e-update-index) "update")
-      )
-     )
-
-    )
-
-  (pretty-hydra-define jmb/hydra-music (:color red :timeout 4 :title music--title)
-    ("Skip"
-     (
-      ("n" #'musica-play-next "next")
-      ("p" #'musica-play-previous "previous")
-      ("r" #'musica-play-next-random "next random"))
-     "Search"
-
-     (("s" #'musica-search "search")
-      ("i" #'musica-info "info"))
-     "Play"(
-            ("SPC" #'musica-play-pause "play-pause"))
-
-     ))
-
-
-
-  (pretty-hydra-define jmb/hydra-slack (:color red :timeout 4 :title slack--title)
-    ("Select"
-     (
-      ("i" slack-im-select  "im")
-      ("c" slack-channel-select "channel")
-      ("r" #'musica-play-next-random "next random"))
-     "Insert"
-
-     (("e" slack-insert-emoji "emojii")
-      )
-     "Start"(
-             ("s" slack-start "start"))
-
-     ))
-
-  )
-
-(use-package auto-highlight-symbol
-  )
-
-(use-package symbol-navigation-hydra
-  :config
-
-
-  ;; You'll want a keystroke for bringing up the hydra.
-  ;;(global-set-key (kbd "something") 'symbol-navigation-hydra-engage-hydra)
-
-  ;; The hydra is intended for navigation only in the current window.
-  (setq-default ahs-highlight-all-windows nil)
-
-  ;; Highlight only while the hydra is active; not upon other circumstances.
-  (setq-default ahs-highlight-upon-window-switch nil)
-  (setq-default ahs-idle-interval 999999999.0)
-
-  ;; Be case-sensitive, since you are probably using this for code.
-  (setq-default ahs-case-fold-search nil)
-
-  ;; Personal preference -- set the default "range" of operation to be the entire buffer.
-  (setq-default ahs-default-range 'ahs-range-whole-buffer)
-
-  ;; Same defaults for multiple cursor behavior
-  ;;(setq-default mc/always-repeat-command t)
-  ;;(setq-default mc/always-run-for-all t)
-
-  ;; You might want this so SN Hydra mutliple cursors can update
-  ;; print-statements / doc-strings
-  (setq-default ahs-inhibit-face-list (delete 'font-lock-string-face ahs-inhibit-face-list))
-  (setq-default ahs-inhibit-face-list (delete 'font-lock-doc-face ahs-inhibit-face-list))
-
-
-
-
-  )
-
-(use-package crux
-  :ensure ;TODO: v
-  )
-
-
-
-
-(use-package general
-  :config
-  (general-define-key
-   "C-M-y" 'consult-yank-from-kill-ring
-   "M-y" 'consult-yank-pop
-   "M-g M-g" 'consult-goto-line
-   "M-s" 'isearch-forward
-   ;;"C-," 'hydra-mc/body
-   "C-<backspace>" 'crux-kill-line-backwards
-   [remap move-beginning-of-line] 'crux-move-beginning-of-line
-   [remap kill-whole-line] 'crux-kill-whole-line
-   [(shift return)] 'crux-smart-open-line
-   "C-,"  'hydra-mc/body
-   "C-<tab>" 'jmb/tab-move/body
-                                        ;"C-M-v" 'hydra-window/body
-   "M-j" (lambda () (interactive)
-           (join-line -1))
-   "C-z" 'avy-goto-char-timer
-
-   "C-h" 'jmb/vim-move/body
-   )
-
-
-
-
-  ;; Cc
-  (general-define-key
-   :prefix "C-c"
-   ;;"c" 'org-capture
-   ;;"c" telega-prefix-map
-   "]" 'hydra-smartparens/body
-   "l" 'org-store-link
-   "m" 'jmb/hydra-music/body
-   "s" 'ispell-word
-   "z" 'jmb/org-mode-hydra/body
-   "g" 'consult-git-grep
-
-   "i"  (lambda () (interactive)  (chezmoi-find "~/.config/emacs/init.org"))
-   "<SPC>" (lambda () (interactive)  (chezmoi-find "~/.config/zsh/.zshrc"))
-   "t" 'consult-theme
-   "<up>" 'windmove-up
-   "<down>" 'windmove-down
-   "<left>" 'windmove-left
-   "<right>" 'windmove-right
-
-   )
-
-  ;; (general-define-key
-  ;;  :prefix "C-q"
-  ;;  "h" 'backward-char    ; Move left
-  ;;  "l" 'forward-char     ; Move right
-  ;;  "j" 'next-line        ; Move down
-  ;;  "k" 'previous-line    ; Move up
-  ;;  )
-
-
-  ;; Cx
-  (general-define-key
-   :prefix "C-x"
-   "b" 'consult-buffer
-   "m" 'magit-status
-   "a" 'ace-jump-mode
-   "C-b" 'ibuffer
-   "k" 'kill-this-buffer-unless-scratch
-   "w" 'elfeed
-   "'" 'hydra-window/body
-   "/" 'my-mu4e-quick/body
-   )
-
-  ( general-def python-mode-map
-    "C-c f" 'hydra-python-format/body
-    )
-
-  ;; (general-def lsp-mode-map
-  ;;   "C-c f" 'lsp-format-buffer
-  ;;      )
-
-  (general-def projectile-mode-map
-    "s-p" 'projectile-command-map
-
-    )
-
-
-  )
-
-(use-package easy-kill
-  :bind (([remap kill-ring-save] . #'easy-kill)
-         ([remap mark-sexp]      . #'easy-mark)
-         :map easy-kill-base-map
-         ("," . easy-kill-expand)))
 
 ;; (defun read-file (file-path)
 ;;   (with-temp-buffer
@@ -2820,6 +2359,468 @@ concatenated."
   )
 
 
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 0.7))
+
+(use-package hydra
+  )
+
+(use-package major-mode-hydra
+  :after all-the-icons
+  :demand t
+  :config
+  (require 'all-the-icons)
+
+  (defun with-faicon (icon str &optional height v-adjust)
+    (s-concat (all-the-icons-faicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
+
+  (defun vl/window-half-height (&optional window)
+    (max 1 (/ (1- (window-height window)) 2)))
+
+  (defun vl/scroll-down-half-other-window ()
+    (interactive)
+    (scroll-other-window
+     (vl/window-half-height (other-window-for-scrolling))))
+  (defun vl/scroll-up-half-other-window ()
+    (interactive)
+    (scroll-other-window-down
+     (vl/window-half-height (other-window-for-scrolling))))
+
+  (defvar org--title (with-faicon "mars" "Orgy" 1 -0.05))
+  (defvar tab-move--title (with-faicon "bomb" "Tabs" 1 -0.05))
+  (defvar mc--title (with-faicon "i-cursor" "Multiple Cursors" 1 -0.05))
+  (defvar parens--title (with-faicon "rebel" "Smart Parens" 1 -0.05))
+  (defvar python--title (with-faicon "code" "Python Clean Up" 1 -0.05))
+  (defvar mail--title (with-faicon "male" "Mail" 1 -0.05))
+  (defvar music--title (with-faicon "music" "Music" 1 -0.05))
+  (defvar slack--title (with-faicon "slack" "Slack" 1 -0.05))
+
+
+  (pretty-hydra-define jmb/org-mode-hydra
+    (:color red :timeout 2 :quit-key "q" :title org--title)
+    ("Actions"
+     (
+      ("t" org-toggle-inline-images "toggle inline images" )
+      ("a" org-agenda "org agenda")
+      ))
+    )
+
+  (pretty-hydra-define jmb/vim-move
+    (:color red :timeout 5 :quit-key "q")
+    ("Actions"
+     (      ("h" backward-char "←")
+            ("M-h" backward-word "←")
+            ("j" next-line "↓")
+            ("k" previous-line "↑")
+            ("l" forward-char "→")
+            ("M-l" forward-word "→")
+            ("a" crux-move-beginning-of-line "")
+            ("e" end-of-line  "")
+            ))
+    )
+
+
+
+
+
+  (pretty-hydra-define jmb/tab-move
+    (:color red :timeout 2 :quit-key "q" :title tab-move--title)
+    ("Actions"
+     (      ("<left>" centaur-tabs-backward "prev tab")
+            ("<right>" centaur-tabs-forward "next tab")
+            ("<up>" centaur-tabs-backward-group "prev. group")
+            ("<down>" centaur-tabs-forward-group "next group")
+            ("k" centaur-tabs-kill-other-buffers-in-current-group "kill all other thabs in this group")
+            ))
+    )
+
+
+  (defhydra hydra-window (:color blue :hint nil)
+    "
+                                                                       ╭─────────┐
+     Move to      Size    Scroll        Split                    Do    │ Windows │
+  ╭────────────────────────────────────────────────────────────────────┴─────────╯
+        ^^            ^_K_^       ^_p_^    ╭─┬─┐^ ^        ╭─┬─┐^ ^         ↺ [_u_] undo layout
+        ^^↑^^           ^^↑^^       ^^↑^^    │ │ │_v_ertical ├─┼─┤_b_alance   ↻ [_r_] restore layout
+      ←   →     _H_ ←   → _L_   ^^ ^^    ╰─┴─╯^ ^        ╰─┴─╯^ ^         ✗ [_d_] close window
+        ^^↓^^           ^^↓^^       ^^↓^^    ╭───┐^ ^        ╭───┐^ ^         ⇋ [_w_] cycle window
+        ^^            ^_J_^       ^_n_^    ├───┤_s_tack    │   │_z_oom
+        ^^ ^^           ^^ ^^       ^^ ^^    ╰───╯^ ^        ╰───╯^ ^
+  --------------------------------------------------------------------------------
+            "
+    ("<tab>" hydra-master/body "back")
+    ("<ESC>" nil "quit")
+    ("n" vl/scroll-up-half-other-window :color red)
+    ("p" vl/scroll-down-half-other-window :color red)
+    ("b" balance-windows)
+    ("d" delete-window)
+    ("H" shrink-window-horizontally :color red)
+    ("<left>" windmove-left :color red)
+    ("J" shrink-window :color red)
+    ("<down>" windmove-down :color red)
+    ("K" enlarge-window :color red)
+    ("<up>" windmove-up :color red)
+    ("L" enlarge-window-horizontally :color red)
+    ("<right>" windmove-right :color red)
+    ("r" winner-redo :color red)
+    ("s" split-window-vertically :color red)
+    ("u" winner-undo :color red)
+    ("v" split-window-horizontally :color red)
+    ("w" other-window)
+    ("z" delete-other-windows))
+
+
+
+
+
+  (pretty-hydra-define hydra-mc (:color red :title mc--title)
+
+    ("Mark"
+     (
+      ("a" mc/mark-all-like-this "mark all")
+      ("n" mc/mark-next-like-this "mark next")
+      ("N" mc/unmark-next-like-this "unmark next")
+      ("p" mc/mark-previous-like-this "mark previous")
+      ("P" mc/unmark-previous-like-this "unmark previous")
+      )
+     "Skip"
+     (
+      ("sn" mc/skip-to-next-like-this "skip to next")
+      ("sp" mc/skip-to-previous-like-this "skip to prev")
+      )
+     "Edit"
+     (
+      ("e" mc/edit-lines "edit lines" :color blue)
+      )
+     )
+    )
+
+  (defhydra hydra-folding (:color red)
+    "
+  _o_pen node    _n_ext fold       toggle _f_orward  _s_how current only
+  _c_lose node   _p_revious fold   toggle _a_ll
+  "
+    ("o" origami-open-node)
+    ("c" origami-close-node)
+    ("n" origami-next-fold)
+    ("p" origami-previous-fold)
+    ("f" origami-forward-toggle-node)
+    ("a" origami-toggle-all-nodes)
+    ("s" origami-show-only-node))
+
+
+
+
+  (defhydra hydra-rectangle (:color blue)
+    "rectangles"
+    ("s" string-rectange "string")
+    ("i" string-insert-rectangle "string insert"))
+
+
+
+
+
+  (pretty-hydra-define hydra-smartparens (:color red :title parens--title)
+    ("Move"
+     (
+      ("f" sp-forward-sexp "forward")
+      ("d" sp-backward-sexp "back")
+      )
+     "Wrap"
+     (
+      ("(" sp-wrap-round "wrap round")
+      ("{" sp-wrap-curly "wrap brace")
+      ("[" sp-wrap-square "wrap square")
+      ("u" sp-unwrap-sexp "unwrap")
+      )
+     "Kill"
+     (("k" sp-kill-sexp "kill")
+      ("K" sp-backward-kill-sexp "backward kill")
+      )
+     "Slurp Barff"
+     (
+      ("s" sp-forward-slurp-sexp "forward slurp")
+      ("S" sp-backward-slurp-sexp "backward slurp")
+      ("b" sp-forward-barf-sexp "forward barf")
+      ("B" sp-backward-barf-sexp "backward barf"))
+     )
+    )
+
+
+
+
+  (defhydra hydra-lsp (:color blue)
+    "lsp"
+    ("d" lsp-find-definition "find definition")
+    ("i" lsp-find-implementation "find implementation")
+    ("r" lsp-find-references "find references"))
+
+
+
+
+  (pretty-hydra-define hydra-python-format (:color teal :title python--title)
+    ("Format"
+     (
+      ("f" blacken-buffer "blacken")
+      ("i" py-isort-buffer "isort"))
+     "Shift"
+     (
+      ("<right>" tom/shift-right "right")
+      ("<left>"  tom/shift-left"left")
+      )
+     )
+
+    )
+
+
+
+
+
+  (defhydra hydra-smerge (:color pink
+                                 :hint nil
+                                 :pre (smerge-mode 1)
+                                 ;; Disable `smerge-mode' when quitting hydra if
+                                 ;; no merge conflicts remain.
+                                 :post (smerge-auto-leave))
+    "
+^Move^       ^Keep^               ^Diff^                 ^Other^
+^^-----------^^-------------------^^---------------------^^-------
+_n_ext       _b_ase               _<_: upper/base        _C_ombine
+_p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
+^^           _l_ower              _>_: base/lower        _k_ill current
+^^           _a_ll                _R_efine
+^^           _RET_: current       _E_diff
+"
+    ("n" smerge-next)
+    ("p" smerge-prev)
+    ("b" smerge-keep-base)
+    ("u" smerge-keep-upper)
+    ("l" smerge-keep-lower)
+    ("a" smerge-keep-all)
+    ("RET" smerge-keep-current)
+    ("\C-m" smerge-keep-current)
+    ("<" smerge-diff-base-upper)
+    ("=" smerge-diff-upper-lower)
+    (">" smerge-diff-base-lower)
+    ("R" smerge-refine)
+    ("E" smerge-ediff)
+    ("C" smerge-combine-with-next)
+    ("r" smerge-resolve)
+    ("k" smerge-kill-current)
+    ("q" nil "cancel" :color blue))
+
+
+
+  (pretty-hydra-define my-mu4e-quick (:color blue :title mail--title)
+    ("Unread"
+     (
+      ("w" (mu4e-headers-search "flag:unread AND maildir:/mpe/INBOX") "unread work")
+      ("p" (mu4e-headers-search "flag:unread AND maildir:/gmail/INBOX")   "unread personal")
+
+      )
+     "Bookmark" (
+                 ("t" (mu4e-headers-search "date:today..now AND maildir:/mpe/INBOX")   "today work")
+                 ("d" (mu4e-headers-search "Damien AND maildir:/mpe/INBOX") "Damien" )
+                 ("j" (mu4e-headers-search "Jochen AND maildir:/mpe/INBOX") "Jochen" )
+
+                 )
+
+     "Org"
+     (
+      ("o" (org-mime-edit-mail-in-org-mode)  "edit message in org mode")
+      ("e" (org-mime-htmlize) "export to html")
+
+      )
+
+     "Utils"
+     (
+      ("c" (mu4e-compose-new)    "compase a message")
+      ("u" (mu4e-update-index) "update")
+      )
+     )
+
+    )
+
+  (pretty-hydra-define jmb/hydra-music (:color red :timeout 4 :title music--title)
+    ("Skip"
+     (
+      ("n" #'musica-play-next "next")
+      ("p" #'musica-play-previous "previous")
+      ("r" #'musica-play-next-random "next random"))
+     "Search"
+
+     (("s" #'musica-search "search")
+      ("i" #'musica-info "info"))
+     "Play"(
+            ("SPC" #'musica-play-pause "play-pause"))
+
+     ))
+
+
+
+  (pretty-hydra-define jmb/hydra-slack (:color red :timeout 4 :title slack--title)
+    ("Select"
+     (
+      ("i" slack-im-select  "im")
+      ("c" slack-channel-select "channel")
+      ("r" #'musica-play-next-random "next random"))
+     "Insert"
+
+     (("e" slack-insert-emoji "emojii")
+      )
+     "Start"(
+             ("s" slack-start "start"))
+
+     ))
+
+  )
+
+(use-package auto-highlight-symbol
+  )
+
+(use-package symbol-navigation-hydra
+  :config
+
+
+  ;; You'll want a keystroke for bringing up the hydra.
+  ;;(global-set-key (kbd "something") 'symbol-navigation-hydra-engage-hydra)
+
+  ;; The hydra is intended for navigation only in the current window.
+  (setq-default ahs-highlight-all-windows nil)
+
+  ;; Highlight only while the hydra is active; not upon other circumstances.
+  (setq-default ahs-highlight-upon-window-switch nil)
+  (setq-default ahs-idle-interval 999999999.0)
+
+  ;; Be case-sensitive, since you are probably using this for code.
+  (setq-default ahs-case-fold-search nil)
+
+  ;; Personal preference -- set the default "range" of operation to be the entire buffer.
+  (setq-default ahs-default-range 'ahs-range-whole-buffer)
+
+  ;; Same defaults for multiple cursor behavior
+  ;;(setq-default mc/always-repeat-command t)
+  ;;(setq-default mc/always-run-for-all t)
+
+  ;; You might want this so SN Hydra mutliple cursors can update
+  ;; print-statements / doc-strings
+  (setq-default ahs-inhibit-face-list (delete 'font-lock-string-face ahs-inhibit-face-list))
+  (setq-default ahs-inhibit-face-list (delete 'font-lock-doc-face ahs-inhibit-face-list))
+
+
+
+
+  )
+
+(use-package crux
+  :ensure ;TODO: v
+  )
+
+
+
+
+(use-package general
+  :config
+  (general-define-key
+   "C-M-y" 'consult-yank-from-kill-ring
+   "M-y" 'consult-yank-pop
+   "M-g M-g" 'consult-goto-line
+   "M-s" 'isearch-forward
+   ;;"C-," 'hydra-mc/body
+   "C-<backspace>" 'crux-kill-line-backwards
+   [remap move-beginning-of-line] 'crux-move-beginning-of-line
+   [remap kill-whole-line] 'crux-kill-whole-line
+   [(shift return)] 'crux-smart-open-line
+   "C-,"  'hydra-mc/body
+   "C-<tab>" 'jmb/tab-move/body
+                                        ;"C-M-v" 'hydra-window/body
+   "M-j" (lambda () (interactive)
+           (join-line -1))
+   "C-z" 'avy-goto-char-timer
+
+   "C-h" 'jmb/vim-move/body
+   )
+
+
+
+
+  ;; Cc
+  (general-define-key
+   :prefix "C-c"
+   ;;"c" 'org-capture
+   ;;"c" telega-prefix-map
+   "]" 'hydra-smartparens/body
+   "l" 'org-store-link
+   "m" 'jmb/hydra-music/body
+   "s" 'ispell-word
+   "z" 'jmb/org-mode-hydra/body
+   "g" 'consult-git-grep
+
+   "i"  (lambda () (interactive)  (chezmoi-find "~/.config/emacs/init.org"))
+   "<SPC>" (lambda () (interactive)  (chezmoi-find "~/.config/zsh/.zshrc"))
+   "t" 'consult-theme
+   "<up>" 'windmove-up
+   "<down>" 'windmove-down
+   "<left>" 'windmove-left
+   "<right>" 'windmove-right
+
+   )
+
+  ;; (general-define-key
+  ;;  :prefix "C-q"
+  ;;  "h" 'backward-char    ; Move left
+  ;;  "l" 'forward-char     ; Move right
+  ;;  "j" 'next-line        ; Move down
+  ;;  "k" 'previous-line    ; Move up
+  ;;  )
+
+
+  ;; Cx
+  (general-define-key
+   :prefix "C-x"
+   "b" 'consult-buffer
+   "m" 'magit-status
+   "a" 'ace-jump-mode
+   "C-b" 'ibuffer
+   "k" 'kill-this-buffer-unless-scratch
+   "w" 'elfeed
+   "'" 'hydra-window/body
+   "/" 'my-mu4e-quick/body
+   )
+
+  ( general-def python-mode-map
+    "C-c f" 'hydra-python-format/body
+    )
+
+  ;; (general-def lsp-mode-map
+  ;;   "C-c f" 'lsp-format-buffer
+  ;;      )
+
+  (general-def projectile-mode-map
+    "s-p" 'projectile-command-map
+
+    )
+
+
+  )
+
+(use-package easy-kill
+  :bind (([remap kill-ring-save] . #'easy-kill)
+         ([remap mark-sexp]      . #'easy-mark)
+         :map easy-kill-base-map
+         ("," . easy-kill-expand)))
+
+(setq custom-file
+      (if (boundp 'server-socket-dir)
+          (expand-file-name "custom.el" server-socket-dir)
+        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+(load custom-file t)
 
 (defun jmb/apply-theme (&optional frame)
   "Load the primary theme. Daemon-safe: called per new frame."
