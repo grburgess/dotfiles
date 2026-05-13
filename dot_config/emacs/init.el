@@ -1520,6 +1520,14 @@ folder, otherwise delete a word"
 
   )
 
+(use-package flymake
+  :straight nil
+  :hook (prog-mode . flymake-mode)
+  :custom
+  (flymake-fringe-indicator-position 'right-fringe)
+  (flymake-no-changes-timeout 1.0))
+
+;; flycheck retained for stan only; loaded by stan-mode hook below.
 (use-package flycheck
   :defer t)
 
@@ -1796,9 +1804,10 @@ folder, otherwise delete a word"
 
 
 (use-package flycheck-stan
-  ;; Add a hook to setup `flycheck-stan' upon `stan-mode' entry
-  :hook ((stan-mode . flycheck-stan-stanc2-setup)
-         (stan-mode . flycheck-stan-stanc3-setup))
+  :after (flycheck stan-mode)
+  :hook (stan-mode . (lambda ()
+                       (require 'flycheck)
+                       (flycheck-mode 1)))
   :config
   ;; A string containing the name or the path of the stanc2 executable
   ;; If nil, defaults to `stanc2'
