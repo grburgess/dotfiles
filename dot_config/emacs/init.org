@@ -1959,78 +1959,41 @@ This is quite an ugly fix for allowing code markup for expressions like
 #+RESULTS:
 
 * LSP
+Built-in Eglot is the LSP client. =eglot-booster= speeds up JSON-RPC transport (needs =emacs-lsp-booster= binary in $PATH).
+
 #+begin_src emacs-lisp
-(use-package lsp-pyright
-  :straight (lsp-pyright :type git :host github :repo "emacs-lsp/lsp-pyright")
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp-deferred)))
-
+(use-package eglot
+  :straight nil
+  :hook ((python-mode python-ts-mode
+          rust-mode rust-ts-mode
+          go-mode go-ts-mode
+          yaml-mode yaml-ts-mode
+          LaTeX-mode latex-mode
+          fortran-mode) . eglot-ensure)
   :custom
-  (lsp-pyright-use-library-code-for-types t)
-  (lsp-pyright-multi-root nil)
-
-  )
-
-
-(use-package lsp-mode
-  :commands (lsp lsp-deferred)
-
-
-  :custom
-  (lsp-auto-guess-root nil)
-  (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
-  (lsp-disabled-clients '((python-mode . pyls)))
-
-  (lsp-rust-analyzer-cargo-watch-command "clippy")
-
-  ;; enable / disable the hints as you prefer:
-  (lsp-rust-analyzer-server-display-inlay-hints t)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-  (lsp-rust-analyzer-display-chaining-hints t)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
-  (lsp-rust-analyzer-display-closure-return-type-hints t)
-  (lsp-rust-analyzer-display-parameter-hints nil)
-  (lsp-rust-analyzer-display-reborrow-hints nil)
-
+  (eglot-autoshutdown t)
+  (eglot-confirm-server-initiated-edits nil)
+  (eglot-send-changes-idle-time 0.5)
+  (eglot-extend-to-xref t)
   :config
-  (setq lsp-print-performance nil)
-  (setq lsp-idle-delay 0.55)
-  (setq lsp-enable-symbol-highlighting t)
-  (setq lsp-enable-snippet t)
-  (setq lsp-restart 'auto-restart)
-  (setq lsp-enable-completion-at-point t)
-  (setq lsp-log-io t)
-  (setq lsp-enable-links nil)
+  ;; Pyright over default Python LSP.
+  (add-to-list 'eglot-server-programs
+               '((python-mode python-ts-mode)
+                 . ("pyright-langserver" "--stdio")))
+  ;; Rust-analyzer with project clippy on save.
+  (setq-default eglot-workspace-configuration
+                '(:pyright (:useLibraryCodeForTypes t)
+                  :rust-analyzer (:checkOnSave (:command "clippy")
+                                  :inlayHints (:lifetimeElisionHints (:enable "skip_trivial")
+                                               :closureReturnTypeHints (:enable t))))))
 
+(use-package eglot-booster
+  :straight (eglot-booster :host github :repo "jdtsmith/eglot-booster")
+  :after eglot
+  :config (eglot-booster-mode))
 
-
-
-  :hook ((python-mode) . lsp-deferred)
-  (yaml-mode . lsp)
-  (LaTeX-mode . lsp)
-  (latex-mode . lsp)
-  (fortran-mode . lsp)
-  )
-
-
-
-(use-package lsp-ui
-  :config (setq lsp-ui-sideline-show-hover t
-                lsp-ui-doc-frame-mode t
-                lsp-ui-sideline-delay 3
-                lsp-ui-doc-delay 3
-                lsp-ui-sideline-ignore-duplicates t
-                lsp-headerline-breadcrumb-icons-enable t
-                lsp-ui-doc-position 'bottom
-                lsp-ui-doc-alignment 'frame
-                lsp-ui-doc-header nil
-                lsp-ui-doc-include-signature t
-                lsp-ui-doc-use-childframe t)
-
-  :commands lsp-ui-mode
-  )
-
+(use-package consult-eglot
+  :after (consult eglot))
 #+end_src
 
 #+RESULTS:
@@ -2061,8 +2024,7 @@ This is quite an ugly fix for allowing code markup for expressions like
 #+BEGIN_SRC emacs-lisp
 
 (use-package flycheck
-  :defer t
-  :hook (lsp-mode . flycheck-mode))
+  :defer t)
 
 #+END_SRC
 *** snippets
@@ -2466,12 +2428,17 @@ text-modes with this snippet.
 
 *** Julia
 #+begin_src emacs-lisp
-(use-package julia-mode
-  )
+(use-package julia-mode)
 
-(use-package lsp-julia
-  :config
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.7"))
+;; Julia LSP via eglot. Requires `using LanguageServer; using SymbolServer`
+;; in your Julia v1.7 env: ~/.julia/environments/v1.7.
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '((julia-mode julia-ts-mode)
+                 . ("julia"
+                    "--startup-file=no"
+                    "--history-file=no"
+                    "-e" "using LanguageServer; using SymbolServer; runserver()"))))
 
 #+end_src
 
@@ -2658,15 +2625,15 @@ text-modes with this snippet.
 #+begin_src emacs-lisp
 (use-package go-mode
   :init
-  (defun lsp-go-install-save-hooks ()
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
-    (add-hook 'before-save-hook #'lsp-organize-imports t t))
-  (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-
-  ;; Start LSP Mode and YASnippet mode
-  (add-hook 'go-mode-hook #'lsp-deferred)
+  ;; eglot-ensure is registered globally for go-mode in the LSP section.
+  ;; Keep yas-minor-mode and before-save formatting hooks.
   (add-hook 'go-mode-hook #'yas-minor-mode)
-
+  (add-hook 'go-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook #'eglot-format-buffer t t)
+              (add-hook 'before-save-hook
+                        (lambda () (call-interactively #'eglot-code-action-organize-imports))
+                        t t)))
   )
 #+end_src
 
@@ -2676,14 +2643,14 @@ text-modes with this snippet.
 (use-package rustic
   :ensure
   :bind (:map rustic-mode-map
-              ("M-j" . lsp-ui-imenu)
-              ("M-?" . lsp-find-references)
-              ("C-c C-c l" . flycheck-list-errors)
-              ("C-c C-c a" . lsp-execute-code-action)
-              ("C-c C-c r" . lsp-rename)
-              ("C-c C-c q" . lsp-workspace-restart)
-              ("C-c C-c Q" . lsp-workspace-Ctshutdown)
-              ("C-c C-c s" . lsp-rust-analyzer-status))
+              ("M-j" . consult-imenu)
+              ("M-?" . xref-find-references)
+              ("C-c C-c l" . flymake-show-buffer-diagnostics)
+              ("C-c C-c a" . eglot-code-actions)
+              ("C-c C-c r" . eglot-rename)
+              ("C-c C-c q" . eglot-reconnect)
+              ("C-c C-c Q" . eglot-shutdown)
+              ("C-c C-c s" . eglot-list-connections))
   :config
   ;; uncomment for less flashiness
   ;; (setq lsp-eldoc-hook nil)
@@ -3318,9 +3285,9 @@ concatenated."
 
   (defhydra hydra-lsp (:color blue)
     "lsp"
-    ("d" lsp-find-definition "find definition")
-    ("i" lsp-find-implementation "find implementation")
-    ("r" lsp-find-references "find references"))
+    ("d" xref-find-definitions "find definition")
+    ("i" eglot-find-implementation "find implementation")
+    ("r" xref-find-references "find references"))
 
 
 
