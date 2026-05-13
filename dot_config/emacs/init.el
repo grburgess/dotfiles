@@ -681,26 +681,45 @@ folder, otherwise delete a word"
 
 
 
-(use-package company
-  :bind (:map company-active-map
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous))
-  :config
-  (setq company-idle-delay 0.1)
-  (global-company-mode t)
-  )
-
 (use-package corfu
-  :straight '(corfu :host github
-                    :repo "minad/corfu")
+  :straight (corfu :host github :repo "minad/corfu"
+                   :files ("*.el" "extensions/*.el"))
   :bind (:map corfu-map
               ("C-j" . corfu-next)
               ("C-k" . corfu-previous)
               ("C-f" . corfu-insert))
   :custom
   (corfu-cycle t)
+  (corfu-auto t)
+  (corfu-auto-delay 0.15)
+  (corfu-auto-prefix 2)
+  (corfu-preview-current nil)
+  (corfu-quit-no-match 'separator)
+  :init
+  (global-corfu-mode))
+
+(use-package corfu-popupinfo
+  :straight nil
+  :after corfu
+  :hook (corfu-mode . corfu-popupinfo-mode)
+  :custom
+  (corfu-popupinfo-delay '(0.5 . 0.2)))
+
+(use-package corfu-history
+  :straight nil
+  :after corfu
+  :init (corfu-history-mode 1)
   :config
-  (corfu-global-mode))
+  (with-eval-after-load 'savehist
+    (add-to-list 'savehist-additional-variables 'corfu-history)))
+
+(use-package cape
+  :straight (cape :host github :repo "minad/cape")
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-keyword)
+  (add-to-list 'completion-at-point-functions #'cape-elisp-symbol))
 
 (use-package kind-icon
   :after corfu
@@ -1756,7 +1775,6 @@ folder, otherwise delete a word"
   :straight nil
   :hook
   (python-mode . pyvenv-mode)
-  (python-mode . company-mode)
   (python-mode . yas-minor-mode)
   :custom
   ;; NOTE: Set these if Python 3 is called "python3" on your system!
@@ -1806,14 +1824,6 @@ folder, otherwise delete a word"
   :config
   ;; The officially recommended offset is 2.
   (setq stan-indentation-offset 2))
-
-
-(use-package company-stan
-  :hook (stan-mode . company-stan-setup)
-  ;;
-  :config
-  ;; Whether to use fuzzy matching in `company-stan'
-  (setq company-stan-fuzzy t))
 
 
 (use-package eldoc-stan
