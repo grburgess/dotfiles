@@ -128,20 +128,6 @@ the buffer is buried."
 (setq ad-redefinition-action 'accept)
 
 (use-package s)
-(use-package all-the-icons
-  :if (display-graphic-p)
-  :demand t
-  :after s
-  :config
-  (when (not (member "all-the-icons" (font-family-list)))
-    (all-the-icons-install-fonts t)))
-
-;; (setq
-;;  all-the-icons-mode-icon-alist
-;;  `(,@all-the-icons-mode-icon-alist
-;;    (telega-chat-mode all-the-icons-fileicon "telegram" :v-adjust 0.0
-;;                      :face all-the-icons-blue-alt)
-;;    (telega-root-mode all-the-icons-material "contacts" :v-adjust 0.0)))
 
 (use-package nerd-icons
   ;; :custom
@@ -1160,7 +1146,7 @@ folder, otherwise delete a word"
   (dirvish-mode-line-format
    '(:left (sort file-time " " file-size symlink) :right (omit yank index)))
   ;; Don't worry, Dirvish is still performant even you enable all these attributes
-  (dirvish-attributes '(all-the-icons collapse subtree-state vc-state))
+  (dirvish-attributes '(nerd-icons collapse subtree-state vc-state))
   :config
   (setq dired-dwim-target t)
   (setq delete-by-moving-to-trash t)
@@ -2024,9 +2010,9 @@ folder, otherwise delete a word"
 (use-package tracking
   :defer nil
   :config
-  (setq tracking-faces-priorities '(all-the-icons-pink
-                                    all-the-icons-lgreen
-                                    all-the-icons-lblue))
+  (setq tracking-faces-priorities '(nerd-icons-pink
+                                    nerd-icons-lgreen
+                                    nerd-icons-lblue))
                                         ;(setq tracking-frame-behavior nil)
   )
 
@@ -2336,13 +2322,19 @@ concatenated."
   )
 
 (use-package major-mode-hydra
-  :after all-the-icons
+  :after nerd-icons
   :demand t
   :config
-  (require 'all-the-icons)
+  (require 'nerd-icons)
 
   (defun with-faicon (icon str &optional height v-adjust)
-    (s-concat (all-the-icons-faicon icon :v-adjust (or v-adjust 0) :height (or height 1)) " " str))
+    "Concatenate ICON + STR. ICON is a FontAwesome name (e.g., \"code\"); we map to nerd-icons' nf-fa-* glyph codes."
+    (s-concat (nerd-icons-faicon (concat "nf-fa-" icon)
+                                 :face 'nerd-icons-default
+                                 :v-adjust (or v-adjust 0)
+                                 :height (or height 1.0))
+              " "
+              str))
 
   (defun vl/window-half-height (&optional window)
     (max 1 (/ (1- (window-height window)) 2)))
@@ -2358,7 +2350,7 @@ concatenated."
 
   (defvar org--title (with-faicon "mars" "Orgy" 1 -0.05))
   (defvar tab-move--title (with-faicon "bomb" "Tabs" 1 -0.05))
-  (defvar mc--title (with-faicon "i-cursor" "Multiple Cursors" 1 -0.05))
+  (defvar mc--title (with-faicon "i_cursor" "Multiple Cursors" 1 -0.05))
   (defvar parens--title (with-faicon "rebel" "Smart Parens" 1 -0.05))
   (defvar python--title (with-faicon "code" "Python Clean Up" 1 -0.05))
   (defvar mail--title (with-faicon "male" "Mail" 1 -0.05))
