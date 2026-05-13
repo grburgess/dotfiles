@@ -379,7 +379,7 @@ the buffer is buried."
   (doom-modeline-icon t)
   (doom-modeline-major-mode-icon t)
   (doom-modeline-window-width-limit fill-column)
-  (doom-modeline-project-detection 'projectile)
+  (doom-modeline-project-detection 'auto)
   (doom-modeline-buffer-encoding nil)
   (auto-revert-check-vc-info t)
   (doom-modeline-major-mode-color-icon t)
@@ -741,8 +741,8 @@ folder, otherwise delete a word"
   )
 
 (defun dw/get-project-root ()
-  (when (fboundp 'projectile-project-root)
-    (projectile-project-root)))
+  (when (project-current)
+    (project-root (project-current))))
 
 (use-package consult
   :straight t
@@ -767,7 +767,7 @@ folder, otherwise delete a word"
 
   :config
 
-  (setq consult-dir-project-list-function #'consult-dir-projectile-dirs)
+  (setq consult-dir-project-list-function #'consult-project-extra-dirs)
 
 
   )
@@ -1040,7 +1040,7 @@ folder, otherwise delete a word"
                                         ;(setq centaur-tabs-adjust-buffer-order 'right)
 
 
-  (centaur-tabs-group-by-projectile-project)
+  (centaur-tabs-group-by-project-name)
 
 
   (defun centaur-tabs-hide-tab (x)
@@ -1205,28 +1205,21 @@ folder, otherwise delete a word"
    ("M-e" . dirvish-emerge-menu)
    ("M-j" . dirvish-fd-jump)))
 
-(use-package ibuffer-projectile
-  :config
+(use-package ibuffer-project
+  :hook (ibuffer . (lambda ()
+                     (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
+                     (unless (eq ibuffer-sorting-mode 'project-file-relative)
+                       (ibuffer-do-sort-by-project-file-relative)))))
 
-  (add-hook 'ibuffer-hook
-            (lambda ()
-              (ibuffer-projectile-set-filter-groups)
-              (unless (eq ibuffer-sorting-mode 'alphabetic)
-                (ibuffer-do-sort-by-alphabetic))))
-
-  (setq ibuffer-formats
-        '((mark modified read-only " "
-                (name 18 18 :left :elide)
-                " "
-                (size 9 -1 :right)
-                " "
-                (mode 16 16 :left :elide)
-                " "
-                project-relative-file)))
-
-
-
-  )
+(setq ibuffer-formats
+      '((mark modified read-only " "
+              (name 18 18 :left :elide)
+              " "
+              (size 9 -1 :right)
+              " "
+              (mode 16 16 :left :elide)
+              " "
+              project-relative-file)))
 
 
 
@@ -1689,23 +1682,19 @@ folder, otherwise delete a word"
 ;; 
 ;;   :defer t)
 
-;; (defun dw/switch-project-action ()
-;;   "Switch to a workspace with the project name and start `magit-status'."
-;;   ;; TODO: Switch to EXWM workspace 1?
-;;   (persp-switch (projectile-project-name))
-;;   (magit-status))
-
-
-(use-package projectile
-                                        ;:diminish projectile-mode
-  :config (projectile-mode)
-  :demand t
-  ;; :bind-keymap
-  ;; ("C-c p" . projectile-command-map)
-  :init
+(use-package project
+  :straight nil
+  :custom
+  (project-vc-extra-root-markers '(".project" "pyproject.toml" "Cargo.toml" "go.mod" "package.json"))
+  :config
   (when (file-directory-p "~/coding/projects")
-    (setq projectile-project-search-path '("~/coding/projects" "~/coding/projects") ))
-  )
+    (dolist (dir (directory-files "~/coding/projects" t "\\`[^.]" t))
+      (when (file-directory-p (expand-file-name ".git" dir))
+        (project-remember-project (project-current nil dir)))))
+  (global-set-key (kbd "s-p") project-prefix-map))
+
+(use-package consult-project-extra
+  :after consult)
 
 (use-package py-isort
   :after python
@@ -2787,10 +2776,6 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   ;;   "C-c f" 'lsp-format-buffer
   ;;      )
 
-  (general-def projectile-mode-map
-    "s-p" 'projectile-command-map
-
-    )
 
 
   )
