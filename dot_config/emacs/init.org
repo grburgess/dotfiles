@@ -2140,6 +2140,18 @@ Built-in Eglot is the LSP client. =eglot-booster= speeds up JSON-RPC transport (
 #+RESULTS:
 | highlight-indent-guides-mode | rainbow-delimiters-mode | smartparens-mode | yas-minor-mode | rainbow-mode | ws-butler-mode |
 
+*** Tree-sitter
+=treesit-auto= installs grammars on demand and remaps =foo-mode= → =foo-ts-mode= when a grammar is available.
+
+#+begin_src emacs-lisp
+(use-package treesit-auto
+  :straight (treesit-auto :host github :repo "renzmann/treesit-auto")
+  :custom (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+#+end_src
+
 *** origami code folding
 #+begin_src emacs-lisp
 

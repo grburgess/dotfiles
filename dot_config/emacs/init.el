@@ -1598,6 +1598,13 @@ folder, otherwise delete a word"
   (indent-bars-width-frac 0.15)
   (indent-bars-pad-frac 0.1))
 
+(use-package treesit-auto
+  :straight (treesit-auto :host github :repo "renzmann/treesit-auto")
+  :custom (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
 
 
 
