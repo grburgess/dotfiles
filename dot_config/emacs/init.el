@@ -2300,11 +2300,9 @@ concatenated."
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
-  (setq which-key-idle-delay 0.7))
+;; which-key is built-in since Emacs 30 — no use-package wrapper needed.
+(which-key-mode 1)
+(setq which-key-idle-delay 0.7)
 
 (use-package hydra
   )
