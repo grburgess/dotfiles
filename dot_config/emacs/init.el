@@ -329,7 +329,7 @@ the buffer is buried."
   (diminish 'global-font-lock-mode)
   (diminish 'elpy-mode)
   (diminish 'abbrev-mode)
-  (diminish 'flyspell-mode)
+  (diminish 'jinx-mode)
   (diminish 'flycheck-mode)
   (diminish 'font-lock-mode)
 
@@ -1276,7 +1276,7 @@ folder, otherwise delete a word"
   ;;                         '(("^ *\\([-]\\) "
   ;;                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-  (add-hook 'org-mode-hook 'turn-on-flyspell)
+  ;; Spellcheck now handled by jinx via text-mode hook
   (setq org-fontify-done-headline t)
 
 
@@ -1611,20 +1611,12 @@ folder, otherwise delete a word"
 
   )
 
-(use-package flyspell
-                                        ; nil
-  :commands (ispell-change-dictionary
-             ispell-word
-             flyspell-buffer
-             flyspell-mode
-             flyspell-region)
-  :config
-  (setq flyspell-issue-message-flag nil)
-  (setq flyspell-issue-welcome-flag nil)
-  (setq ispell-program-name "/opt/homebrew/bin/ispell")
-  (setq ispell-dictionary "american")
-  (add-hook 'text-mode-hook 'flyspell-mode)
-  )
+;; Jinx — enchant-based, JIT spellcheck. Replaces flyspell.
+;; Setup once on a fresh machine: brew install enchant pkg-config, then M-x jinx-install
+(use-package jinx
+  :hook (text-mode . jinx-mode)
+  :custom
+  (jinx-languages "en_US"))
 
 
 
@@ -1853,7 +1845,6 @@ folder, otherwise delete a word"
 
          (LaTeX-mode . reftex-mode)
          (LaTeX-mode . visual-line-mode)
-         (LaTeX-mode . flyspell-mode)
          (LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . turn-on-reftex)
 
@@ -2700,7 +2691,7 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
    "]" 'hydra-smartparens/body
    "l" 'org-store-link
    "m" 'jmb/hydra-music/body
-   "s" 'ispell-word
+   "s" 'jinx-correct
    "z" 'jmb/org-mode-hydra/body
    "g" 'consult-git-grep
 
