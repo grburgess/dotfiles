@@ -193,17 +193,13 @@ the buffer is buried."
 (setq tramp-default-method "ssh")
 
 (use-package doom-themes
-  :ensure t
   :defer t
-  :init
-
+  :config
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config)
-  (doom-themes-neotree-config)
-
-  )
+  (doom-themes-neotree-config))
 
 ;; Or if you have use-package installed
 (use-package kaolin-themes
@@ -288,10 +284,6 @@ the buffer is buried."
           (2 . (rainbow  1.3))
           (3 . (rainbow bold 1.2))
           (t . (semilight 1.1))))
-
-
-  :config
-  (load-theme 'modus-vivendi t)
 
 
   )
@@ -3536,5 +3528,11 @@ concatenated."
 
 ;;   )
 
-(add-hook 'after-init-hook (lambda () (add-hook 'after-init-hook (lambda () (load-theme 'solarized-light)))
-                             ))
+(defun jmb/apply-theme (&optional frame)
+  "Load the primary theme. Daemon-safe: called per new frame."
+  (with-selected-frame (or frame (selected-frame))
+    (load-theme 'modus-vivendi t)))
+
+(if (daemonp)
+    (add-hook 'after-make-frame-functions #'jmb/apply-theme)
+  (jmb/apply-theme))
