@@ -3027,25 +3027,20 @@ concatenated."
 #+RESULTS:
 : musica-play-previous
 
-** chatGPT
-
+** AI (gptel)
+Claude backend declared. Auth deferred — see =claude_comments/gptel-setup.md= for the =~/.authinfo.gpg= setup once a Claude API key is provisioned.
 
 #+begin_src emacs-lisp
-;; (use-package chatgpt-shell
-;; ;;   :config
-;;   (setq chatgpt-shell-openai-key
-;;         (auth-source-pick-first-password :host "api.openai.com"))
-;;   )
-
-
-
-
-;; (use-package gptel
-;;   :defer t
-;;   :config
-;;   (setq gptel-api-key "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")
-
-;;   )
+(use-package gptel
+  :defer t
+  :config
+  (setq gptel-default-mode 'org-mode)
+  (setq gptel-model 'claude-sonnet-4-5
+        gptel-backend (gptel-make-anthropic "Claude"
+                        :stream t
+                        :key (lambda ()
+                               (auth-source-pick-first-password
+                                :host "api.anthropic.com")))))
 #+end_src
 
 #+RESULTS:

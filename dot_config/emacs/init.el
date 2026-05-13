@@ -2297,21 +2297,16 @@ concatenated."
   (cl-assert (executable-find "pytunes") nil "pytunes not installed")
   (process-lines "pytunes" "previous"))
 
-;; (use-package chatgpt-shell
-;; ;;   :config
-;;   (setq chatgpt-shell-openai-key
-;;         (auth-source-pick-first-password :host "api.openai.com"))
-;;   )
-
-
-
-
-;; (use-package gptel
-;;   :defer t
-;;   :config
-;;   (setq gptel-api-key "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")
-
-;;   )
+(use-package gptel
+  :defer t
+  :config
+  (setq gptel-default-mode 'org-mode)
+  (setq gptel-model 'claude-sonnet-4-5
+        gptel-backend (gptel-make-anthropic "Claude"
+                        :stream t
+                        :key (lambda ()
+                               (auth-source-pick-first-password
+                                :host "api.anthropic.com")))))
 
 (use-package regex-tool
   :config
