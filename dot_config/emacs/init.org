@@ -2176,6 +2176,14 @@ Built-in Eglot is the LSP client. =eglot-booster= speeds up JSON-RPC transport (
   (global-treesit-auto-mode))
 #+end_src
 
+*** Breadcrumb
+Header-line breadcrumb of imenu/treesit/eglot path; replaces lsp-ui-headerline-breadcrumb.
+
+#+begin_src emacs-lisp
+(use-package breadcrumb
+  :hook ((prog-mode . breadcrumb-local-mode)))
+#+end_src
+
 *** origami code folding
 #+begin_src emacs-lisp
 
@@ -2252,10 +2260,10 @@ Setup on a fresh machine: ~brew install enchant pkg-config~, then ~M-x jinx-inst
 
 *** magit todos
 #+begin_src emacs-lisp
-;; (use-package magit-todos
-;; 
-;;   :defer t)
-#+END_SRC
+(use-package magit-todos
+  :after magit
+  :config (magit-todos-mode 1))
+#+end_src
 *** git gutter
 
 ** Projects (project.el)

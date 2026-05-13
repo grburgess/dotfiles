@@ -1629,6 +1629,9 @@ folder, otherwise delete a word"
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
+(use-package breadcrumb
+  :hook ((prog-mode . breadcrumb-local-mode)))
+
 
 
 
@@ -1665,9 +1668,9 @@ folder, otherwise delete a word"
 (use-package git-timemachine
   :commands git-timemachine)
 
-;; (use-package magit-todos
-;; 
-;;   :defer t)
+(use-package magit-todos
+  :after magit
+  :config (magit-todos-mode 1))
 
 (use-package project
   :straight nil
