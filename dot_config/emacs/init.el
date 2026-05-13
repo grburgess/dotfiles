@@ -46,14 +46,12 @@
 (require 'straight-x)
 
 (use-package chezmoi
-  :ensure t
   :after magit
   :config
   (add-hook 'org-babel-post-tangle-hook #'chezmoi-write)
   )
 
 (use-package bug-hunter
-  :ensure t
   )
 
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -134,21 +132,9 @@ the buffer is buried."
 (setq vc-follow-symlinks t)
 (setq ad-redefinition-action 'accept)
 
-;; Minimap
-(use-package sublimity
-  :ensure t
-  :config (require 'sublimity)
-  (require 'sublimity-scroll)
-  (setq sublimity-scroll-weight 10
-        sublimity-scroll-drift-length 20)
-                                        ;  (require 'sublimity-map)
-  (sublimity-mode 1))
-                                        ;  (sublimity-map-set-delay 3))
-
 (use-package s)
 (use-package all-the-icons
   :if (display-graphic-p)
-  :ensure t
   :demand t
   :after s
   :config
@@ -162,26 +148,13 @@ the buffer is buried."
 ;;                      :face all-the-icons-blue-alt)
 ;;    (telega-root-mode all-the-icons-material "contacts" :v-adjust 0.0)))
 
-;; (use-package all-the-icons-ibuffer
-;;   :ensure t
-;;   :init (all-the-icons-ibuffer-mode 1))
-
 (use-package nerd-icons
-  :ensure t
   ;; :custom
   ;; The Nerd Font you want to use in GUI
   ;; "Symbols Nerd Font Mono" is the default and is recommended
   ;; but you can use any other Nerd Font if you want
   ;; (nerd-icons-font-family "Symbols Nerd Font Mono")
   )
-
-;; (use-package super-save
-;;   :defer 1
-;;   :diminish super-save-mode
-;;   :config
-;;   (super-save-mode +1)
-;;   (setq super-save-auto-save-when-idle t))
-
 
 ;; Revert Dired and other buffers
 (setq global-auto-revert-non-file-buffers t)
@@ -201,67 +174,7 @@ the buffer is buried."
   (doom-themes-org-config)
   (doom-themes-neotree-config))
 
-;; Or if you have use-package installed
-(use-package kaolin-themes
-  :ensure t
-
-  :config
-  )
-
-(use-package green-is-the-new-black-theme
-  :ensure t
-
-  :config
-  )
-
-(use-package green-phosphor-theme
-  :ensure t
-
-  :config
-  )
-
-
-(use-package vscode-dark-plus-theme
-  :ensure t
-
-
-  )
-
-(use-package blueballs-dark-theme
-  :straight
-  (:host github :repo "blueballs-theme/blueballs-emacs" :branch "master" :files ("*.el"))
-  )
-
-(use-package brilliance-dull-theme
-  :straight
-  (:host github :repo "bizzyman/brilliance-dull-theme-emacs" :branch "master" :files ("*.el"))
-  )
-
-
-(use-package nano-theme
-  :straight
-  (:host github :repo "rougier/nano-theme" :branch "master" :files ("*.el"))
-  )
-
-(use-package writerish-dark-theme
-  :straight
-  (:host github :repo "apc/writerish" :branch "master" :files ("*.el"))
-  )
-
-
-(use-package omni-theme
-  :straight
-  (:host github :repo "getomni/emacs" :branch "main" :files ("*.el"))
-  )
-
-
-(use-package the-matrix-theme
-  :straight
-  (:host github :repo "monkeyjunglejuice/matrix-emacs-theme" :branch "main" :files ("*.el"))
-  )
-
 (use-package modus-themes
-  :ensure t
   :init
   ;; Add all your customizations prior to loading the themes
   (setq modus-themes-mode-line '(accented borderless)
@@ -290,7 +203,6 @@ the buffer is buried."
 
 
 (use-package ef-themes
-  :ensure t
   :init
   ;; Add all your customizations prior to loading the themes
 
@@ -423,7 +335,6 @@ the buffer is buried."
       display-time-default-load-average nil)
 
 (use-package diminish
-  :ensure t
   :config
   (diminish 'rainbow-mode)
   (diminish 'auto-fill-mode)
@@ -450,11 +361,9 @@ the buffer is buried."
 ;; installing this package!
 
 (use-package minions
-  :ensure t
   :hook (doom-modeline-mode . minions-mode))
 
 (use-package doom-modeline
-  :ensure t
   ;;:after eshell     ;; Make sure it gets hooked after eshell
   ;;:hook (after-init . doom-modeline-mode)
   :init (doom-modeline-mode 1)
@@ -494,7 +403,6 @@ the buffer is buried."
   )
 
 (use-package pulsar
-  :ensure t
   :straight
   (:host github :repo "protesilaos/pulsar" :branch "main" :files ("*.el"))
   :config
@@ -545,41 +453,16 @@ the buffer is buried."
 
   )
 
-;; (use-package beacon
-;;   :ensure t
-;;   :config
 
-;;   (progn
-
-;;     (setq beacon-color "#00FCB7")
-;;     (setq beacon-push-mark 60)
-
-;;     (setq beacon-blink-when-point-moves-vertically nil) ; default nil
-;;     (setq beacon-blink-when-point-moves-horizontally nil) ; default nil
-;;     (setq beacon-blink-when-buffer-changes t) ; default t
-;;     (setq beacon-blink-when-window-scrolls t) ; default t
-;;     (setq beacon-blink-when-window-changes t) ; default t
-;;     (setq beacon-blink-when-focused t) ; default nil
-
-;;     (setq beacon-blink-duration 0.7) ; default 0.3
-;;     (setq beacon-blink-delay 0.1) ; default 0.3
-;;     (setq beacon-size 40) ; default 40
-
-;;     (add-to-list 'beacon-dont-blink-major-modes 'term-mode)
-
-;;     (beacon-mode 1)))
 
 (use-package rainbow-mode
-  :ensure t
   :hook (prog-mode . rainbow-mode )
   )
 
 (use-package svg-lib
-  :ensure t
   )
 
 (use-package neotree
-  :ensure t
   :config
   (global-set-key [f8] 'neotree-toggle)
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
@@ -591,7 +474,6 @@ the buffer is buried."
   (treemacs-load-theme "nerd-icons"))
 
 (use-package solaire-mode
-  :ensure t
   :config
 
   (solaire-global-mode +1)
@@ -602,18 +484,15 @@ the buffer is buried."
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 (use-package which-key
-  :ensure t
   :init (which-key-mode)
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 0.7))
 
 (use-package hydra
-  :ensure t
   )
 
 (use-package major-mode-hydra
-  :ensure t
   :after all-the-icons
   :demand t
   :config
@@ -924,11 +803,9 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   )
 
 (use-package auto-highlight-symbol
-  :ensure t
   )
 
 (use-package symbol-navigation-hydra
-  :ensure t
   :config
 
 
@@ -970,7 +847,6 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
 
 (use-package general
-  :ensure t
   :config
   (general-define-key
    "C-M-y" 'consult-yank-from-kill-ring
@@ -1056,7 +932,6 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
   )
 
 (use-package easy-kill
-  :ensure t
   :bind (([remap kill-ring-save] . #'easy-kill)
          ([remap mark-sexp]      . #'easy-mark)
          :map easy-kill-base-map
@@ -1228,33 +1103,6 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 (setq recentf-max-saved-items 25)
 
 
-;; (use-package prescient
-;;   :ensure t
-;;   :config
-;;   (setq prescient-history-length 200)
-;;   (setq prescient-save-file "~/.config/emacs/prescient-items")
-;;   (setq prescient-filter-method '(literal regexp))
-;;   (prescient-persist-mode 1)
-
-;;   )
-
-;; (use-package ivy-prescient
-
-;;   :ensure t
-;;   :after (prescient ivy)
-;;   :config
-;;   (setq ivy-prescient-sort-commands
-;;         '(:not counsel-grep
-;;                counsel-rg
-;;                counsel-switch-buffer
-;;                ivy-switch-buffer
-;;                swiper
-;;                swiper-multi))
-;;   (setq ivy-prescient-retain-classic-highlighting t)
-;;   (setq ivy-prescient-enable-filtering nil)
-;;   (setq ivy-prescient-enable-sorting t)
-;;   (ivy-prescient-mode 1))
-
 ;; Individual history elements can be configured separately
 ;;(put 'minibuffer-history 'history-length 25)
 ;;(put 'evil-ex-history 'history-length 50)
@@ -1292,26 +1140,9 @@ folder, otherwise delete a word"
 
   )
 
-;; (use-package posframe :demand)
-;; (use-package vertico-posframe
-;;   :straight (vertico-posframe :host github :repo "tumashu/vertico-posframe")
-;;                                         ;:disabled
-;;   :config
-;;   (setq vertico-posframe-parameters
-;;         '((left-fringe . 8)
-;;           (right-fringe . 8)
-;;           (alpha . 95)
-;;           ))
-;;   (defun my/posframe-poshandler-p0.5p0-to-f0.5p1 (info)
-;;     (let ((x (car (posframe-poshandler-p0.5p0-to-f0.5f0 info)))
 
-;;           (y (cdr (posframe-poshandler-point-1 info nil t))))
-;;       (cons x y)))
-;;   (setq vertico-posframe-poshandler 'my/posframe-poshandler-p0.5p0-to-f0.5p1)
-;;   (vertico-posframe-mode 1))
 
 (use-package company
-  :ensure t
   :bind (:map company-active-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous))
@@ -1333,7 +1164,6 @@ folder, otherwise delete a word"
   (corfu-global-mode))
 
 (use-package kind-icon
-  :ensure t
   :after corfu
   :custom
   (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
@@ -1372,7 +1202,6 @@ folder, otherwise delete a word"
   )
 
 (use-package consult-dir
-  :ensure t
   :bind (("C-x C-d" . consult-dir)
          :map vertico-map
          ("C-x C-d" . consult-dir)
@@ -1386,7 +1215,6 @@ folder, otherwise delete a word"
   )
 
 (use-package kind-icon
-  :ensure t
   :after corfu
   :custom
   (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
@@ -1405,13 +1233,6 @@ folder, otherwise delete a word"
   :init
   (marginalia-mode))
 
-
-;; (use-package all-the-icons-completion
-;;   :ensure t
-;;   :init
-;;   (all-the-icons-completion-mode)
-;;   :hook
-;;   (marginalia-mode-hook . all-the-icons-completion-marginalia-setup)
 
 (use-package nerd-icons-completion
   :straight (nerd-icons-completion :type git :host github :repo "rainstormstudio/nerd-icons-completion")
@@ -1440,7 +1261,6 @@ folder, otherwise delete a word"
 
 ;; Consult users will also want the embark-consult package.
 (use-package embark-consult
-  :ensure t
   :after (embark consult)
   :demand t ; only necessary if you have the hook below
   ;; if you want to have consult previews as you move around an
@@ -1457,13 +1277,7 @@ folder, otherwise delete a word"
   :config
   (ace-window-display-mode 1))
 
-;; (use-package winner
 
-;;   :config
-;;   (winner-mode)
-;;   (setq  winner-dont-bind-my-keys t)
-
-;;   )
 
 (defun dw/org-mode-visual-fill ()
   (setq visual-fill-column-width 110
@@ -1475,47 +1289,9 @@ folder, otherwise delete a word"
   :defer t
   :hook (org-mode . dw/org-mode-visual-fill))
 
-;; (use-package ace-jump-mode
-;;   :ensure t)
 
-;; (use-package popper
-;;   :ensure t ; or :straight t
-;;   :bind (("C-`"   . popper-toggle-latest)
-;;          ("M-`"   . popper-cycle)
-;;          ("C-M-`" . popper-toggle-type))
-;;   :init
-;;   (setq popper-reference-buffers
-
-;;         '("\\*Messages\\*"
-;;           "Output\\*$"
-;;           "\\*Async Shell Command\\*"
-;;           help-mode
-;;           compilation-mode
-;;           ("^\\*Warnings\\*$" . hide)
-;;           ("^\\*Compile-Log\\*$" . hide)
-;;           "^\\*Backtrace\\*"
-;;           "^\\*Apropos"
-;;           "^Calc:"
-;;           "^\\*eldoc\\*"
-;;           "^\\*TeX errors\\*"
-;;           "^\\*ielm\\*"
-;;           "^\\*TeX Help\\*"
-;;           "\\*Shell Command Output\\*"
-;;           ("\\*Async Shell Command\\*" . hide)
-;;           "\\*Completions\\*"
-;;           ;; "\\*scratch\\*"
-;;           "[Oo]utput\\*"
-
-
-;;           )
-
-;;         )
-
-;;   (popper-mode +1)
-;;   (popper-echo-mode +1))
 
 (use-package avy
-  :ensure t
   :commands (avy-goto-word-1 avy-goto-char-2 avy-goto-char-timer)
   :config
   (setq avy-timeout-seconds 0.35)
@@ -1872,7 +1648,6 @@ folder, otherwise delete a word"
    ("M-j" . dirvish-fd-jump)))
 
 (use-package ibuffer-projectile
-  :ensure t
   :config
 
   (add-hook 'ibuffer-hook
@@ -1924,7 +1699,6 @@ folder, otherwise delete a word"
 
 
 (use-package nerd-icons-ibuffer
-  :ensure t
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
 (setq-default fill-column 80)
@@ -1997,7 +1771,6 @@ folder, otherwise delete a word"
   )
 
 (use-package org-superstar
-  :ensure t
   :after org
   :hook (org-mode . org-superstar-mode)
   :custom
@@ -2030,18 +1803,6 @@ folder, otherwise delete a word"
 (add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
 (add-to-list 'org-structure-template-alist '("json" . "src json"))
 
-(use-package org-bullets
-  :ensure t
-  :after org
-  :commands org-bullets-mode
-  :init
-  (add-hook 'org-mode-hook 'org-bullets-mode)
-  )
-
-
-
-                                        ;(define-key global-map "\C-cc" 'org-capture)
-
 (setq org-src-fontify-natively t
       org-src-tab-acts-natively t
       org-confirm-babel-evaluate nil
@@ -2054,7 +1815,6 @@ folder, otherwise delete a word"
      (custom-set-variables `(org-emphasis-alist ',org-emphasis-alist))))
 
 (use-package org-download
-  :ensure t
   :after org
 
   :defer nil
@@ -2071,7 +1831,6 @@ folder, otherwise delete a word"
   (require 'org-download))
 
 (use-package org-roam
-  :ensure t
   :init
   (setq org-roam-v2-ack t)
   (setq org-roam-dailies-directory "~/Documents/roam/journal/")
@@ -2175,7 +1934,6 @@ folder, otherwise delete a word"
 
 
 (use-package lsp-mode
-  :ensure t
   :commands (lsp lsp-deferred)
 
 
@@ -2218,7 +1976,6 @@ folder, otherwise delete a word"
 
 
 (use-package lsp-ui
-  :ensure t
   :config (setq lsp-ui-sideline-show-hover t
                 lsp-ui-doc-frame-mode t
                 lsp-ui-sideline-delay 3
@@ -2234,10 +1991,7 @@ folder, otherwise delete a word"
   :commands lsp-ui-mode
   )
 
-(use-package rubocop)
-
 (use-package apheleia
-  :ensure t
   :config
   (apheleia-global-mode +1)
   (add-to-list 'apheleia-mode-alist '(python-mode . (ruff isort)))
@@ -2247,12 +2001,10 @@ folder, otherwise delete a word"
   )
 
 (use-package flycheck
-  :ensure t
   :defer t
   :hook (lsp-mode . flycheck-mode))
 
 (use-package yasnippet                  ; Snippets
-  :ensure t
   :hook (prog-mode . yas-minor-mode)
   :config
 
@@ -2262,7 +2014,6 @@ folder, otherwise delete a word"
   )
 (use-package yasnippet-snippets         ; Collection of snippets
   :after yasnippet
-  :ensure t
   :config (yasnippet-snippets-initialize)
 
   )
@@ -2318,7 +2069,6 @@ folder, otherwise delete a word"
   )
 
 (use-package smartparens
-  :ensure t
   :config
                                         ;  (use-package smartparens-config)
   (require 'smartparens-config)
@@ -2336,7 +2086,6 @@ folder, otherwise delete a word"
   :hook (prog-mode . smartparens-mode))
 
 (use-package rainbow-delimiters
-  :ensure t
   :hook (prog-mode . rainbow-delimiters-mode)
   )
 
@@ -2348,7 +2097,6 @@ folder, otherwise delete a word"
 
 
 (use-package highlight-indent-guides
-  :ensure t
   :init
   (setq highlight-indent-guides-auto-enabled nil)
   (setq highlight-indent-guides-method 'character)
@@ -2366,79 +2114,12 @@ folder, otherwise delete a word"
 
   )
 
-;; (use-package dash
-;;   :ensure t
 
-;;   )
 
-;; ;; Origami code folding
-;; (use-package origami
-;;   :ensure t
-;;   :commands origami-mode
-;;   :config
 
-;;   (global-origami-mode 1)
-
-;;   (progn
-;;     (add-hook 'prog-mode-hook 'origami-mode)
-;;     (with-eval-after-load 'hydra
-;;       (define-key origami-mode-map (kbd "C-x f")
-;;         (defhydra hydra-folding (:color red :hint nil)
-;;           "
-;; _o_pen node    _n_ext fold       toggle _f_orward    _F_ill column: %`fill-column
-;; _c_lose node   _p_revious fold   toggle _a_ll        e_x_it
-;; "
-;;           ("o" origami-open-node)
-;;           ("c" origami-close-node)
-;;           ("n" origami-next-fold)
-;;           ("p" origami-previous-fold)
-;;           ("f" origami-forward-toggle-node)
-;;           ("a" origami-toggle-all-nodes)
-;;           ("F" fill-column)
-;;           ("x" nil :color blue))))))
-
-;; (use-package hideshow
-;;   :ensure t
-;;   :config
-;;   (defun hs-cycle (&optional level)
-;;     (interactive "p")
-;;     (let (message-log-max
-;;           (inhibit-message t))
-;;       (if (= level 1)
-;;           (pcase last-command
-;;             ('hs-cycle
-;;              (hs-hide-level 1)
-;;              (setq this-command 'hs-cycle-children))
-;;             ('hs-cycle-children
-;;              ;; TODO: Fix this case. `hs-show-block' needs to be
-;;              ;; called twice to open all folds of the parent
-;;              ;; block.
-;;              (save-excursion (hs-show-block))
-;;              (hs-show-block)
-;;              (setq this-command 'hs-cycle-subtree))
-;;             ('hs-cycle-subtree
-;;              (hs-hide-block))
-;;             (_
-;;              (if (not (hs-already-hidden-p))
-;;                  (hs-hide-block)
-;;                (hs-hide-level 1)
-;;                (setq this-command 'hs-cycle-children))))
-;;         (hs-hide-level level)
-;;         (setq this-command 'hs-hide-level))))
-
-;;   (defun hs-global-cycle ()
-;;     (interactive)
-;;     (pcase last-command
-;;       ('hs-global-cycle
-;;        (save-excursion (hs-show-all))
-;;        (setq this-command 'hs-global-show))
-;;       (_ (hs-hide-all))))
-
-;;   )
 
 (use-package multiple-cursors
   ;;  :disabled
-  :ensure t
   :defer nil
   :config
 
@@ -2461,20 +2142,9 @@ folder, otherwise delete a word"
   (add-hook 'text-mode-hook 'flyspell-mode)
   )
 
-;; (use-package ghub
-;;   :ensure t
 
-
-;;   )
-
-;; (use-package ghub+
-;;   :ensure t
-
-
-;;   )
 
 (use-package magit
-  :ensure t
   :demand t
   :bind ( ("s-g" . magit-status))
   ;; :commands (magit-status magit-get-current-branch)
@@ -2484,36 +2154,12 @@ folder, otherwise delete a word"
 
   )
 
-;; (use-package git-commit
-;;   :ensure t
-;;   :after magit
-;;   :config
-;;   (setq git-commit-summary-max-length 50)
-;;   (setq git-commit-known-pseudo-headers
-;;         '("Signed-off-by"
-;;           "Acked-by"
-;;           "Modified-by"
-;;           "Cc"
-;;           "Suggested-by"
-;;           "Reported-by"
-;;           "Tested-by"
-;;           "Reviewed-by"))
-;;   (setq git-commit-style-convention-checks
-;;         '(non-empty-second-line
-;;           overlong-summary-line)))
-
 
 (use-package git-timemachine
-  :ensure t
   :commands git-timemachine)
 
-;; (use-package forge
-;;   :ensure t
-;;   :after magit)
-
 ;; (use-package magit-todos
-;;   :ensure t
-
+;; 
 ;;   :defer t)
 
 ;; (defun dw/switch-project-action ()
@@ -2535,7 +2181,6 @@ folder, otherwise delete a word"
   )
 
 (use-package py-isort
-  :ensure t
   :after python
   )
 
@@ -2548,14 +2193,12 @@ folder, otherwise delete a word"
 
                                         ; direnv mode allows automatic loading of direnv variables
 (use-package direnv
-  :ensure t
   :config
   (direnv-mode))
 
 
 
 (use-package pyvenv
-  :ensure t
   :config
 
   (pyvenv-tracking-mode 1)
@@ -2597,7 +2240,6 @@ folder, otherwise delete a word"
   )
 
 (use-package sphinx-doc
-  :ensure t
   :hook (python-mode . sphinx-doc-mode)
   :config
   (setq sphinx-doc-include-types t)
@@ -2618,8 +2260,7 @@ folder, otherwise delete a word"
 (use-package stan-mode
   :straight
   (:host github :repo "stan-dev/stan-mode" :branch "master" :files ("stan-mode/stan-mode.el" "stan-mode/stan-keywords.el"))
-  ;;  :ensure t
-  :mode (("\\.stan\\'" . stan-mode)
+  ;;  :mode (("\\.stan\\'" . stan-mode)
          ("\\.stanfunctions\\'" . stan-mode))
   :hook (stan-mode . stan-mode-setup)
 
@@ -2629,7 +2270,6 @@ folder, otherwise delete a word"
 
 
 (use-package company-stan
-  :ensure t
   :hook (stan-mode . company-stan-setup)
   ;;
   :config
@@ -2638,7 +2278,6 @@ folder, otherwise delete a word"
 
 
 (use-package eldoc-stan
-  :ensure t
   :hook (stan-mode . eldoc-stan-setup)
   ;;
   :config
@@ -2648,7 +2287,6 @@ folder, otherwise delete a word"
 
 (use-package flycheck-stan
   ;; Add a hook to setup `flycheck-stan' upon `stan-mode' entry
-  :ensure t
   :hook ((stan-mode . flycheck-stan-stanc2-setup)
          (stan-mode . flycheck-stan-stanc3-setup))
   :config
@@ -2661,7 +2299,6 @@ folder, otherwise delete a word"
 
 
 (use-package stan-snippets
-  :ensure t
   :hook (stan-mode . stan-snippets-initialize)
   ;;
   :config
@@ -2669,22 +2306,8 @@ folder, otherwise delete a word"
   )
 
     ;;; ac-stan.el (Not on MELPA; Need manual installation)
-;; (use-package ac-stan
-;;   :load-path "path-to-your-directory/ac-stan/"
-;;   ;; Delete the line below if using.
-;;   :disabled t
-;;   :hook (stan-mode . stan-ac-mode-setup)
-;;   ;;
-;;   :config
-;;   ;; No configuration options as of now.
-;;   )
-
-
-;;   ;; No configuration options as of now.
-;;   )
 
 (use-package julia-mode
-  :ensure t
   )
 
 (use-package lsp-julia
@@ -2692,18 +2315,17 @@ folder, otherwise delete a word"
   (setq lsp-julia-default-environment "~/.julia/environments/v1.7"))
 
 (use-package yaml-mode
-  :ensure t
   :mode ("\\.yml$" . yaml-mode)
   )
 
 (use-package auctex
   :defer t
-  :ensure t)
+  )
 
 
 (use-package reftex
   :defer t
-  :ensure t)
+  )
 
 
 
@@ -2797,17 +2419,14 @@ folder, otherwise delete a word"
 
 
 (use-package docker-compose-mode
-  :ensure t
 
   )
 
 (use-package json-mode
-  :ensure t
 
   )
 
 (use-package clojure-mode
-  :ensure t
   :mode (("\\.clj\\'" . clojure-mode)
          ("\\.edn\\'" . clojure-mode))
   :init
@@ -2820,12 +2439,10 @@ folder, otherwise delete a word"
 
 (use-package clj-refactor
   :defer t
-  :ensure t
   :diminish clj-refactor-mode
   :config (cljr-add-keybindings-with-prefix "C-c C-m"))
 
 (use-package cider
-  :ensure t
   :defer t
   :init (add-hook 'cider-mode-hook #'clj-refactor-mode)
   :diminish subword-mode
@@ -2878,279 +2495,9 @@ folder, otherwise delete a word"
 ;; load mu4e from the installation path.
 ;; yours might differ check with the Emacs installation
 
-;; (use-package htmlize
-;;   :ensure t
-;;   )
 
-;; (use-package org-mime
-;;   :ensure t
-;;   )
-
-;; (use-package mu4e
-;;   :load-path  " /opt/homebrew/share/emacs/site-lisp/mu/mu4e/"
-;;   :straight nil
-
-;;   :config
-
-;;   (require 'org-mime)
-
-;;   ;; for sending mails
-;;   (require 'smtpmail)
-
-
-;;   ;; we installed this with homebrew
-;;   (setq mu4e-mu-binary (executable-find "mu"))
-
-;;   ;; this is the directory we created before:
-;;   (setq mu4e-maildir "~/.maildir")
-
-;;   ;; this command is called to sync imap servers:
-;;   (setq mu4e-get-mail-command (concat (executable-find "mbsync") " -a"))
-;;   ;; how often to call it in seconds:
-;;   (setq mu4e-update-interval (* 2 60))
-
-;;   (setq mu4e-index-update-error-warning nil)
-;;   ;; save attachment to desktop by default
-;;   ;; or another choice of yours:
-;;   (setq mu4e-attachment-dir "~/Downloads")
-
-;;   ;; rename files when moving - needed for mbsync:
-;;   (setq mu4e-change-filenames-when-moving t)
-
-;;   ;; list of your email adresses:
-;;   (setq mu4e-user-mail-address-list '("jmichaelburgess@gmail.com"
-;;                                       "jburgess@mpe.mpg.de"
-;;                                       ))
-
-
-;;   ;; check your ~/.maildir to see how the subdirectories are called
-;;   ;; for the generic imap account:
-;;   ;; e.g `ls ~/.maildir/example'
-;;   (setq   mu4e-maildir-shortcuts
-;;           '(
-
-;;             ("/gmail/INBOX" . ?g)
-;;             ("/gmail/[Gmail]/Sent Mail" . ?G)
-;;             ("/mpe/INBOX" . ?m)
-;;             ("/mpe/Sent" . ?M)))
-
-
-
-
-
-
-;;   (setq mu4e-contexts
-;;         `(
-;;           ,(make-mu4e-context
-;;             :name "gmail"
-;;             :enter-func
-;;             (lambda () (mu4e-message "Enter jmichaelburgess@gmail.com context"))
-;;             :leave-func
-;;             (lambda () (mu4e-message "Leave jmichaelburgess@gmail.com context"))
-;;             :match-func
-;;             (lambda (msg)
-;;               (when msg
-;;                 (mu4e-message-contact-field-matches msg
-;;                                                     :to "jmichaelburgess@gmail.com")))
-;;             :vars '((user-mail-address . "jmichaelburgess@gmail.com")
-;;                     (user-full-name . "J. Michael Burgess")
-;;                     (mu4e-drafts-folder . "/gmail/Drafts")
-;;                     (mu4e-refile-folder . "/gmail/Archive")
-;;                     (mu4e-sent-folder . "/gmail/Sent")
-;;                     (mu4e-trash-folder . "/gmail/Trash")
-;;                     (mu4e-compose-signature  .
-;;                                              (concat
-;;                                               "-----\n"
-;;                                               "/J. Michael\n"
-;;                                               "sent from emacs without a mouse\n"))
-;;                     )
-;;             )
-
-;;           ,(make-mu4e-context
-;;             :name "mpe"
-;;             :enter-func
-;;             (lambda () (mu4e-message "Enter jburgess@mpe.mpg.de context"))
-;;             :leave-func
-;;             (lambda () (mu4e-message "Leave jburgess@mpe.mpg.de context"))
-;;             :match-func
-;;             (lambda (msg)
-;;               (when msg
-;;                 (mu4e-message-contact-field-matches msg
-;;                                                     :to "jburgess@mpe.mpg.de")))
-;;             :vars '((user-mail-address . "jburgess@mpe.mpg.de")
-;;                     (user-full-name . "J. Michael Burgess")
-
-;;                     (mu4e-compose-signature  .
-;;                                              (concat
-;;                                               "-----\n"
-;;                                               "/J. Michael\n"
-;;                                               "sent from emacs without a mouse\n"))
-;;                     (mu4e-drafts-folder . "/mpe/Drafts")
-;;                     (mu4e-refile-folder . "/mpe/Archive")
-;;                     (mu4e-sent-folder . "/mpe/Sent")
-;;                     (mu4e-trash-folder . "/mpe/Trash")))))
-
-;;   (setq mu4e-context-policy 'pick-first) ;; start with the first (default) context;
-;;   (setq mu4e-compose-context-policy 'ask) ;; ask for context if no context matches;
-
-
-
-;;   ;; gpg encryptiom & decryption:
-;;   ;; this can be left alone
-;;   (require 'epa-file)
-;;   (epa-file-enable)
-;;   (setq epa-pinentry-mode 'loopback)
-;;   (auth-source-forget-all-cached)
-
-;;   ;; don't keep message compose buffers around after sending:
-;;   (setq message-kill-buffer-on-exit t)
-
-;;   ;; send function:
-;;   (setq send-mail-function 'sendmail-send-it
-;;         message-send-mail-function 'sendmail-send-it)
-
-;;   ;; send program:
-;;   ;; this is exeranal. remember we installed it before.
-;;   (setq sendmail-program (executable-find "msmtp"))
-
-;;   ;; select the right sender email from the context.
-;;   (setq message-sendmail-envelope-from 'header)
-
-;;   ;; chose from account before sending
-;;   ;; this is a custom function that works for me.
-;;   ;; well I stole it somewhere long ago.
-;;   ;; I suggest using it to make matters easy
-;;   ;; of course adjust the email adresses and account descriptions
-;;   (defun timu/set-msmtp-account ()
-;;     (if (message-mail-p)
-;;         (save-excursion
-;;           (let*
-;;               ((from (save-restriction
-;;                        (message-narrow-to-headers)
-;;                        (message-fetch-field "from")))
-;;                (account
-;;                 (cond
-
-;;                  ((string-match "jmichaelburgess@gmail.com" from) "gmail")
-;;                  ((string-match "jburgess@mpe.mpg.de" from) "example"))))
-;;             (setq message-sendmail-extra-arguments (list '"-a" account))))))
-
-;;   (add-hook 'message-send-mail-hook 'timu/set-msmtp-account)
-
-;;   ;; mu4e cc & bcc
-;;   ;; this is custom as well
-;;   (add-hook 'mu4e-compose-mode-hook
-;;             (defun timu/add-cc-and-bcc ()
-;;               "My Function to automatically add Cc & Bcc: headers.
-;;     This is in the mu4e compose mode."
-;;               (save-excursion (message-add-header "Cc:\n"))
-;;               (save-excursion (message-add-header "Bcc:\n"))))
-
-;;   ;; mu4e address completion
-;;   (add-hook 'mu4e-compose-mode-hook 'company-mode)
-
-
-;;   ;; store link to message if in header view, not to header query:
-;;   (setq org-mu4e-link-query-in-headers-mode nil)
-;;   ;; don't have to confirm when quitting:
-;;   (setq mu4e-confirm-quit nil)
-;;   ;; number of visible headers in horizontal split view:
-;;   (setq mu4e-headers-visible-lines 20)
-;;   ;; don't show threading by default:
-;;   (setq mu4e-headers-show-threads t)
-;;   ;; hide annoying "mu4e Retrieving mail..." msg in mini buffer:
-;;   (setq mu4e-hide-index-messages t)
-;;   ;; customize the reply-quote-string:
-;;   (setq message-citation-line-format "%N @ %Y-%m-%d %H:%M :\n")
-;;   ;; M-x find-function RET message-citation-line-format for docs:
-;;   (setq message-citation-line-function 'message-insert-formatted-citation-line)
-;;   ;; by default do not show related emails:
-;;   (setq mu4e-headers-include-related nil)
-;;   ;; by default do not show threads:
-;;   (setq mu4e-headers-show-threads nil)
-;;   :init
-
-
-
-;;   (setq org-mu4e-convert-to-html t)
-
-;;   (setq org-mime-export-options '(:section-numbers nil
-;;                                                    :with-author nil
-;;                                                    :with-toc nil))
-
-;;   (add-hook 'org-mime-html-hook
-;;             (lambda ()
-;;               (org-mime-change-element-style
-;;                "pre" (format "color: %s; background-color: %s; padding: 0.5em;"
-;;                              "#5EFFA5" "#211F20"))))
-
-;;   (global-set-key [f6] 'mu4e)
-;;   )
-
-;; (use-package mu4e-column-faces
-;;   :ensure t
-;;   :after mu4e
-;;   :config (mu4e-column-faces-mode 1))
-
-
-;; (use-package mu4e-thread-folding
-;;   :straight (mu4e-thread-folding :type git :host github :repo "rougier/mu4e-thread-folding")
-;;   :init
-;;   (add-to-list 'mu4e-header-info-custom
-;;                '(:empty . (:name "Empty"
-;;                                  :shortname ""
-;;                                  :function (lambda (msg) "  "))))
-;;   (setq mu4e-headers-fields '((:empty         .    1)
-;;                               (:human-date    .   12)
-;;                               (:from          .   22)
-;;                               (:flags         .    6)
-;;                               (:mailing-list  .   10)
-
-;;                               (:subject       .   nil)))
-;;   :config
-
-;;   (define-key mu4e-headers-mode-map (kbd "<tab>")     'mu4e-headers-toggle-at-point)
-;;   (define-key mu4e-headers-mode-map (kbd "<left>")    'mu4e-headers-fold-at-point)
-;;   (define-key mu4e-headers-mode-map (kbd "<S-left>")  'mu4e-headers-fold-all)
-;;   (define-key mu4e-headers-mode-map (kbd "<right>")   'mu4e-headers-unfold-at-point)
-;;   (define-key mu4e-headers-mode-map (kbd "<S-right>") 'mu4e-headers-unfold-all)
-
-;;   )
-
-;; (use-package mu4e-marker-icons
-;;   :ensure t
-;;   :init (mu4e-marker-icons-mode 1))
-
-;; (use-package slack
-;;   :commands (slack-start)
-;;   :init
-;;   (setq slack-buffer-emojify t) ;; if you want to enable emoji, default nil
-;;   (setq slack-prefer-current-team t)
-;;   :config
-
-;;   (slack-register-team
-;;    :name "hemato"
-;;    :default t
-;;    :token (auth-source-pick-first-password
-;;            :host "hema-to.slack.com"
-;;            :user "jmichael@hema.to")
-;;    :cookie (auth-source-pick-first-password
-;;             :host "hema-to.slack.com"
-;;             :user "jmichael@hema.to^cookie")
-
-;;    :subscribed-channels '(general ml_club office tech research off-topic)
-;;    :full-and-display-names t)
-
-
-;;   )
-
-;; (use-package alert
-;;   :commands (alert)
-;;   :init
-;;   (setq alert-default-style 'osx-notifier))
 
 (use-package redacted
-  :ensure t
   :straight
   (:host github :repo "bkaestner/redacted.el" :branch "main" :files ("*.el"))
   :init
@@ -3158,14 +2505,12 @@ folder, otherwise delete a word"
   )
 
 (use-package darkroom
-  :ensure t
   :commands darkroom-mode
   :defer t
   :config
   (setq darkroom-text-scale-increase 0))
 
 (use-package focus
-  :ensure t
   :defer t
   )
 
@@ -3183,11 +2528,9 @@ folder, otherwise delete a word"
   )
 
 (use-package visual-fill-column
-  :ensure t
   )
 
 (use-package rainbow-identifiers
-  :ensure t
   )
 
 
@@ -3220,11 +2563,9 @@ folder, otherwise delete a word"
                                         ;  (define-key global-map (kbd "f12") telega-prefix-map)
 
 (use-package csv-mode
-  :ensure t
   )
 
 (use-package elfeed-org
-  :ensure t
   :config
   (elfeed-org)
   (setq rmh-elfeed-org-files (list "~/org/rss.org"))
@@ -3299,7 +2640,6 @@ concatenated."
 
 
 (use-package elfeed
-  :ensure t
   :config
   ;;  (global-set-key (kbd "C-x w") 'elfeed)
 
@@ -3310,7 +2650,6 @@ concatenated."
 
 
 (use-package elfeed-score
-  :ensure t
   :config
 
 
@@ -3460,8 +2799,7 @@ concatenated."
   (process-lines "pytunes" "previous"))
 
 ;; (use-package chatgpt-shell
-;;   :ensure t
-;;   :config
+;; ;;   :config
 ;;   (setq chatgpt-shell-openai-key
 ;;         (auth-source-pick-first-password :host "api.openai.com"))
 ;;   )
@@ -3477,56 +2815,11 @@ concatenated."
 ;;   )
 
 (use-package regex-tool
-  :ensure t
   :config
   (setq regex-tool-backend "Perl")
   )
 
-;; (use-package erc-hl-nicks
-;;   :after erc)
 
-;; (use-package erc-image
-;;   :after erc)
-
-
-;; (use-package erc
-;;   :commands erc
-;;   :config
-;;   (setq erc-server "localhost"
-;;         erc-nick "jburgess"    ; Change this!
-;;         erc-user-full-name "J Michael Burgess"  ; And this!
-;;         erc-track-shorten-start 8
-;;         erc-track-position-in-mode-line t
-;;                                         ;        erc-autojoin-channels-alist '((""))
-;;         erc-kill-buffer-on-part t
-;;         erc-auto-query 'bury
-;;         erc-track-exclude-types '("JOIN" "NICK" "PART" "QUIT" "MODE"
-;;                                   "324" "329" "332" "333" "353" "477")
-;;                                         ;erc-join-buffer 'bury
-;;         erc-modules
-;;         '(autoaway autojoin button completion fill irccontrols keep-place
-;;                    list match menu move-to-prompt netsplit networks noncommands
-;;                    readonly ring stamp track hl-nicks))
-
-
-
-
-
-
-;;   (defvar bitlbee-password "slapitup")
-
-;;   (add-hook 'erc-join-hook 'bitlbee-identify)
-;;   (defun bitlbee-identify ()
-;;     "If we're on the bitlbee server, send the identify command to the
-;;  &bitlbee channel."
-;;     (when (and (string= "localhost" erc-session-server)
-;;                (string= "&bitlbee" (buffer-name)))
-;;       (erc-message "PRIVMSG" (format "%s identify %s"
-;;                                      (erc-default-target)
-;;                                      bitlbee-password))))
-
-
-;;   )
 
 (defun jmb/apply-theme (&optional frame)
   "Load the primary theme. Daemon-safe: called per new frame."
