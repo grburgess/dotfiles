@@ -1,1 +1,3 @@
-
+# Emacs byte-compile artifacts — never auto-add to source.
+.config/emacs/*.elc
+.config/emacs/eln-cache/**
