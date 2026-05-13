@@ -3,259 +3,35 @@
 #   / // __| '_ \| '__/ __|
 #  / /_\__ \ | | | | | (__
 # /____|___/_| |_|_|  \___|
+#
+# Thin orchestrator. Logic lives in the modules below.
 
-
+# Non-interactive / dumb terminal short-circuit.
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 
-# ============================================================================
-# PATH Configuration
-# ============================================================================
-{{ if eq .chezmoi.os "darwin" }}
-export PATH="/opt/homebrew/bin:$PATH"
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-export PATH="${PATH}:${HOME}/.cargo/bin"
-export PATH="${PATH}:/Users/jburgess/.local/bin"
-{{ else if eq .chezmoi.os "linux" }}
-export PATH="/usr/local/sbin:/usr/local/bin:${PATH}"
-{{ if eq .chezmoi.osRelease.id "raspbian" }}
-export PATH="${PATH}:~/.local/bin"
-{{ else }}
-export PATH="${PATH}:/home/jburgess/.local/bin"
-{{ end }}
-{{ end }}
-source ~/.config/zsh/prompt.zsh
+zsh_dir="${HOME}/.config/zsh"
 
+source "${zsh_dir}/env.zsh"          # PATH + env vars
+source "${zsh_dir}/options.zsh"      # setopt / history / bindkey
+source "${zsh_dir}/prompt.zsh"       # prompt overrides
+source "${zsh_dir}/plugins.zsh"      # zinit + plugins
+source "${zsh_dir}/completion.zsh"   # compinit + zstyle (needs zinit loaded)
+source "${zsh_dir}/fzf.zsh"          # FZF_* + shell integration
+source "${zsh_dir}/tools.zsh"        # mise / zoxide / direnv / iterm2 / gcloud
+source "${zsh_dir}/functions.zsh"    # shmux, periodic_remote_rsync
+source "${zsh_dir}/emacs.zsh"        # emacsclient wrappers
+source "${zsh_dir}/alias.zsh"        # aliases
+source "${zsh_dir}/highlight.zsh"    # syntax-highlight styles
 
-ZSH_DISABLE_COMPFIX='true'
-CASE_SENSITIVE="false"
-HYPHEN_INSENSITIVE="true"
-DISABLE_AUTO_UPDATE="false"
+# Secrets — rendered from 1Password by chezmoi (private_* prefix → 0600 perms).
+source "${zsh_dir}/github_token.zsh"
+source "${zsh_dir}/wandb.zsh"
+source "${zsh_dir}/hf_token.zsh"
+source "${zsh_dir}/boston_tile_source_v2_auth.zsh"
+source "${zsh_dir}/boston_tile_coverage_auth.zsh"
+source "${zsh_dir}/google_geocoding_api_key.zsh"
 
+# Micromamba init must come last.
+source "${zsh_dir}/micromamba.zsh"
 
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=100000
-SAVEHIST=100000
-
-setopt appendhistory autocd extendedglob sharehistory
-setopt hist_ignore_all_dups hist_ignore_space hist_reduce_blanks hist_verify
-unsetopt notify
-
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-
-# Define a function to SSH into a server and start a tmux session
-shmux() {
-    # Check if an argument is provided
-    if [ $# -eq 0 ]; then
-        echo "Usage: shmux <username@hostname>"
-        return 1
-    fi
-    
-    # Extract the username and hostname from the argument
-    local server=$1
-
-    # SSH into the server and start tmux
-    ssh -t "$server" 'tmux -CC new -A -s main'
-}
-
-# Preferred editor for local and remote sessions
-export EDITOR='emacs'
-
-# VENV Python
-export WORKON_HOME=~/.environs
-
-{{ if eq .chezmoi.os "linux" }}
-{{ if ne .chezmoi.osRelease.id "raspbian" }}
-VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-export WORKON_HOME=~/.environs
-source ~/.local/bin/virtualenvwrapper.sh
-{{ end }}
-{{ end }}
-
-# local
-export ATOMDB=~/.threeml/atomdb
-export OMP_NUM_THREADS=1
-export MKL_NUM_THREADS=1
-export NUMEXPR_NUM_THREADS=1
-
-{{ if eq .chezmoi.os "darwin" }}
-export CMDSTAN=/Users/jburgess/.cmdstanpy/cmdstan
-{{ else if eq .chezmoi.os "linux" }}
-export CMDSTAN=/home/jburgess/.cmdstan/cmdstan
-{{ else }}
-{{ end }}
-
-bindkey -e
-
-test -e "${HOME}/.config/zsh/.iterm2_shell_integration.zsh" && source "${HOME}/.config/zsh/.iterm2_shell_integration.zsh"
-
-{{ if eq .chezmoi.os "darwin" }}
-
-export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:~/sw/lib
-
-# End of lines configured by zsh-newuser-install
-
-{{ end }}
-# HDF5 version check
-export HDF5_DISABLE_VERSION_CHECK=1
-export ITERM_ENABLE_SHELL_INTEGRATION_WITH_TMUX=YES
-
-{{ if eq .chezmoi.os "darwin" }}
-export HDF5_DIR="$(brew --prefix hdf5)"
-{{ end }}
-
-source ~/.config/zsh/plugins.zsh
-source ~/.config/zsh/emacs.zsh
-source ~/.config/zsh/alias.zsh
-source ~/.config/zsh/github_token.zsh
-source ~/.config/zsh/wandb.zsh
-
-export LS_COLORS="*.rsp=32:*.rsp2=32:*.h5=34:*.pha=33:*.fits=33;01:*.py=32;01:*.ipynb=36"
-
-{{ if eq .chezmoi.os "linux" }}
-export FZF_DEFAULT_COMMAND='fdfind -HI -L --exclude .git --color=always'
-{{ else }}
-export FZF_DEFAULT_COMMAND='fd -HI -L --exclude .git --color=always'
-{{ end }}
-
-export FZF_DEFAULT_OPTS="
-  --ansi
-  --height 80%
-  --reverse
-  --multi
-  --color fg:#19C78B,bg:#37004F,hl:#FF2387,fg+:#CDCDCD,bg+:#37004F,hl+:#1FF98C
-"
-
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /dev/null || lsd --tree --color=always {}) 2> /dev/null | head -200'"
-export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
-export FZF_ALT_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
-
-export FZ_HISTORY_CD_CMD=z
-
-periodic_remote_rsync() {
-    local remote_host="$1"
-    local remote_source_file="$2"
-    local local_destination="$3"
-    local interval="$4"
-
-    if [[ -z "$remote_host" || -z "$remote_source_file" || -z "$local_destination" || -z "$interval" ]]; then
-        echo "Usage: periodic_remote_rsync <remote_host> <remote_source_file> <local_destination> <interval_in_seconds>"
-        return 1
-    fi
-
-    while true; do
-        rsync -av "$remote_host:$remote_source_file" "$local_destination"
-        sleep "$interval"
-    done
-}
-
-{{ if eq .chezmoi.os "darwin" }}
-FPATH=$(brew --prefix)/share/zsh/site-functions:~/sw/mac-zsh-completions:$FPATH
-
-# Add Docker completions if Docker.app is installed
-if [ -d "/Applications/Docker.app/Contents/Resources/etc" ]; then
-  FPATH=/Applications/Docker.app/Contents/Resources/etc:$FPATH
-fi
-
-zstyle ':completion:*' completer _complete _match _approximate
-zstyle ':completion:*:match:*' original only
-zstyle ':completion:*:approximate:*' max-errors 1 numeric
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-zstyle ':completion:*' menu select
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*:*:*:*:*' group-name ''
-zstyle ':completion:*' squeeze-slashes true
-zstyle ':completion:*:git-checkout:*' sort true
-zstyle ':completion:*:descriptions' format '[%d]'
-
-# File completion settings
-zstyle ':completion:*' file-sort modification
-zstyle ':completion:*' list-dirs-first true
-
-# fzf-tab settings
-zstyle ':fzf-tab:complete:cd:*' fzf-preview "lsd -1 --color=always $realpath"
-zstyle ':fzf-tab:*' fzf-preview 'bat --color=always ${realpath} 2>/dev/null || lsd -1 --color=always ${realpath}'
-zstyle ':fzf-tab:*' accept-line enter
-zstyle ':fzf-tab:*' continuous-trigger '/'
-{{ else}}
-source ~/sw/fzf-tab-completion/zsh/fzf-zsh-completion.sh
-bindkey '^I' fzf_completion
-
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*:*:git:*' fzf-search-display true
-zstyle ':completion:*' fzf-search-display true
-zstyle ':completion:*' menu select
-{{ end }}
-
-
-autoload -Uz compinit promptinit
-promptinit
-
-# Cache compinit for faster startup (once per day)
-if [[ ! -f ${ZDOTDIR}/.zcompdump || -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-  compinit
-else
-  compinit -C
-fi
-
-zinit cdreplay -q   # -q is for quiet; actually run all the `compdef's saved before
-                    #`compinit` call (`compinit' declares the `compdef' function, so
-                    # it cannot be used until `compinit' is ran; Zinit solves this
-                    # via intercepting the `compdef'-calls and storing them for later
-                    # use with `zinit cdreplay')
-
-{{ if eq .chezmoi.os "darwin" }}
-# Load fzf-tab after compinit (required for proper completion)
-zinit light Aloxaf/fzf-tab
-{{ end }}
-
-export PURE_PROMPT_SYMBOL=⚥
-
-{{ if eq .chezmoi.os "darwin" }}
-# Modern development tools
-eval "$(mise activate zsh)"
-eval "$(zoxide init zsh)"
-
-# History substring search keybindings
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-# Also bind vim mode keys
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
-
-eval "$(direnv hook zsh)"
-
-source $(brew --prefix)/opt/fzf/shell/key-bindings.zsh
-source $(brew --prefix)/opt/fzf/shell/completion.zsh
-
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/jburgess/sw/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/jburgess/sw/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/jburgess/sw/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/jburgess/sw/google-cloud-sdk/completion.zsh.inc'; fi
-
-
-{{ end }}
-
-{{ if eq .chezmoi.os "darwin" }}
-# M1 Max Optimizations for Numba/OpenBLAS
-export NUMBA_NUM_THREADS=8          # Use all P-cores
-export OPENBLAS_NUM_THREADS=8        # OpenBLAS threads
-export NUMBA_THREADING_LAYER=omp     # Threading backend
-{{ end }}
-
-# >>> mamba initialize >>>
-# !! Contents within this block are managed by 'micromamba shell init' !!
-export MAMBA_EXE='{{ .chezmoi.homeDir }}/.local/bin/micromamba';
-export MAMBA_ROOT_PREFIX='{{ .chezmoi.homeDir }}/micromamba';
-__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__mamba_setup" 2>/dev/null
-else
-    alias micromamba="$MAMBA_EXE"  # Fallback on help from micromamba activate
-fi
-unset __mamba_setup
-# <<< mamba initialize <<<
+unset zsh_dir
