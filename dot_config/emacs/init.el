@@ -1032,7 +1032,7 @@ folder, otherwise delete a word"
                                         ;(setq centaur-tabs-adjust-buffer-order 'right)
 
 
-  (centaur-tabs-group-by-project-name)
+  (centaur-tabs-group-buffer-groups)
 
 
   (defun centaur-tabs-hide-tab (x)

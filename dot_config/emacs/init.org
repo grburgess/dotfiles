@@ -1423,7 +1423,7 @@ Allows to jump into a a directory within the minibuffer
                                         ;(setq centaur-tabs-adjust-buffer-order 'right)
 
 
-  (centaur-tabs-group-by-project-name)
+  (centaur-tabs-group-buffer-groups)
 
 
   (defun centaur-tabs-hide-tab (x)
