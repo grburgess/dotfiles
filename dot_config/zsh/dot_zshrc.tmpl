@@ -313,6 +313,8 @@ fi
 unset __conda_setup
 
 if [ -f "/opt/homebrew/Caskroom/mambaforge/base/etc/profile.d/mamba.sh" ]; then
+    export MAMBA_EXE='/opt/homebrew/bin/mamba'
+    export MAMBA_ROOT_PREFIX='/opt/homebrew/Caskroom/mambaforge/base'
     . "/opt/homebrew/Caskroom/mambaforge/base/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
