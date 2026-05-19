@@ -19,8 +19,8 @@ export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 export FZF_ALT_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
 
-# fz history cd command (works with zoxide).
-export FZ_HISTORY_CD_CMD=z
+# fz history cd command — use zsh-z's function directly; the `z` alias is shadowed by fz.
+export FZ_HISTORY_CD_CMD=zshz
 
 {{ if eq .chezmoi.os "darwin" }}
 # Brew fzf shell integration (key bindings + completion).
