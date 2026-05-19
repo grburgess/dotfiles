@@ -4,3 +4,7 @@
 .config/zsh/.#*
 .config/zsh/.claude/**
 .config/zsh/.zsh_history
+
+# Emacs byte-compile artifacts — never auto-add to source.
+.config/emacs/*.elc
+.config/emacs/eln-cache/**
