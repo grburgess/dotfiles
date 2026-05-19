@@ -1,0 +1,32 @@
+# fzf configuration and shell integration.
+
+{{ if eq .chezmoi.os "linux" }}
+export FZF_DEFAULT_COMMAND='fdfind -HI -L --exclude .git --color=always'
+{{ else }}
+export FZF_DEFAULT_COMMAND='fd -HI -L --exclude .git --color=always'
+{{ end }}
+
+export FZF_DEFAULT_OPTS="
+  --ansi
+  --height 80%
+  --reverse
+  --multi
+  --color fg:#19C78B,bg:#37004F,hl:#FF2387,fg+:#CDCDCD,bg+:#37004F,hl+:#1FF98C
+"
+
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS="--preview '(bat --theme ansi-dark --color always {} 2> /dev/null || lsd --tree --color=always {}) 2> /dev/null | head -200'"
+export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
+export FZF_ALT_C_OPTS="--preview 'lsd --tree --color=always {} | head -200'"
+
+# fz history cd command (works with zoxide).
+export FZ_HISTORY_CD_CMD=z
+
+{{ if eq .chezmoi.os "darwin" }}
+# Brew fzf shell integration (key bindings + completion).
+if command -v fzf >/dev/null 2>&1; then
+    fzf_share="$(brew --prefix)/opt/fzf/shell"
+    [[ -f "$fzf_share/key-bindings.zsh" ]] && source "$fzf_share/key-bindings.zsh"
+    [[ -f "$fzf_share/completion.zsh" ]] && source "$fzf_share/completion.zsh"
+fi
+{{ end }}

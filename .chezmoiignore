@@ -1,1 +1,6 @@
-
+# Runtime caches and editor lock files — never auto-add to source.
+.config/zsh/.zcompdump*
+.config/zsh/.zcompcache/**
+.config/zsh/.#*
+.config/zsh/.claude/**
+.config/zsh/.zsh_history
