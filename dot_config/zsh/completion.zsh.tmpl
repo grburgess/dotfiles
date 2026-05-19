@@ -40,10 +40,11 @@ autoload -Uz compinit promptinit
 promptinit
 
 # Cache compinit to once per day for faster startup.
+# -u: skip ownership check (Docker.app completions are owned by localadmin)
 if [[ ! -f ${ZDOTDIR}/.zcompdump || -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
-    compinit
+    compinit -u
 else
-    compinit -C
+    compinit -C -u
 fi
 
 # Replay deferred compdef calls captured by zinit before compinit ran.
