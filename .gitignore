@@ -5,3 +5,7 @@
 /emacs/.config/emacs/.DS_Store
 /zsh/.config/zsh/.zcompcache/
 /emacs/.DS_Store
+
+# Emacs byte-compile artifacts
+dot_config/emacs/*.elc
+dot_config/emacs/eln-cache/
