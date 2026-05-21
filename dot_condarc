@@ -4,3 +4,7 @@ channels:
 channel_priority: strict
 auto_activate_base: true
 changeps1: false
+create_default_packages:
+  - ipykernel
+  - ipympl
+  - ipywidgets
