@@ -27,3 +27,24 @@ periodic_remote_rsync() {
         sleep "$interval"
     done
 }
+
+# Launch JupyterLab from the dedicated `jupyter` env regardless of current env.
+# iTerm2: orange tab + Jupyter profile while running; resets on exit/Ctrl-C.
+jlab() {
+    emulate -L zsh
+    setopt LOCAL_TRAPS
+
+    if [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+        printf '\033]6;1;bg;red;brightness;230\a'
+        printf '\033]6;1;bg;green;brightness;120\a'
+        printf '\033]6;1;bg;blue;brightness;30\a'
+        printf '\033]50;SetProfile=Jupyter\a'
+
+        trap '
+            printf "\033]6;1;bg;*;default\a"
+            printf "\033]50;SetProfile=Default\a"
+        ' EXIT INT
+    fi
+
+    mamba run --live-stream -n jupyter jupyter lab "$@"
+}
