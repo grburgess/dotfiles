@@ -46,5 +46,6 @@ jlab() {
         ' EXIT INT
     fi
 
-    mamba run --live-stream -n jupyter jupyter lab "$@"
+    # Direct binary call avoids `mamba run`'s `exec --` bash-builtin bug (mamba 2.5.x).
+    /opt/homebrew/Caskroom/mambaforge/base/envs/jupyter/bin/jupyter lab "$@"
 }
