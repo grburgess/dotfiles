@@ -2304,6 +2304,12 @@ concatenated."
                                (auth-source-pick-first-password
                                 :host "api.anthropic.com")))))
 
+(use-package claude-code-ide
+  :straight (claude-code-ide :host github :repo "manzaltu/claude-code-ide.el")
+  :bind ("C-c C-'" . claude-code-ide-menu)
+  :config
+  (claude-code-ide-emacs-tools-setup))
+
 (use-package regex-tool
   :config
   (setq regex-tool-backend "Perl")

@@ -23,5 +23,23 @@ alias gca="source ~/.scripts/cloud_login.sh"
 
 #alias cow="source ~/.scripts/cow_starup.sh"
 
+# Launch ml_dev container in current directory
+mldev() {
+  local image="us-docker.pkg.dev/devops-tools-295c/us-docker/cnvrg:ml_dev-2026.11.1"
+  local gcloud_dir="/Users/burgessj/.config/gcloud"
+  local creds="/root/.config/gcloud/legacy_credentials/principal/iam.googleapis.com/locations/global/workforcePools/cape-okta-workforce-pool/subject/JMichael.Burgess@moodys.com/adc.json"
+
+  docker run -it --rm --platform linux/amd64 \
+    -v "${PWD}:/workspace" \
+    -v "${gcloud_dir}:/root/.config/gcloud:cached" \
+    -e GOOGLE_APPLICATION_CREDENTIALS="${creds}" \
+    -e GOOGLE_CLOUD_PROJECT="ml-dev-a7b7" \
+    -e GITHUB_TOKEN="${GITHUB_TOKEN}" \
+    -e HF_TOKEN="${HF_TOKEN}" \
+    -w /workspace \
+    "${image}" \
+    "$@"
+}
+
 
 

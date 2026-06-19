@@ -3042,6 +3042,17 @@ Claude backend declared. Auth deferred — see =claude_comments/gptel-setup.md= 
 #+end_src
 
 #+RESULTS:
+** AI (claude-code-ide)
+Drives the Claude Code CLI over MCP; exposes Emacs tools (xref, tree-sitter, project, diagnostics) to Claude and shows edits via ediff. Uses the existing vterm backend; requires the =claude= CLI on PATH.
+
+#+begin_src emacs-lisp
+(use-package claude-code-ide
+  :straight (claude-code-ide :host github :repo "manzaltu/claude-code-ide.el")
+  :bind ("C-c C-'" . claude-code-ide-menu)
+  :config
+  (claude-code-ide-emacs-tools-setup))
+#+end_src
+
 ** regex tool
 
 #+begin_src emacs-lisp
