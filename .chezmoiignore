@@ -42,4 +42,5 @@
 .config/zsh/nsl_secret2.zsh
 .config/zsh/boston_tile_coverage_auth.zsh
 .config/zsh/boston_tile_source_v2_auth.zsh
+.config/zsh/irp_api_key.zsh
 {{ end }}
