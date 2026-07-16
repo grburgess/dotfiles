@@ -24,14 +24,15 @@ source "${zsh_dir}/highlight.zsh"    # syntax-highlight styles
 
 # Secrets — rendered from 1Password by chezmoi (private_* prefix → 0600 perms).
 source "${zsh_dir}/github_token.zsh"
-source "${zsh_dir}/wandb.zsh"
 source "${zsh_dir}/hf_token.zsh"
+{{ if eq .profile "work" -}}
 source "${zsh_dir}/boston_tile_source_v2_auth.zsh"
 source "${zsh_dir}/boston_tile_coverage_auth.zsh"
 source "${zsh_dir}/google_geocoding_api_key.zsh"
 source "${zsh_dir}/nsl_id2.zsh"
 source "${zsh_dir}/nsl_secret2.zsh"
 source "${zsh_dir}/atlassian_token.zsh"
+{{ end -}}
 
 # Mambaforge and micromamba init must come last.
 source "${zsh_dir}/mambaforge.zsh"
