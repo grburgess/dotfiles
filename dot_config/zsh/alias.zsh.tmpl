@@ -28,6 +28,9 @@ alias deactivate="conda deactivate"
 {{- end }}
 
 alias gca="source ~/.scripts/cloud_login.sh"
+{{ if eq .profile "work" -}}
+alias reauth="~/.scripts/auth_all.sh"   # staleness-gated google + mai re-auth
+{{ end -}}
 
 #alias cow="source ~/.scripts/cow_starup.sh"
 
