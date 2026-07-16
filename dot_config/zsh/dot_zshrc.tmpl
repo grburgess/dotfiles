@@ -35,9 +35,12 @@ source "${zsh_dir}/atlassian_token.zsh"
 source "${zsh_dir}/irp_api_key.zsh"
 {{ end -}}
 
-# Mambaforge and micromamba init must come last.
-source "${zsh_dir}/mambaforge.zsh"
+# Mamba init must come last. Style depends on machine profile.
+{{ if eq .profile "home" -}}
 source "${zsh_dir}/micromamba.zsh"
+{{- else -}}
+source "${zsh_dir}/mambaforge.zsh"
+{{- end }}
 
 unset zsh_dir
 
