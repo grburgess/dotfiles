@@ -27,7 +27,7 @@
 {{ if eq .profile "work" }}
 .ssh
 .ssh/**
-.private_dot_authinfo
+.authinfo
 .mbsyncrc
 .msmtprc
 {{ end }}
