@@ -13,6 +13,18 @@
 .claude/skills
 .claude/skills/**
 
+# iTerm2 shell integration: auto-updated by iTerm2 itself → perpetual drift.
+.config/zsh/.iterm2
+.config/zsh/.iterm2/**
+.config/zsh/.iterm2_shell_integration.zsh
+
+# gh CLI config: managed by `gh auth` (old token auth is obsolete).
+.config/gh
+.config/gh/**
+
+# chezmoi's own state DB: machine-specific binary, never track.
+.config/chezmoi/chezmoistate.boltdb
+
 # Home-only files: excluded on work machines (profile = "work").
 {{ if eq .profile "work" }}
 .ssh
