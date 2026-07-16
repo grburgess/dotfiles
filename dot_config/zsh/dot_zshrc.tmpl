@@ -32,6 +32,7 @@ source "${zsh_dir}/google_geocoding_api_key.zsh"
 source "${zsh_dir}/nsl_id2.zsh"
 source "${zsh_dir}/nsl_secret2.zsh"
 source "${zsh_dir}/atlassian_token.zsh"
+source "${zsh_dir}/irp_api_key.zsh"
 {{ end -}}
 
 # Mambaforge and micromamba init must come last.
@@ -39,3 +40,5 @@ source "${zsh_dir}/mambaforge.zsh"
 source "${zsh_dir}/micromamba.zsh"
 
 unset zsh_dir
+
+test -e "${ZDOTDIR}/.iterm2_shell_integration.zsh" && source "${ZDOTDIR}/.iterm2_shell_integration.zsh"
