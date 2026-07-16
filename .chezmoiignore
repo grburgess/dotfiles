@@ -9,19 +9,9 @@
 .config/emacs/*.elc
 .config/emacs/eln-cache/**
 
-# Claude skills: never publish local change-notes or regenerable caches.
-.claude/skills/*/claude_comments
-.claude/skills/*/claude_comments/**
-.claude/skills/**/__pycache__
-.claude/skills/**/__pycache__/**
-.claude/skills/**/*.pyc
-.claude/skills/**/.pytest_cache
-.claude/skills/**/.pytest_cache/**
-.claude/skills/**/.ipynb_checkpoints
-.claude/skills/**/.ipynb_checkpoints/**
-.claude/skills/**/node_modules
-.claude/skills/**/node_modules/**
-.claude/skills/**/.DS_Store
+# Claude skills: no longer managed by chezmoi (edited live, not via dotfiles).
+.claude/skills
+.claude/skills/**
 
 # Home-only files: excluded on work machines (profile = "work").
 {{ if eq .profile "work" }}
