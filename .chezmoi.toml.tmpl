@@ -1,0 +1,9 @@
+{{- $profile := promptStringOnce . "profile" "machine profile (home/work)" "home" -}}
+[edit]
+command="code"
+args=["--wait"]
+[git]
+autoCommit = true
+autoPush = true
+[data]
+profile = {{ $profile | quote }}

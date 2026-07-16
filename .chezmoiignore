@@ -22,3 +22,19 @@
 .claude/skills/**/node_modules
 .claude/skills/**/node_modules/**
 .claude/skills/**/.DS_Store
+
+# Home-only files: excluded on work machines (profile = "work").
+{{ if eq .profile "work" }}
+.config/zsh/google_geocoding_api_key.zsh
+.config/zsh/nsl_id2.zsh
+.config/zsh/nsl_secret2.zsh
+.config/zsh/boston_tile_coverage_auth.zsh
+.config/zsh/boston_tile_source_v2_auth.zsh
+.config/zsh/atlassian_token.zsh
+.config/zsh/wandb.zsh
+.ssh
+.ssh/**
+.private_dot_authinfo
+.mbsyncrc
+.msmtprc
+{{ end }}
