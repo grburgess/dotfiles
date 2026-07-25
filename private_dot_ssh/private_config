@@ -1,0 +1,39 @@
+# Home network SSH mesh — every host below reaches every other host by
+# alias, with key auth, from any machine on the LAN.
+#
+# Shared verbatim by all four hosts (macOS and Linux), so keep it free of
+# platform-specific options. In particular NEVER add `UseKeychain`: it exists
+# solely in Apple's OpenSSH fork, and stock Linux OpenSSH treats an unknown
+# option as fatal for the ENTIRE file — one such line, copied over from the
+# Mac, silently broke every outbound ssh from deathstar.
+#
+# Pending repurposing — deliberately NOT aliased until their new roles settle:
+#   10.10.1.10   TV Mac (MacBookPro15,3), retired from HTPC duty
+#   10.10.1.150  old NAS "asus", decommissioned
+#   10.10.1.200  retropi, currently offline
+# The old `plex` alias was removed: it pointed at the HA Pi on some hosts and
+# at the dead NAS on others. Plex itself now runs on `foundation`.
+#
+# There is deliberately no github.com block: GitHub is no longer accessed over
+# SSH. id_ed25519 below is the mesh key, not a GitHub key.
+
+Host stargazer
+     HostName 10.10.1.19
+     User jburgess
+
+Host foundation
+     HostName 10.10.1.20
+     User jburgess
+
+Host deathstar
+     HostName 10.10.1.21
+     User jburgess
+
+Host ha
+     HostName 10.10.1.100
+     User pi
+
+Host stargazer foundation deathstar ha
+     IdentityFile ~/.ssh/id_ed25519
+     ServerAliveInterval 60
+     ServerAliveCountMax 3
