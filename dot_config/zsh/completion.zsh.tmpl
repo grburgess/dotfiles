@@ -28,7 +28,13 @@ zstyle ':fzf-tab:*' accept-line enter
 zstyle ':fzf-tab:*' continuous-trigger '/'
 {{ else }}
 [[ -f "${HOME}/sw/fzf-tab-completion/zsh/fzf-zsh-completion.sh" ]] && source "${HOME}/sw/fzf-tab-completion/zsh/fzf-zsh-completion.sh"
-bindkey '^I' fzf_completion
+
+# Only bind if the source above actually defined the widget. fzf_completion comes
+# from the lincheney/fzf-tab-completion clone in ~/sw, NOT from the fzf package —
+# on a host without that clone an unconditional bindkey creates a phantom widget
+# and zsh-syntax-highlighting warns on every prompt. Same hazard, same guard as
+# the history-substring-search binds in tools.zsh.
+zle -la fzf_completion >/dev/null 2>&1 && bindkey '^I' fzf_completion
 
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:*:git:*' fzf-search-display true
