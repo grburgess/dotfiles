@@ -1205,6 +1205,17 @@ Allows to jump into a a directory within the minibuffer
 #+begin_src emacs-lisp
 #+end_src
 
+** emacsclient file placement
+
+Files opened from a shell (=e foo=, =$EDITOR=) arrive through the server. With
+=server-window= at its default nil, the server uses =pop-to-buffer=, which on a
+tall frame splits the window and drops the file in the bottom half. Reuse the
+selected window instead.
+
+#+begin_src emacs-lisp
+(setq server-window #'switch-to-buffer)
+#+end_src
+
 ** fill
 #+begin_src emacs-lisp
 

@@ -829,6 +829,8 @@ folder, otherwise delete a word"
 
 
 
+(setq server-window #'switch-to-buffer)
+
 (defun dw/org-mode-visual-fill ()
   (setq visual-fill-column-width 110
         visual-fill-column-center-text t)
