@@ -43,4 +43,5 @@
 .config/zsh/boston_tile_coverage_auth.zsh
 .config/zsh/boston_tile_source_v2_auth.zsh
 .config/zsh/irp_api_key.zsh
+.config/zsh/vx_eu_key_dev.zsh
 {{ end }}
