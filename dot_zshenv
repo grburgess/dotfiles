@@ -1,1 +1,11 @@
 export ZDOTDIR=$HOME/.config/zsh
+
+# Ollama: default context for models with no baked-in num_ctx PARAMETER.
+# Required because Ollama's OpenAI-compatible /v1 endpoint (used by opencode)
+# silently discards per-request num_ctx. Without this the default is 4096.
+export OLLAMA_CONTEXT_LENGTH=65536
+
+# Ollama: never auto-unload a model. Keeps the prompt cache alive between turns
+# (a cold reload costs ~6 min of prompt reprocessing at 64k context).
+# Release memory manually when done:  ollama stop <model>
+export OLLAMA_KEEP_ALIVE=-1
