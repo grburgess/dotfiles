@@ -33,6 +33,11 @@ Host ha
      HostName 10.10.1.100
      User pi
 
+
+Host retropi
+     HostName 10.10.1.200
+     User pi
+
 Host stargazer foundation deathstar ha
      IdentityFile ~/.ssh/id_ed25519
      ServerAliveInterval 60
