@@ -3568,6 +3568,94 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
 
 #+RESULTS:
 
+* Local packages
+Emacs front ends I maintain alongside their Neovim originals. Both live on
+=feat/emacs-port= branches that are not pushed yet, so straight.el has
+nothing to fetch — they load straight from the working tree. The
+=file-directory-p= guards mean checking those repos back out to =main=
+(where =emacs/= does not exist) degrades to "the package is absent" rather
+than breaking startup.
+
+** dataview
+Opens =.parquet=, =.csv=, =.gpkg= and friends as duckdb-rendered tables
+instead of raw bytes. Needs =duckdb= on =PATH=, plus a one-time
+=duckdb -c "INSTALL spatial;"= for the GDAL-backed formats.
+
+=dataview-setup= is what installs the =file-name-handler-alist= entry, so
+it has to run — merely loading the library does nothing.
+
+#+begin_src emacs-lisp
+(defconst jmb/dataview-dir "~/projects/de-dataview.nvim/emacs"
+  "Working tree of the dataview Emacs front end.")
+
+(when (file-directory-p jmb/dataview-dir)
+  (use-package dataview
+    :straight nil
+    :load-path jmb/dataview-dir
+    :commands (dataview-setup dataview-data dataview-schema dataview-stats
+               dataview-layer dataview-query)
+    :init
+    ;; Not :config — the handler must be installed before any data file is
+    ;; visited, and nothing else pulls this package in.
+    (require 'dataview)
+    (dataview-setup)))
+#+end_src
+
+** annotate-markdown
+Live browser preview for markdown, with in-browser commenting that writes
+=> [!NOTE] Comment:= lines back into the buffer. No external runtime — the
+server is Emacs's own =make-network-process=.
+
+#+begin_src emacs-lisp
+(defconst jmb/annotate-markdown-dir "~/projects/de-annotate-markdown.nvim/emacs"
+  "Working tree of the annotate-markdown Emacs front end.")
+
+(when (file-directory-p jmb/annotate-markdown-dir)
+  (use-package annotate-markdown
+    :straight nil
+    :load-path jmb/annotate-markdown-dir
+    :commands (annotate-markdown-toggle)
+    :init
+    ;; NOT :bind (:map markdown-mode-map ...) -- use-package installs that
+    ;; only after THIS package loads, and nothing loads it until the key is
+    ;; pressed, so the key never exists.  Bind when markdown-mode loads
+    ;; instead; the :commands autoload then pulls the package in on first use.
+    (with-eval-after-load 'markdown-mode
+      (define-key markdown-mode-map (kbd "C-c C-v")
+                  #'annotate-markdown-toggle))))
+#+end_src
+
+Show the preview inside Emacs rather than in the external browser. The page
+is rendered entirely client-side by =markdown-it=, =mermaid= and
+=highlight.js=, so it needs a real JavaScript engine -- =eww= would show an
+empty shell. =xwidget-webkit= is one, embedded in a buffer.
+
+Scoped deliberately: the advice let-binds =browse-url-browser-function= for
+the duration of this one command, so every other link Emacs opens still goes
+to the real browser. Set =jmb/annotate-markdown-use-xwidget= to nil to go
+back without unwinding anything.
+
+#+begin_src emacs-lisp
+(defvar jmb/annotate-markdown-use-xwidget t
+  "When non-nil, show the annotate-markdown preview in an Emacs xwidget.
+Set to nil to use the external browser instead.")
+
+(defun jmb/annotate-markdown--in-xwidget (orig &rest args)
+  "Run ORIG with ARGS, routing its `browse-url' call to an xwidget.
+Falls through untouched when xwidget support is missing from this build,
+so a config shared with a non-xwidget Emacs still opens the browser
+rather than failing."
+  (if (and jmb/annotate-markdown-use-xwidget
+           (featurep 'xwidget-internal)
+           (fboundp 'xwidget-webkit-browse-url))
+      (let ((browse-url-browser-function #'xwidget-webkit-browse-url))
+        (apply orig args))
+    (apply orig args)))
+
+(advice-add 'annotate-markdown-toggle :around
+            #'jmb/annotate-markdown--in-xwidget)
+#+end_src
+
 * Custom-file
 Loaded just before the terminal theme apply so any =custom.el= face settings can't fight with =jmb/apply-theme=.
 

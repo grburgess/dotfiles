@@ -2775,6 +2775,57 @@ _p_rev       _u_pper (mine)       _=_: upper/lower       _r_esolve
          :map easy-kill-base-map
          ("," . easy-kill-expand)))
 
+(defconst jmb/dataview-dir "~/projects/de-dataview.nvim/emacs"
+  "Working tree of the dataview Emacs front end.")
+
+(when (file-directory-p jmb/dataview-dir)
+  (use-package dataview
+    :straight nil
+    :load-path jmb/dataview-dir
+    :commands (dataview-setup dataview-data dataview-schema dataview-stats
+               dataview-layer dataview-query)
+    :init
+    ;; Not :config — the handler must be installed before any data file is
+    ;; visited, and nothing else pulls this package in.
+    (require 'dataview)
+    (dataview-setup)))
+
+(defconst jmb/annotate-markdown-dir "~/projects/de-annotate-markdown.nvim/emacs"
+  "Working tree of the annotate-markdown Emacs front end.")
+
+(when (file-directory-p jmb/annotate-markdown-dir)
+  (use-package annotate-markdown
+    :straight nil
+    :load-path jmb/annotate-markdown-dir
+    :commands (annotate-markdown-toggle)
+    :init
+    ;; NOT :bind (:map markdown-mode-map ...) -- use-package installs that
+    ;; only after THIS package loads, and nothing loads it until the key is
+    ;; pressed, so the key never exists.  Bind when markdown-mode loads
+    ;; instead; the :commands autoload then pulls the package in on first use.
+    (with-eval-after-load 'markdown-mode
+      (define-key markdown-mode-map (kbd "C-c C-v")
+                  #'annotate-markdown-toggle))))
+
+(defvar jmb/annotate-markdown-use-xwidget t
+  "When non-nil, show the annotate-markdown preview in an Emacs xwidget.
+Set to nil to use the external browser instead.")
+
+(defun jmb/annotate-markdown--in-xwidget (orig &rest args)
+  "Run ORIG with ARGS, routing its `browse-url' call to an xwidget.
+Falls through untouched when xwidget support is missing from this build,
+so a config shared with a non-xwidget Emacs still opens the browser
+rather than failing."
+  (if (and jmb/annotate-markdown-use-xwidget
+           (featurep 'xwidget-internal)
+           (fboundp 'xwidget-webkit-browse-url))
+      (let ((browse-url-browser-function #'xwidget-webkit-browse-url))
+        (apply orig args))
+    (apply orig args)))
+
+(advice-add 'annotate-markdown-toggle :around
+            #'jmb/annotate-markdown--in-xwidget)
+
 (setq custom-file
       (if (boundp 'server-socket-dir)
           (expand-file-name "custom.el" server-socket-dir)
